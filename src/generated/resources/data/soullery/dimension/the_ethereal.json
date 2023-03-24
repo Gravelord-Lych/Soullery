@@ -1,0 +1,11 @@
+{
+  "type": "soullery:the_ethereal",
+  "generator": {
+    "biome_source": {
+      "biome": "minecraft:plains",
+      "type": "minecraft:fixed"
+    },
+    "settings": "soullery:the_ethereal",
+    "type": "soullery:the_ethereal"
+  }
+}

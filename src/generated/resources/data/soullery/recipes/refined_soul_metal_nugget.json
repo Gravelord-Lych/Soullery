@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soullery:refined_soul_metal_ingot"
+    }
+  ],
+  "result": {
+    "item": "soullery:refined_soul_metal_nugget",
+    "count": 9
+  }
+}

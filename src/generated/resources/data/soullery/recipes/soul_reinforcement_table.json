@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "---",
+    "#W#",
+    "###"
+  ],
+  "key": {
+    "-": {
+      "item": "soullery:soul_metal_ingot"
+    },
+    "#": {
+      "item": "soullery:soul_stone"
+    },
+    "W": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "item": "soullery:soul_reinforcement_table"
+  }
+}

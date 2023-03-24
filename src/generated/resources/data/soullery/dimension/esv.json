@@ -1,0 +1,10 @@
+{
+  "type": "soullery:esv",
+  "generator": {
+    "biome_source": {
+      "biome": "soullery:esv",
+      "type": "minecraft:fixed"
+    },
+    "type": "soullery:esv"
+  }
+}

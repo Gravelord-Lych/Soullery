@@ -1,0 +1,68 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soullery:item/soul_energy_gem_l2_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.1
+      },
+      "model": "soullery:item/soul_energy_gem_l2_1"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.2
+      },
+      "model": "soullery:item/soul_energy_gem_l2_2"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.3
+      },
+      "model": "soullery:item/soul_energy_gem_l2_3"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.4
+      },
+      "model": "soullery:item/soul_energy_gem_l2_4"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.5
+      },
+      "model": "soullery:item/soul_energy_gem_l2_5"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.6
+      },
+      "model": "soullery:item/soul_energy_gem_l2_6"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.7
+      },
+      "model": "soullery:item/soul_energy_gem_l2_7"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.8
+      },
+      "model": "soullery:item/soul_energy_gem_l2_8"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 0.9
+      },
+      "model": "soullery:item/soul_energy_gem_l2_9"
+    },
+    {
+      "predicate": {
+        "soullery:soul_energy_level": 1.0
+      },
+      "model": "soullery:item/soul_energy_gem_l2_10"
+    }
+  ]
+}

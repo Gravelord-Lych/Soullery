@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "is_generating_se=false": {
+      "model": "soullery:block/heat_segen"
+    },
+    "is_generating_se=true": {
+      "model": "soullery:block/heat_segen_gs"
+    }
+  }
+}

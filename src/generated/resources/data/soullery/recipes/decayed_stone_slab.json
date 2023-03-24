@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "soullery:decayed_stone"
+    }
+  },
+  "result": {
+    "item": "soullery:decayed_stone_slab",
+    "count": 6
+  }
+}

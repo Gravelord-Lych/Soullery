@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:warped_stems",
+    "minecraft:warped_nylium",
+    "minecraft:warped_planks",
+    "minecraft:warped_wart_block",
+    "soullery:warped_hyphal_soil"
+  ]
+}

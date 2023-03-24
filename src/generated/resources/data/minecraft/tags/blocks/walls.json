@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "soullery:cracked_decayed_stone_brick_wall",
+    "soullery:cracked_soul_stone_brick_wall",
+    "soullery:decayed_stone_brick_wall",
+    "soullery:decayed_stone_wall",
+    "soullery:smooth_soul_stone_wall",
+    "soullery:soul_stone_brick_wall",
+    "soullery:soul_stone_wall"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:evoker",
+    "minecraft:pillager",
+    "minecraft:ravager",
+    "minecraft:vindicator",
+    "minecraft:illusioner",
+    "minecraft:witch",
+    "soullery:dark_evoker",
+    "soullery:engineer"
+  ]
+}

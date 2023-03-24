@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "soullery:soul_metal_ingot"
+    },
+    {
+      "item": "soullery:soul_blaze_powder"
+    }
+  ],
+  "result": {
+    "item": "soullery:refined_soul_metal_ingot"
+  }
+}

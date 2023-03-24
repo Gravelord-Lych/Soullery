@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "is_generating_se=false": {
+      "model": "soullery:block/nether_segen_l2"
+    },
+    "is_generating_se=true": {
+      "model": "soullery:block/nether_segen_l2_gs"
+    }
+  }
+}

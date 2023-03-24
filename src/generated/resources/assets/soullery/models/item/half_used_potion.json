@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soullery:item/half_used_potion_overlay",
+    "layer1": "minecraft:item/potion"
+  }
+}

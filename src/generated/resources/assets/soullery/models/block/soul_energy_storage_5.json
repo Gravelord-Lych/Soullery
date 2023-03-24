@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "soullery:block/soul_energy_storage_5",
+    "end": "soullery:block/simple_soul_machine_side"
+  }
+}

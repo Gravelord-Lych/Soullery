@@ -1,0 +1,71 @@
+{
+  "targets": [
+    "soulleryswap",
+    "soulleryfinal"
+  ],
+  "passes": [
+    {
+      "name": "entity_outline",
+      "intarget": "soulleryfinal",
+      "outtarget": "soulleryswap",
+      "uniforms": [
+        {
+          "name": "RedMatrix",
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "GreenMatrix",
+          "values": [
+            0.6,
+            0.6,
+            0.6
+          ]
+        },
+        {
+          "name": "BlueMatrix",
+          "values": [
+            0.7,
+            0.7,
+            0.7
+          ]
+        }
+      ]
+    },
+    {
+      "name": "color_convolve",
+      "intarget": "minecraft:main",
+      "outtarget": "soulleryswap",
+      "uniforms": []
+    },
+    {
+      "name": "blur",
+      "intarget": "soulleryswap",
+      "outtarget": "soulleryfinal",
+      "uniforms": [
+        {
+          "name": "BlurDir",
+          "values": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Radius",
+          "values": [
+            2.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "soulleryswap",
+      "outtarget": "soulleryfinal",
+      "uniforms": []
+    }
+  ]
+}

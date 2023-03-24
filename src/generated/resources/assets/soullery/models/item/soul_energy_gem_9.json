@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soullery:item/soul_energy_gem_9"
+  }
+}

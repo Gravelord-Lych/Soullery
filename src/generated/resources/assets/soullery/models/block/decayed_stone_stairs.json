@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "side": "soullery:block/decayed_stone",
+    "bottom": "soullery:block/decayed_stone",
+    "top": "soullery:block/decayed_stone"
+  }
+}

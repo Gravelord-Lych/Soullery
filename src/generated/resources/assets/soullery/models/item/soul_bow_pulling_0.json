@@ -1,0 +1,6 @@
+{
+  "parent": "soullery:item/soul_bow",
+  "textures": {
+    "layer0": "soullery:item/soul_bow_pulling_0"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "soullery:block/decayed_stone_bricks"
+  }
+}

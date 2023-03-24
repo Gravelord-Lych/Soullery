@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "soul_energy_level=0": {
+      "model": "soullery:block/soul_energy_storage_l2_0"
+    },
+    "soul_energy_level=1": {
+      "model": "soullery:block/soul_energy_storage_l2_1"
+    },
+    "soul_energy_level=2": {
+      "model": "soullery:block/soul_energy_storage_l2_2"
+    },
+    "soul_energy_level=3": {
+      "model": "soullery:block/soul_energy_storage_l2_3"
+    },
+    "soul_energy_level=4": {
+      "model": "soullery:block/soul_energy_storage_l2_4"
+    },
+    "soul_energy_level=5": {
+      "model": "soullery:block/soul_energy_storage_l2_5"
+    }
+  }
+}

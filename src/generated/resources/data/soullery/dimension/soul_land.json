@@ -1,0 +1,10 @@
+{
+  "type": "soullery:soul_land",
+  "generator": {
+    "biome_source": {
+      "type": "soullery:soul_land"
+    },
+    "settings": "soullery:soul_land",
+    "type": "soullery:dynamic_seed_noise"
+  }
+}

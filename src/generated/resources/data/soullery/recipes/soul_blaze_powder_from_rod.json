@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soullery:soul_blaze_rod"
+    }
+  ],
+  "result": {
+    "item": "soullery:soul_blaze_powder",
+    "count": 2
+  }
+}

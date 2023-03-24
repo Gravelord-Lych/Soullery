@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "side": "soullery:block/decayed_stone_bricks",
+    "bottom": "soullery:block/decayed_stone_bricks",
+    "top": "soullery:block/decayed_stone_bricks"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "soullery:item/soul_bow"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "soullery:soul_bow_pulling": 1.0
+      },
+      "model": "soullery:item/soul_bow_pulling_0"
+    },
+    {
+      "predicate": {
+        "soullery:soul_bow_pulling": 1.0,
+        "soullery:soul_bow_pull": 0.65
+      },
+      "model": "soullery:item/soul_bow_pulling_1"
+    },
+    {
+      "predicate": {
+        "soullery:soul_bow_pulling": 1.0,
+        "soullery:soul_bow_pull": 0.9
+      },
+      "model": "soullery:item/soul_bow_pulling_2"
+    }
+  ]
+}

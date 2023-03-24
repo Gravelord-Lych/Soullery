@@ -1,0 +1,12 @@
+{
+  "type": "soullery:subworld",
+  "generator": {
+    "biome_source": {
+      "large_biomes": false,
+      "seed": 0,
+      "type": "minecraft:vanilla_layered"
+    },
+    "settings": "soullery:subworld",
+    "type": "soullery:subworld"
+  }
+}

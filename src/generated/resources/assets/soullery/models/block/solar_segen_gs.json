@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "side": "soullery:block/simple_soul_machine_side",
+    "front": "soullery:block/simple_soul_machine_side",
+    "top": "soullery:block/solar_segen_gs"
+  }
+}

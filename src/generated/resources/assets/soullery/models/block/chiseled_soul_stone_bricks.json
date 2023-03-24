@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "soullery:block/smooth_soul_stone",
+    "side": "soullery:block/chiseled_soul_stone_bricks"
+  }
+}

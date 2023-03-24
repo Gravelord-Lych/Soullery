@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "soullery:block/crimson_hyphal_soil_side",
+    "bottom": "minecraft:block/soul_soil",
+    "top": "soullery:block/crimson_hyphal_soil_top"
+  }
+}

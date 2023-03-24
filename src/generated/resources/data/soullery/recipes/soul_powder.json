@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soullery:soul_piece"
+    }
+  ],
+  "result": {
+    "item": "soullery:soul_powder",
+    "count": 3
+  }
+}

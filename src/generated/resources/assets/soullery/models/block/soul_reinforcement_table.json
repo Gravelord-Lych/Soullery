@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "side": "soullery:block/soul_reinforcement_table_side",
+    "front": "soullery:block/soul_reinforcement_table_side",
+    "bottom": "soullery:block/soul_stone",
+    "top": "soullery:block/soul_reinforcement_table_top"
+  }
+}

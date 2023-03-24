@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "soullery:cracked_soul_stone_bricks",
+    "soullery:decayed_stone",
+    "soullery:decayed_stone_bricks",
+    "soullery:refined_soul_metal_block",
+    "soullery:smooth_soul_stone",
+    "soullery:soul_metal_block",
+    "soullery:soul_reinforcement_table",
+    "soullery:soul_stone",
+    "soullery:soul_stone_bricks"
+  ]
+}

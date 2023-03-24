@@ -1,0 +1,213 @@
+{
+  "mob.meta8.share_stronger_shield": {
+    "subtitle": "subtitles.soullery:mob.meta8.share_stronger_shield",
+    "sounds": [
+      "soullery:mob/meta8/share_stronger_shield"
+    ]
+  },
+  "random.energy_shield_break": {
+    "subtitle": "subtitles.soullery:random.energy_shield_break",
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ]
+  },
+  "mob.meta8.laser": {
+    "subtitle": "subtitles.soullery:mob.meta8.laser",
+    "sounds": [
+      "soullery:random/laser1",
+      "soullery:random/laser2",
+      "soullery:random/laser3"
+    ]
+  },
+  "mob.meta8.share_shield": {
+    "subtitle": "subtitles.soullery:mob.meta8.share_shield",
+    "sounds": [
+      "soullery:mob/meta8/share_shield"
+    ]
+  },
+  "mob.soul_rabbit.ambient": {
+    "subtitle": "subtitles.soullery:mob.soul_rabbit.ambient",
+    "sounds": [
+      {
+        "name": "mob/rabbit/idle1",
+        "volume": 0.25
+      },
+      {
+        "name": "mob/rabbit/idle2",
+        "volume": 0.25
+      },
+      {
+        "name": "mob/rabbit/idle3",
+        "volume": 0.25
+      },
+      {
+        "name": "mob/rabbit/idle4",
+        "volume": 0.25
+      }
+    ]
+  },
+  "mob.soul_rabbit.attack": {
+    "subtitle": "subtitles.soullery:mob.soul_rabbit.attack",
+    "sounds": [
+      "entity/rabbit/attack1",
+      "entity/rabbit/attack2",
+      "entity/rabbit/attack3",
+      "entity/rabbit/attack4"
+    ]
+  },
+  "mob.soul_rabbit.death": {
+    "subtitle": "subtitles.soullery:mob.soul_rabbit.death",
+    "sounds": [
+      {
+        "name": "mob/rabbit/bunnymurder",
+        "volume": 0.5
+      }
+    ]
+  },
+  "mob.soul_rabbit.hurt": {
+    "subtitle": "subtitles.soullery:mob.soul_rabbit.hurt",
+    "sounds": [
+      {
+        "name": "mob/rabbit/hurt1",
+        "volume": 0.5
+      },
+      {
+        "name": "mob/rabbit/hurt2",
+        "volume": 0.5
+      },
+      {
+        "name": "mob/rabbit/hurt3",
+        "volume": 0.5
+      },
+      {
+        "name": "mob/rabbit/hurt4",
+        "volume": 0.5
+      }
+    ]
+  },
+  "mob.soul_rabbit.jump": {
+    "subtitle": "subtitles.soullery:mob.soul_rabbit.jump",
+    "sounds": [
+      {
+        "name": "mob/rabbit/hop1",
+        "volume": 0.1
+      },
+      {
+        "name": "mob/rabbit/hop2",
+        "volume": 0.1
+      },
+      {
+        "name": "mob/rabbit/hop3",
+        "volume": 0.1
+      },
+      {
+        "name": "mob/rabbit/hop4",
+        "volume": 0.1
+      }
+    ]
+  },
+  "mob.robot.death": {
+    "subtitle": "subtitles.soullery:mob.robot.death",
+    "sounds": [
+      "mob/irongolem/death"
+    ]
+  },
+  "mob.robot.hurt": {
+    "subtitle": "subtitles.soullery:mob.robot.hurt",
+    "sounds": [
+      "mob/irongolem/hit1",
+      "mob/irongolem/hit2",
+      "mob/irongolem/hit3",
+      "mob/irongolem/hit4"
+    ]
+  },
+  "mob.robot.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "mob/irongolem/walk1",
+      "mob/irongolem/walk2",
+      "mob/irongolem/walk3",
+      "mob/irongolem/walk4"
+    ]
+  },
+  "mob.soul_skeleton.ambient": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton.ambient",
+    "sounds": [
+      "soullery:mob/soul_skeleton/ambient1",
+      "soullery:mob/soul_skeleton/ambient2",
+      "soullery:mob/soul_skeleton/ambient3"
+    ]
+  },
+  "mob.soul_skeleton.death": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton.death",
+    "sounds": [
+      "soullery:mob/soul_skeleton/death"
+    ]
+  },
+  "mob.soul_skeleton.hurt": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton.hurt",
+    "sounds": [
+      "soullery:mob/soul_skeleton/hurt1",
+      "soullery:mob/soul_skeleton/hurt2",
+      "soullery:mob/soul_skeleton/hurt3",
+      "soullery:mob/soul_skeleton/hurt4"
+    ]
+  },
+  "mob.soul_skeleton.shoot": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton.shoot",
+    "sounds": [
+      "random/bow"
+    ]
+  },
+  "mob.soul_skeleton.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "soullery:mob/soul_skeleton/step1",
+      "soullery:mob/soul_skeleton/step2",
+      "soullery:mob/soul_skeleton/step3",
+      "soullery:mob/soul_skeleton/step4"
+    ]
+  },
+  "mob.wanderer.ambient": {
+    "subtitle": "subtitles.soullery:mob.wanderer.ambient",
+    "sounds": [
+      "soullery:mob/wanderer/ambient1",
+      "soullery:mob/wanderer/ambient2",
+      "soullery:mob/wanderer/ambient3",
+      "soullery:mob/wanderer/ambient4"
+    ]
+  },
+  "mob.wanderer.death": {
+    "subtitle": "subtitles.soullery:mob.wanderer.death",
+    "sounds": [
+      "soullery:mob/wanderer/death"
+    ]
+  },
+  "mob.wanderer.hurt": {
+    "subtitle": "subtitles.soullery:mob.wanderer.hurt",
+    "sounds": [
+      "soullery:mob/wanderer/hurt1",
+      "soullery:mob/wanderer/hurt2",
+      "soullery:mob/wanderer/hurt3",
+      "soullery:mob/wanderer/hurt4"
+    ]
+  },
+  "mob.wanderer.laser": {
+    "subtitle": "subtitles.soullery:mob.wanderer.laser",
+    "sounds": [
+      "soullery:random/laser1",
+      "soullery:random/laser2",
+      "soullery:random/laser3"
+    ]
+  },
+  "mob.wanderer.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "soullery:mob/wanderer/step1",
+      "soullery:mob/wanderer/step2"
+    ]
+  }
+}

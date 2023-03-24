@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "is_generating_se=false": {
+      "model": "soullery:block/segen"
+    },
+    "is_generating_se=true": {
+      "model": "soullery:block/segen_gs"
+    }
+  }
+}

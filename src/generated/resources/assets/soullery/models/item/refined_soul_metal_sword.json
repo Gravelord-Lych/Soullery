@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "soullery:item/refined_soul_metal_sword"
+  }
+}

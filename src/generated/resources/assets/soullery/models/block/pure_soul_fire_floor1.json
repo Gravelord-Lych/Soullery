@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fire_floor",
+  "textures": {
+    "fire": "soullery:block/pure_soul_fire_1"
+  }
+}

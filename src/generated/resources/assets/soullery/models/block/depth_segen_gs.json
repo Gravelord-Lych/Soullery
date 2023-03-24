@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "side": "soullery:block/depth_segen_side",
+    "front": "soullery:block/depth_segen_side",
+    "top": "soullery:block/depth_segen_gs"
+  }
+}

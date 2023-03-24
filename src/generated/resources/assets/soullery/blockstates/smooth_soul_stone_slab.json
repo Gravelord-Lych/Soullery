@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "soullery:block/smooth_soul_stone_slab_top"
+    },
+    "type=bottom": {
+      "model": "soullery:block/smooth_soul_stone_slab"
+    },
+    "type=double": {
+      "model": "soullery:block/smooth_soul_stone"
+    }
+  }
+}
