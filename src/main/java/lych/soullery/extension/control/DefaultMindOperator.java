@@ -1,11 +1,8 @@
 package lych.soullery.extension.control;
 
-import lych.soullery.extension.control.attack.DefaultMeleeHandler;
-import lych.soullery.extension.control.attack.MeleeHandler;
+import lych.soullery.extension.control.attack.*;
 import lych.soullery.extension.control.movement.DefaultMovementHandler;
 import lych.soullery.extension.control.movement.MovementHandler;
-import lych.soullery.extension.control.rotation.DefaultRotationHandler;
-import lych.soullery.extension.control.rotation.RotationHandler;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.server.ServerWorld;
@@ -32,7 +29,12 @@ public class DefaultMindOperator extends MindOperator<MobEntity> {
     }
 
     @Override
-    protected RotationHandler<? super MobEntity> initRotationHandler() {
-        return DefaultRotationHandler.INSTANCE;
+    protected RightClickHandler<? super MobEntity> initRightClickHandler() {
+        return new DynamicRightClickHandler();
+    }
+
+    @Override
+    protected TargetFinder<? super MobEntity> initTargetFinder() {
+        return DynamicTargetFinder.DEFAULT;
     }
 }

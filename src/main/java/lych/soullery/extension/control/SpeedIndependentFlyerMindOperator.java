@@ -1,8 +1,9 @@
 package lych.soullery.extension.control;
 
-import lych.soullery.extension.control.movement.FlyerMovementHandler;
 import lych.soullery.extension.control.movement.MovementHandler;
+import lych.soullery.extension.control.movement.SpeedIndependentFlyerMovementHandler;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.server.ServerWorld;
 
@@ -19,6 +20,12 @@ public class SpeedIndependentFlyerMindOperator extends FlyerMindOperator {
 
     @Override
     protected MovementHandler<? super MobEntity> initMovementHandler() {
-        return FlyerMovementHandler.SPEED_INDEPENDENT;
+        return SpeedIndependentFlyerMovementHandler.INSTANCE;
+    }
+
+    @Override
+    protected void removeFrom(PlayerEntity player, MobEntity mob) {
+        super.removeFrom(player, mob);
+        mob.setNoGravity(false);
     }
 }

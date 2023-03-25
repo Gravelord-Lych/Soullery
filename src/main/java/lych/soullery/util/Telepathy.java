@@ -14,7 +14,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class Telepathy {
-    public static final double DEFAULT_ANGLE_WEIGHT = 4;
+    public static final double DEFAULT_ANGLE_WEIGHT = 6;
+    public static final double HIGH_ANGLE_WEIGHT = 12;
 
     private Telepathy() {}
 

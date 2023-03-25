@@ -49,8 +49,8 @@ public interface ILaserAttacker extends IRangedAttackMob, ICustomLaserUser {
         LaserSource source = getLaserData(target).create(position, world);
         Random random = ((MobEntity) this).getRandom();
         double deviation = getAttackDeviation(target);
-        Vector3d offsetter = new Vector3d(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1).scale(deviation);
-        Vector3d truePosition = trueTargetPosition.add(offsetter);
+        Vector3d offset = new Vector3d(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1).scale(deviation);
+        Vector3d truePosition = trueTargetPosition.add(offset);
         LaserAttackResult result = source.attackAndStopIfHit(truePosition, getBreakThreshold(target, truePosition, power), this);
         float damage = getLaserDamage(target);
         if (damage > 0) {

@@ -23,7 +23,7 @@ public class FlyerMindOperator extends DefaultMindOperator {
 
     @Override
     protected MovementHandler<? super MobEntity> initMovementHandler() {
-        return FlyerMovementHandler.NORMAL;
+        return FlyerMovementHandler.INSTANCE;
     }
 
     @Override

@@ -41,7 +41,8 @@ public final class ModItems {
     public static final Item HALF_USED_LINGERING_POTION = new HalfUsedLingeringPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
-    public static final Item MIND_OPERATOR = new MindOperatorItem(common().stacksTo(1));
+    public static final Item MIND_OPERATOR = new MindOperatorItem(common().stacksTo(1), 1);
+    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().stacksTo(1), 2);
     public static final Item REFINED_SOUL_METAL_AXE = new AxeItem(Tool.REFINED_SOUL_METAL, 5, -3, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_BOOTS = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.FEET, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_CHESTPLATE = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.CHEST, common().fireResistant());
@@ -178,6 +179,7 @@ public final class ModItems {
         registry.register(make(HALF_USED_POTION, ModItemNames.HALF_USED_POTION));
         registry.register(make(HALF_USED_SPLASH_POTION, ModItemNames.HALF_USED_SPLASH_POTION));
         registry.register(make(MIND_OPERATOR, ModItemNames.MIND_OPERATOR));
+        registry.register(make(MIND_OPERATOR_II, ModItemNames.MIND_OPERATOR_II));
         registry.register(make(REFINED_SOUL_METAL_AXE, ModItemNames.REFINED_SOUL_METAL_AXE));
         registry.register(make(REFINED_SOUL_METAL_BOOTS, ModItemNames.REFINED_SOUL_METAL_BOOTS));
         registry.register(make(REFINED_SOUL_METAL_CHESTPLATE, ModItemNames.REFINED_SOUL_METAL_CHESTPLATE));
@@ -282,5 +284,20 @@ public final class ModItems {
 
     private static void registerSpawnEgg(IForgeRegistry<Item> registry, Item spawnEgg, String entityName) {
         registry.register(make(spawnEgg, entityName + SPAWN_EGG_SUFFIX));
+    }
+
+    static Rarity next(Rarity rarity) {
+        switch (rarity) {
+            case COMMON:
+                return Rarity.UNCOMMON;
+            case UNCOMMON:
+                return Rarity.RARE;
+            case RARE:
+                return Rarity.EPIC;
+            case EPIC:
+                return ModRarities.LEGENDARY;
+            default:
+                return rarity == ModRarities.LEGENDARY ? ModRarities.MAX : rarity;
+        }
     }
 }

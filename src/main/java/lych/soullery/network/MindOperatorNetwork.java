@@ -6,7 +6,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class MindOperatorNetwork {
     public static SimpleChannel MOVEMENTS;
-    public static SimpleChannel ROTATIONS;
     public static final String VERSION = "1.0";
     private static int id = 0;
 
@@ -20,13 +19,6 @@ public class MindOperatorNetwork {
                 .encoder(MovementData::toBytes)
                 .decoder(MovementData::new)
                 .consumer(MovementData::handler)
-                .add();
-
-        ROTATIONS = NetworkRegistry.newSimpleChannel(Soullery.prefix("mind_operator_rotations"), () -> VERSION, MindOperatorNetwork::isCorrectVersion, MindOperatorNetwork::isCorrectVersion);
-        ROTATIONS.messageBuilder(RotationData.class, nextID())
-                .encoder(RotationData::toBytes)
-                .decoder(RotationData::new)
-                .consumer(RotationData::handler)
                 .add();
     }
 

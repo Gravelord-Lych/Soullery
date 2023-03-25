@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.ai.brain.schedule.Activity;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
-import net.minecraft.entity.ai.brain.task.SwimTask;
 import net.minecraft.entity.ai.brain.task.Task;
 import net.minecraft.world.server.ServerWorld;
 import org.spongepowered.asm.mixin.Final;
@@ -58,7 +57,7 @@ public abstract class BrainMixin<E extends LivingEntity> implements IBrainMixin<
     }
 
     @Override
-    public boolean canSwim() {
-        return availableBehaviorsByPriority.values().stream().anyMatch(map -> map.values().stream().flatMap(Collection::stream).anyMatch(task -> task instanceof SwimTask));
+    public boolean anyMatch(Class<?> type) {
+        return availableBehaviorsByPriority.values().stream().anyMatch(map -> map.values().stream().flatMap(Collection::stream).anyMatch(type::isInstance));
     }
 }

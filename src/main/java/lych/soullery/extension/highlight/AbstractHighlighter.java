@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import lych.soullery.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,6 +71,13 @@ public abstract class AbstractHighlighter implements Highlighter {
     protected static Color reduce(List<float[]> colors) {
         float[] hsb = colors.stream().reduce((a1, a2) -> new float[]{getHue(a1[0], a2[0]), (a1[1] + a2[1]) / 2, (a1[2] + a2[2]) / 2}).orElseThrow(() -> new IllegalArgumentException("Colors cannot be empty"));
         return asColor(hsb);
+    }
+
+    protected static float applyBlink(int timer, float scale, float blinkFrequencyInv, int blinkThreshold) {
+        if (timer > blinkThreshold) {
+            return 0;
+        }
+        return scale * (MathHelper.cos((blinkThreshold - timer) / blinkFrequencyInv) - 1) * ((blinkThreshold - timer) * 0.0005f);
     }
 
     protected static float getHue(float h1, float h2) {

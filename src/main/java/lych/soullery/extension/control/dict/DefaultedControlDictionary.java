@@ -2,10 +2,9 @@ package lych.soullery.extension.control.dict;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import lych.soullery.extension.control.Controller;
 import lych.soullery.extension.control.ControllerType;
-import lych.soullery.extension.control.SoulManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,22 +14,30 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-public class DefaultedControlDictionary implements ControlDictionary {
+public final class DefaultedControlDictionary implements ControlDictionary {
     private final Map<EntityType<?>, ControllerType<?>> controllerMap;
-    private final List<Pair<Predicate<? super MobEntity>, ControllerType<?>>> conditions;
+    private final List<Pair<BiPredicate<? super MobEntity, ? super PlayerEntity>, ControllerType<?>>> conditions;
+    private final Set<EntityType<?>> nulls;
     private final ControllerType<?> defaultValue;
 
-    private DefaultedControlDictionary(Map<EntityType<?>, ControllerType<?>> controllerMap, ControllerType<?> defaultValue, List<Pair<Predicate<? super MobEntity>, ControllerType<?>>> conditions) {
+    private DefaultedControlDictionary(Map<EntityType<?>, ControllerType<?>> controllerMap, Set<EntityType<?>> nulls, List<Pair<BiPredicate<? super MobEntity, ? super PlayerEntity>, ControllerType<?>>> conditions, ControllerType<?> defaultValue) {
         this.controllerMap = controllerMap;
         this.defaultValue = defaultValue;
         this.conditions = conditions;
+        this.nulls = nulls;
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     @Override
     public <T extends MobEntity> ControllerType<? super T> get(EntityType<T> type) {
+        if (nulls.contains(type)) {
+            return null;
+        }
         ControllerType<?> ct = controllerMap.get(type);
         if (ct == null) {
             ct = defaultValue;
@@ -42,27 +49,26 @@ public class DefaultedControlDictionary implements ControlDictionary {
         }
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends MobEntity> Controller<? super T> control(T mob, PlayerEntity player, ServerWorld world, int time) {
-        if (controllerMap.containsKey(mob.getType())) {
-            return ControlDictionary.super.control(mob, player, world, time);
+    public <T extends MobEntity> ControllerType<? super T> specify(T mob, PlayerEntity player, ServerWorld world, int time) {
+        if (nulls.contains(mob.getType())) {
+            return null;
         }
-        for (Pair<Predicate<? super MobEntity>, ControllerType<?>> pair : conditions) {
-            if (pair.getFirst().test(mob)) {
+        if (controllerMap.containsKey(mob.getType())) {
+            return get((EntityType<T>) mob.getType());
+        }
+        for (Pair<BiPredicate<? super MobEntity, ? super PlayerEntity>, ControllerType<?>> pair : conditions) {
+            if (pair.getFirst().test(mob, player)) {
                 try {
-                    SoulManager manager = SoulManager.get(world);
-                    Controller<? super T> controller = manager.add(mob, player, (ControllerType<? super T>) pair.getSecond());
-                    if (time < Integer.MAX_VALUE) {
-                        manager.getTimes().setTime(mob, controller.getType(), time);
-                    }
-                    return controller;
+                    return (ControllerType<? super T>) pair.getSecond();
                 } catch (ClassCastException e) {
                     throw createException(mob.getType(), pair.getSecond(), e);
                 }
             }
         }
-        return ControlDictionary.super.control(mob, player, world, time);
+        return ControlDictionary.super.specify(mob, player, world, time);
     }
 
     private static RuntimeException createException(EntityType<?> type, ControllerType<?> ct, ClassCastException e) {
@@ -74,12 +80,13 @@ public class DefaultedControlDictionary implements ControlDictionary {
     }
 
     public static DefaultedControlDictionary only(ControllerType<?> ct) {
-        return new DefaultedControlDictionary(Collections.emptyMap(), ct, Collections.emptyList());
+        return new DefaultedControlDictionary(Collections.emptyMap(), Collections.emptySet(), Collections.emptyList(), ct);
     }
 
     public static class Builder {
+        private final ImmutableSet.Builder<EntityType<?>> nulls = ImmutableSet.builder();
         private final ImmutableMap.Builder<EntityType<?>, ControllerType<?>> controllerMapBuilder = ImmutableMap.builder();
-        private final ImmutableList.Builder<Pair<Predicate<? super MobEntity>, ControllerType<?>>> conditions = ImmutableList.builder();
+        private final ImmutableList.Builder<Pair<BiPredicate<? super MobEntity, ? super PlayerEntity>, ControllerType<?>>> conditions = ImmutableList.builder();
         private final ControllerType<?> defaultValue;
         private boolean canControlBosses;
 
@@ -98,19 +105,28 @@ public class DefaultedControlDictionary implements ControlDictionary {
         }
 
         public Builder doNotControl(EntityType<?> type) {
-            return addCondition(mob -> mob.getType() == type, null);
+            nulls.add(type);
+            return this;
         }
 
         public Builder addCondition(Predicate<? super MobEntity> condition, @Nullable ControllerType<?> ct) {
+            return addBiCondition((mob, player) -> condition.test(mob), ct);
+        }
+
+        public Builder doNotControlIf(Predicate<? super MobEntity> condition) {
+            return addCondition(condition, null);
+        }
+
+        public Builder addBiCondition(BiPredicate<? super MobEntity, ? super PlayerEntity> condition, @Nullable ControllerType<?> ct) {
             conditions.add(Pair.of(condition, ct));
             return this;
         }
 
         public DefaultedControlDictionary build() {
             if (!canControlBosses) {
-                conditions.add(Pair.of(mob -> !mob.canChangeDimensions(), null));
+                addCondition(mob -> !mob.canChangeDimensions(), null);
             }
-            return new DefaultedControlDictionary(controllerMapBuilder.build(), defaultValue, conditions.build());
+            return new DefaultedControlDictionary(controllerMapBuilder.build(), nulls.build(), conditions.build(), defaultValue);
         }
     }
 }

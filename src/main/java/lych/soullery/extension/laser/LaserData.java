@@ -14,7 +14,6 @@ import java.util.TreeMap;
 import java.util.function.UnaryOperator;
 
 public class LaserData {
-    public static final LaserData REDSTONE = new Builder().color(Color.RED).build();
     public static final int DEFAULT_DURABILITY = 1000;
 
     private static final double DEFAULT_SPACING = 0.2f;

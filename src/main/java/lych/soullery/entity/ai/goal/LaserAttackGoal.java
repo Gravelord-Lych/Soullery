@@ -1,6 +1,7 @@
 package lych.soullery.entity.ai.goal;
 
 import com.google.common.base.Preconditions;
+import lych.soullery.api.IRangedAttackGoal;
 import lych.soullery.entity.iface.ILaserAttacker;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -13,7 +14,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
-public class LaserAttackGoal<T extends MobEntity & ILaserAttacker> extends Goal {
+public class LaserAttackGoal<T extends MobEntity & ILaserAttacker> extends Goal implements IRangedAttackGoal {
     protected final T mob;
     protected LivingEntity target;
     protected int attackTime = -1;

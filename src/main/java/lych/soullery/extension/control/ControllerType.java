@@ -2,11 +2,11 @@ package lych.soullery.extension.control;
 
 import lych.soullery.Soullery;
 import lych.soullery.api.event.RegisterControllersEvent;
+import lych.soullery.extension.control.movement.RegularWaterMobOperator;
 import lych.soullery.extension.highlight.SoulControlHighlighter;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.BlazeEntity;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -29,13 +29,19 @@ public class ControllerType<T extends MobEntity> {
     public static final ControllerType<MobEntity> DEFAULT_MO = new ControllerType<>(Soullery.prefix("default_mo"), DefaultMindOperator::new, DefaultMindOperator::new);
     public static final ControllerType<MobEntity> AGGRESSIVE_FLYER_MO = new ControllerType<>(Soullery.prefix("aggressive_flyer_mo"), AggressiveFlyerMindOperator::new, AggressiveFlyerMindOperator::new);
     public static final ControllerType<BlazeEntity> BLAZE_MO = new ControllerType<>(Soullery.prefix("blaze_mo"), BlazeOperator::new, BlazeOperator::new);
+    public static final ControllerType<CreeperEntity> CREEPER_MO = new ControllerType<>(Soullery.prefix("creeper_mo"), CreeperOperator::new, CreeperOperator::new);
+    public static final ControllerType<MobEntity> CUSTOM_MO = new ControllerType<>(Soullery.prefix("custom_mo"), ControllerType::createCustom, ControllerType::loadCustom);
     public static final ControllerType<EndermanEntity> ENDERMAN_MO = new ControllerType<>(Soullery.prefix("enderman_mo"), EndermanOperator::new, EndermanOperator::new);
+    public static final ControllerType<EvokerEntity> EVOKER_MO = new ControllerType<>(Soullery.prefix("evoker_mo"), EvokerOperator::new, EvokerOperator::new);
     public static final ControllerType<MobEntity> FLYER_MO = new ControllerType<>(Soullery.prefix("flyer"), FlyerMindOperator::new, FlyerMindOperator::new);
     public static final ControllerType<GhastEntity> GHAST_MO = new ControllerType<>(Soullery.prefix("ghast_mo"), GhastOperator::new, GhastOperator::new);
+    public static final ControllerType<GuardianEntity> GUARDIAN_MO = new ControllerType<>(Soullery.prefix("guardian_mo"), GuardianOperator::new, GuardianOperator::new);
     public static final ControllerType<MobEntity> HARMLESS_MO = new ControllerType<>(Soullery.prefix("harmless_mo"), HarmlessMindOperator::new, HarmlessMindOperator::new);
     public static final ControllerType<MobEntity> HARMLESS_SPEED_LIMITED_MO = new ControllerType<>(Soullery.prefix("harmless_speed_limited_mo"), HarmlessSpeedLimitedMindOperator::new, HarmlessSpeedLimitedMindOperator::new);
     public static final ControllerType<MobEntity> SPEED_INDEPENDENT_FLYER_MO = new ControllerType<>(Soullery.prefix("speed_independent_flyer"), SpeedIndependentFlyerMindOperator::new, SpeedIndependentFlyerMindOperator::new);
     public static final ControllerType<MobEntity> SPEED_LIMITED_MO = new ControllerType<>(Soullery.prefix("speed_limited_mo"), SpeedLimitedMindOperator::new, SpeedLimitedMindOperator::new);
+    public static final ControllerType<SquidEntity> SQUID_MO = new ControllerType<>(Soullery.prefix("squid_mo"), SquidOperator::new, SquidOperator::new);
+    public static final ControllerType<MobEntity> WATER_MOB_MO = new ControllerType<>(Soullery.prefix("water_mob_mo"), RegularWaterMobOperator::new, RegularWaterMobOperator::new);
 
     private final ResourceLocation registryName;
     private final float[] colorHSB;
@@ -80,6 +86,24 @@ public class ControllerType<T extends MobEntity> {
             CONTROLLERS = new HashMap<>();
         }
         CONTROLLERS.put(type.getRegistryName(), type);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Controller<MobEntity> createCustom(ControllerType<MobEntity> type, UUID mob, UUID player, ServerWorld level) {
+        try {
+            return (Controller<MobEntity>) CustomOperator.class.getConstructors()[0].newInstance(type, mob, player, level);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Controller<MobEntity> loadCustom(ControllerType<MobEntity> type, CompoundNBT compoundNBT, ServerWorld level) {
+        try {
+            return (Controller<MobEntity>) CustomOperator.class.getConstructors()[1].newInstance(type, compoundNBT, level);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Controller<T> create(T mob, PlayerEntity player) {

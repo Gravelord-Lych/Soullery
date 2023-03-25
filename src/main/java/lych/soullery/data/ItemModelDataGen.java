@@ -48,6 +48,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         halfUsedPotion(registryNameToString(HALF_USED_POTION), POTION);
         halfUsedPotion(registryNameToString(HALF_USED_SPLASH_POTION), SPLASH_POTION);
         simple(registryNameToString(MIND_OPERATOR), HANDHELD, prefix(MIND_OPERATOR));
+        simple(registryNameToString(MIND_OPERATOR_II), HANDHELD, prefix(MIND_OPERATOR_II));
         simple(registryNameToString(REFINED_SOUL_METAL_AXE), HANDHELD, prefix(REFINED_SOUL_METAL_AXE));
         simple(registryNameToString(REFINED_SOUL_METAL_BOOTS), GENERATED, prefix(REFINED_SOUL_METAL_BOOTS));
         simple(registryNameToString(REFINED_SOUL_METAL_CHESTPLATE), GENERATED, prefix(REFINED_SOUL_METAL_CHESTPLATE));

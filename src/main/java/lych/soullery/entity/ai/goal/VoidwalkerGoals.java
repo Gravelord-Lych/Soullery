@@ -1,5 +1,6 @@
 package lych.soullery.entity.ai.goal;
 
+import lych.soullery.api.IRangedAttackGoal;
 import lych.soullery.entity.iface.ISpellCastable.SpellType;
 import lych.soullery.entity.monster.voidwalker.*;
 import lych.soullery.entity.projectile.EtherealArrowEntity;
@@ -296,7 +297,7 @@ public final class VoidwalkerGoals {
         }
     }
 
-    public static class BowAttackGoal extends Goal {
+    public static class BowAttackGoal extends Goal implements IRangedAttackGoal {
         private static final int MAX_TRY_TIME = 5;
         private final VoidArcherEntity archer;
         private final double speedModifier;

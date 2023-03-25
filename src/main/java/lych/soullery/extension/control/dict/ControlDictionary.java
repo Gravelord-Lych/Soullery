@@ -7,14 +7,24 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.server.ServerWorld;
+import org.jetbrains.annotations.Nullable;
 
 public interface ControlDictionary {
+    @Nullable
     <T extends MobEntity> ControllerType<? super T> get(EntityType<T> type);
 
+    @Nullable
+    @SuppressWarnings("unchecked")
+    default <T extends MobEntity> ControllerType<? super T> specify(T mob, PlayerEntity player, ServerWorld world, int time) {
+        return get((EntityType<T>) mob.getType());
+    }
+
+    @Nullable
     default <T extends MobEntity> Controller<? super T> control(T mob, PlayerEntity player) {
         return control(mob, player, Integer.MAX_VALUE);
     }
 
+    @Nullable
     default <T extends MobEntity> Controller<? super T> control(T mob, PlayerEntity player, int time) {
         if (player.level.isClientSide()) {
             throw new IllegalStateException("Cannot control a mob clientside");
@@ -22,9 +32,12 @@ public interface ControlDictionary {
         return control(mob, player, (ServerWorld) player.level, time);
     }
 
-    @SuppressWarnings("unchecked")
+    @Nullable
     default <T extends MobEntity> Controller<? super T> control(T mob, PlayerEntity player, ServerWorld world, int time) {
-        ControllerType<? super T> type = get((EntityType<T>) mob.getType());
+        ControllerType<? super T> type = specify(mob, player, world, time);
+        if (type == null) {
+            return null;
+        }
         SoulManager manager = SoulManager.get(world);
         Controller<? super T> controller = manager.add(mob, player, type);
         if (time < Integer.MAX_VALUE) {

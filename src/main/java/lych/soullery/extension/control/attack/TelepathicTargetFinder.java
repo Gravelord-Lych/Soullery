@@ -4,6 +4,7 @@ import lych.soullery.util.Telepathy;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import org.jetbrains.annotations.Nullable;
 
 public class TelepathicTargetFinder implements TargetFinder<MobEntity> {
@@ -25,10 +26,10 @@ public class TelepathicTargetFinder implements TargetFinder<MobEntity> {
 
     @Nullable
     @Override
-    public LivingEntity findTarget(MobEntity operatingMob, ServerPlayerEntity player) {
+    public LivingEntity findTarget(MobEntity operatingMob, ServerPlayerEntity player, CompoundNBT data) {
         if (metaphysical) {
-            return Telepathy.telepathicAttackFirstMetaphysically(LivingEntity.class, operatingMob, reachDistance, attackAngle, angleWeight, entity -> entity != player);
+            return Telepathy.telepathicAttackFirstMetaphysically(LivingEntity.class, operatingMob, reachDistance, attackAngle, angleWeight, entity -> entity != player && entity.attackable());
         }
-        return Telepathy.telepathicAttackFirst(LivingEntity.class, operatingMob, reachDistance, attackAngle, angleWeight, entity -> entity != player);
+        return Telepathy.telepathicAttackFirst(LivingEntity.class, operatingMob, reachDistance, attackAngle, angleWeight, entity -> entity != player && entity.attackable());
     }
 }

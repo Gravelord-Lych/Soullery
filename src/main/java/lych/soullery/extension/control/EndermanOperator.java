@@ -3,8 +3,7 @@ package lych.soullery.extension.control;
 import lych.soullery.extension.control.attack.*;
 import lych.soullery.extension.control.movement.DefaultMovementHandler;
 import lych.soullery.extension.control.movement.MovementHandler;
-import lych.soullery.extension.control.rotation.DefaultRotationHandler;
-import lych.soullery.extension.control.rotation.RotationHandler;
+import lych.soullery.util.Telepathy;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class EndermanOperator extends MindOperator<EndermanEntity> {
-    private static final TargetFinder<? super EndermanEntity> ALT_FINDER = new TelepathicTargetFinder(12, Math.PI / 4, 6, true);
+    private static final TargetFinder<? super EndermanEntity> ALT_FINDER = new TelepathicTargetFinder(12, Math.PI / 4, Telepathy.HIGH_ANGLE_WEIGHT, true);
 
     public EndermanOperator(ControllerType<EndermanEntity> type, UUID mob, UUID player, ServerWorld level) {
         super(type, mob, player, level);
@@ -36,11 +35,6 @@ public class EndermanOperator extends MindOperator<EndermanEntity> {
     }
 
     @Override
-    protected RotationHandler<? super EndermanEntity> initRotationHandler() {
-        return DefaultRotationHandler.INSTANCE;
-    }
-
-    @Override
     protected TargetFinder<? super EndermanEntity> initAlternativeTargetFinder() {
         return ALT_FINDER;
     }
@@ -55,7 +49,7 @@ public class EndermanOperator extends MindOperator<EndermanEntity> {
     protected LivingEntity findRightClickTarget(EndermanEntity operatingEnderman, ServerPlayerEntity player) {
         LivingEntity target = super.findRightClickTarget(operatingEnderman, player);
         if (target == null) {
-            target = alternativeTargetFinder.findTarget(operatingEnderman, player);
+            target = alternativeTargetFinder.findTarget(operatingEnderman, player, data);
         }
         return target;
     }

@@ -3,8 +3,6 @@ package lych.soullery.extension.control;
 import lych.soullery.extension.control.attack.*;
 import lych.soullery.extension.control.movement.FlyerMovementHandler;
 import lych.soullery.extension.control.movement.MovementHandler;
-import lych.soullery.extension.control.rotation.DefaultRotationHandler;
-import lych.soullery.extension.control.rotation.RotationHandler;
 import lych.soullery.util.Telepathy;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -30,12 +28,7 @@ public class GhastOperator extends MindOperator<GhastEntity> {
 
     @Override
     protected MovementHandler<? super GhastEntity> initMovementHandler() {
-        return FlyerMovementHandler.NORMAL;
-    }
-
-    @Override
-    protected RotationHandler<? super GhastEntity> initRotationHandler() {
-        return DefaultRotationHandler.INSTANCE;
+        return FlyerMovementHandler.INSTANCE;
     }
 
     @Override

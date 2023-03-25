@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
@@ -16,7 +17,7 @@ public class EndermanRightClickHandler implements TargetNotNeededRightClickHandl
     private int cooldown = 10;
 
     @Override
-    public void handleRightClick(EndermanEntity operatingEnderman, ServerPlayerEntity player) {
+    public void handleRightClick(EndermanEntity operatingEnderman, ServerPlayerEntity player, CompoundNBT data) {
         if (cooldown > 0) {
             return;
         }
@@ -35,18 +36,18 @@ public class EndermanRightClickHandler implements TargetNotNeededRightClickHandl
     }
 
     @Override
-    public void handleRightClick(EndermanEntity operatingEnderman, LivingEntity target, ServerPlayerEntity player) {
+    public void handleRightClick(EndermanEntity operatingEnderman, LivingEntity target, ServerPlayerEntity player, CompoundNBT data) {
         if (operatingEnderman.distanceToSqr(target) >= 3 * 3) {
             callTeleport(operatingEnderman, target.getX(), target.getY(), target.getZ());
             cooldown = 20;
         } else {
-            TargetNotNeededRightClickHandler.super.handleRightClick(operatingEnderman, target, player);
+            TargetNotNeededRightClickHandler.super.handleRightClick(operatingEnderman, target, player, data);
         }
     }
 
     @Override
-    public void tick(EndermanEntity operatingEnderman, ServerPlayerEntity player) {
-        TargetNotNeededRightClickHandler.super.tick(operatingEnderman, player);
+    public void tick(EndermanEntity operatingEnderman, ServerPlayerEntity player, CompoundNBT data) {
+        TargetNotNeededRightClickHandler.super.tick(operatingEnderman, player, data);
         if (cooldown > 0) {
             cooldown--;
         }

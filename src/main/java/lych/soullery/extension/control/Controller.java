@@ -1,10 +1,12 @@
 package lych.soullery.extension.control;
 
 import com.google.common.base.MoreObjects;
+import lych.soullery.Soullery;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
@@ -120,4 +122,17 @@ public abstract class Controller<T extends MobEntity> {
                 .add("preparing", preparing)
                 .toString();
     }
+
+    @SuppressWarnings("unchecked")
+    public final void handleDeathRaw(MobEntity mob, PlayerEntity player) {
+        try {
+            handleDeath((T) mob, (ServerPlayerEntity) player);
+        } catch (ClassCastException e) {
+            Soullery.LOGGER.warn(SoulManager.MARKER, "Death not handled for controlled mob", e);
+        }
+    }
+
+    protected void handleDeath(T mob, ServerPlayerEntity player) {}
+
+    protected void handleDepleted(ServerPlayerEntity player) {}
 }

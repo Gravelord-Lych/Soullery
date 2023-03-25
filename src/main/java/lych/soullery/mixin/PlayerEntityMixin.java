@@ -5,6 +5,7 @@ import lych.soullery.Soullery;
 import lych.soullery.api.exa.IExtraAbility;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.extension.ExtraAbility;
+import lych.soullery.extension.control.MindOperator;
 import lych.soullery.gui.container.inventory.ExtraAbilityInventory;
 import lych.soullery.util.AdditionalCooldownTracker;
 import lych.soullery.util.EntityUtils;
@@ -108,7 +109,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
             if (EntityUtils.isAlive(entity) && entity instanceof MobEntity) {
                 setOperatingMob((MobEntity) entity);
             } else {
-                setOperatingMob(null);
+                MindOperator.resetAndAddCooldown((PlayerEntity) (Object) this, 40);
             }
         }
     }

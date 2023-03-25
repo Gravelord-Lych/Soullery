@@ -304,6 +304,10 @@ public final class SoulEnergies {
         return list.stream().mapToInt(provider -> of(provider).map(ISoulEnergyStorage::getSoulEnergyStored).orElse(0)).sum();
     }
 
+    public static int getExtractableSEOf(PlayerEntity player) {
+        return getExtractableSEOf(getSEContainers(player));
+    }
+
     public static int getExtractableSEOf(List<? extends CapabilityProvider<?>> list) {
         return list.stream().mapToInt(provider -> of(provider).map(ses -> Math.min(ses.getMaxExtract(), ses.getSoulEnergyStored())).orElse(0)).sum();
     }

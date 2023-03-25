@@ -14,6 +14,7 @@ public class HighlighterType {
     public static final HighlighterType MIND_OPERATOR_HELPER_ALT = new HighlighterType("CA56EF44-7E20-D0B3-85E0-E97273BA5B1D", MindOperatorHelperAltHighlighter::new, MindOperatorHelperAltHighlighter::new);
     public static final HighlighterType MONSTER_VIEW = new HighlighterType("C9A92E28-1765-40AB-853A-F3874408A039", MonsterViewHighlighter::new, MonsterViewHighlighter::new);
     public static final HighlighterType SOUL_CONTROL = new HighlighterType("9855C4A0-2B69-C250-92D2-A9230193F2BC", SoulControlHighlighter::new, SoulControlHighlighter::new);
+    public static final HighlighterType SOUL_CONTROLLER = new HighlighterType("AEC70D6B-080C-021F-8A88-555BE39B9971", SoulControllerHighlighter::new, SoulControllerHighlighter::new);
 
     static {
         HIGHLIGHTERS = new HashMap<>();
@@ -22,6 +23,7 @@ public class HighlighterType {
         registerHighlighter(MIND_OPERATOR_HELPER_ALT);
         registerHighlighter(MONSTER_VIEW);
         registerHighlighter(SOUL_CONTROL);
+        registerHighlighter(SOUL_CONTROLLER);
     }
 
     private static final Map<UUID, HighlighterType> HIGHLIGHTERS;

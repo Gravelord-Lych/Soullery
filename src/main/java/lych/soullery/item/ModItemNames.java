@@ -9,6 +9,7 @@ public final class ModItemNames {
     public static final String HALF_USED_POTION = "half_used_potion";
     public static final String HALF_USED_SPLASH_POTION = "half_used_splash_potion";
     public static final String MIND_OPERATOR = "mind_operator";
+    public static final String MIND_OPERATOR_II = "mind_operator_l2";
     public static final String REFINED_SOUL_METAL_AXE = "refined_soul_metal_axe";
     public static final String REFINED_SOUL_METAL_BOOTS = "refined_soul_metal_boots";
     public static final String REFINED_SOUL_METAL_CHESTPLATE = "refined_soul_metal_chestplate";

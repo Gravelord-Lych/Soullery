@@ -31,7 +31,6 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.MovementInput;
@@ -129,15 +128,6 @@ public final class ClientEventListener {
         }
 
         @SubscribeEvent
-        public static void onMouseScroll(InputEvent.MouseScrollEvent event) {
-            PlayerEntity player = Minecraft.getInstance().player;
-            MobEntity operatingMob = MindOperatorSynchronizer.getOperatingMob(player);
-            if (operatingMob != null) {
-                MindOperatorSynchronizer.handleRotationOffsetC(operatingMob, event.isRightDown() ? 1 : 0);
-            }
-        }
-
-        @SubscribeEvent
         public static void onInputUpdate(InputUpdateEvent event) {
             MovementInput input = event.getMovementInput();
             if (((IEntityMixin) event.getPlayer()).isReversed()) {
@@ -163,6 +153,8 @@ public final class ClientEventListener {
             MobEntity operatingMob = MindOperatorSynchronizer.getOperatingMob(player);
             if (operatingMob != null) {
                 MindOperatorSynchronizer.setupCamera(operatingMob, player, event);
+            } else {
+                MindOperatorSynchronizer.resetCamera(event);
             }
         }
 

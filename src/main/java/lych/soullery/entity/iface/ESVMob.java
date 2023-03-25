@@ -1,5 +1,6 @@
 package lych.soullery.entity.iface;
 
+import lych.soullery.api.IStrongMinded;
 import net.minecraft.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 

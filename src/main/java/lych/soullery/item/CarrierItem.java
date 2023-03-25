@@ -135,31 +135,16 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
     public Rarity getRarity(ItemStack stack) {
         Rarity rarity = super.getRarity(stack);
         if (size(stack) > 0) {
-            rarity = next(rarity);
+            rarity = ModItems.next(rarity);
         }
         if (isSpecial(stack)) {
-            rarity = next(next(rarity));
+            rarity = ModItems.next(ModItems.next(rarity));
         }
         return rarity;
     }
 
     protected boolean isSpecial(ItemStack stack) {
         return maxSize(stack) > 1;
-    }
-
-    private static Rarity next(Rarity rarity) {
-        switch (rarity) {
-            case COMMON:
-                return Rarity.UNCOMMON;
-            case UNCOMMON:
-                return Rarity.RARE;
-            case RARE:
-                return Rarity.EPIC;
-            case EPIC:
-                return ModRarities.LEGENDARY;
-            default:
-                return rarity == ModRarities.LEGENDARY ? ModRarities.MAX : rarity;
-        }
     }
 
     public static IOMode getIOMode(ItemStack stack) {

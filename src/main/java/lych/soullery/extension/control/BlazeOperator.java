@@ -3,8 +3,6 @@ package lych.soullery.extension.control;
 import lych.soullery.extension.control.attack.*;
 import lych.soullery.extension.control.movement.DefaultMovementHandler;
 import lych.soullery.extension.control.movement.MovementHandler;
-import lych.soullery.extension.control.rotation.DefaultRotationHandler;
-import lych.soullery.extension.control.rotation.RotationHandler;
 import lych.soullery.util.Telepathy;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,17 +23,12 @@ public class BlazeOperator extends MindOperator<BlazeEntity> {
 
     @Override
     protected MeleeHandler<? super BlazeEntity> initMeleeHandler() {
-        return DefaultMeleeHandler.INSTANCE;
+        return NoMeleeHandler.INSTANCE;
     }
 
     @Override
     protected MovementHandler<? super BlazeEntity> initMovementHandler() {
         return DefaultMovementHandler.NORMAL;
-    }
-
-    @Override
-    protected RotationHandler<? super BlazeEntity> initRotationHandler() {
-        return DefaultRotationHandler.INSTANCE;
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.util.Constants;
@@ -13,20 +14,20 @@ public class BlazeRightClickHandler implements TargetNotNeededRightClickHandler<
     private int cooldown;
 
     @Override
-    public void tick(BlazeEntity operatingMob, ServerPlayerEntity player) {
-        TargetNotNeededRightClickHandler.super.tick(operatingMob, player);
+    public void tick(BlazeEntity operatingMob, ServerPlayerEntity player, CompoundNBT data) {
+        TargetNotNeededRightClickHandler.super.tick(operatingMob, player, data);
         if (cooldown > 0) {
             cooldown--;
         }
     }
 
     @Override
-    public void handleRightClick(BlazeEntity operatingBlaze, ServerPlayerEntity player) {
+    public void handleRightClick(BlazeEntity operatingBlaze, ServerPlayerEntity player, CompoundNBT data) {
         handleRightClick(operatingBlaze, operatingBlaze.getLookAngle(), 16 * 16);
     }
 
     @Override
-    public void handleRightClick(BlazeEntity operatingBlaze, LivingEntity target, ServerPlayerEntity player) {
+    public void handleRightClick(BlazeEntity operatingBlaze, LivingEntity target, ServerPlayerEntity player, CompoundNBT data) {
         handleRightClick(operatingBlaze, EntityUtils.centerOf(operatingBlaze).vectorTo(EntityUtils.centerOf(target)), operatingBlaze.distanceToSqr(target));
     }
 

@@ -2,12 +2,16 @@ package lych.soullery.entity.monster;
 
 import lych.soullery.entity.ai.goal.LaserAttackGoal;
 import lych.soullery.entity.iface.ILaserAttacker;
+import lych.soullery.extension.control.ICustomOperable;
+import lych.soullery.extension.control.attack.*;
 import lych.soullery.extension.laser.LaserData;
 import lych.soullery.util.Lasers;
 import lych.soullery.util.ModSoundEvents;
+import lych.soullery.util.Telepathy;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -27,9 +31,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-public class WandererEntity extends MonsterEntity implements ILaserAttacker {
+public class WandererEntity extends MonsterEntity implements ILaserAttacker, ICustomOperable<WandererEntity> {
     private static final DataParameter<Boolean> DATA_ATTACKING = EntityDataManager.defineId(WandererEntity.class, DataSerializers.BOOLEAN);
+    private static final TargetFinder<MobEntity> FINDER = new TelepathicTargetFinder(20, Math.PI / 6, Telepathy.HIGH_ANGLE_WEIGHT);
     private static final float LASER_DAMAGE = 8;
+    private final RightClickHandler<MobEntity> rightClickHandler = new DynamicRightClickHandler();
     private final LaserData data = new LaserData.Builder()
             .color(Color.CYAN)
             .predicate(Lasers.monster(this), LaserData.DEFAULT_DURABILITY / 2)
@@ -130,5 +136,21 @@ public class WandererEntity extends MonsterEntity implements ILaserAttacker {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         playSound(ModSoundEvents.WANDERER_STEP.get(), 0.15f, 1);
+    }
+
+    @Override
+    public MeleeHandler<? super WandererEntity> getMeleeHandler() {
+        return NoMeleeHandler.INSTANCE;
+    }
+
+    @Override
+    public RightClickHandler<? super WandererEntity> getRightClickHandler() {
+        return rightClickHandler;
+    }
+
+
+    @Override
+    public TargetFinder<? super WandererEntity> getTargetFinder() {
+        return FINDER;
     }
 }

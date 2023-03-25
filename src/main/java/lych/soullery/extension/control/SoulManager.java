@@ -59,6 +59,9 @@ public class SoulManager extends WorldSavedData {
             if (dead || noMobFound || noPlayerFound) {
                 itr.remove();
                 stopControlling(mob, controller, true, EntityUtils.isAlive(mob));
+                if (dead) {
+                    controller.handleDeathRaw(mob, playerController);
+                }
                 setDirty();
                 continue;
             }
@@ -76,8 +79,17 @@ public class SoulManager extends WorldSavedData {
             if (mob != null) {
                 EntityHighlightManager.get(level).highlight(HighlighterType.SOUL_CONTROL, mob);
             }
+            if (playerController != null) {
+                EntityHighlightManager.get(level).highlight(HighlighterType.SOUL_CONTROLLER, playerController);
+            }
         }
         times.tick();
+        level.players().stream().filter(player -> MindOperatorSynchronizer.getOperatingMob(player) != null).forEach(player -> {
+            if (!controllers.values().stream().filter(pair -> Objects.equals(player.getUUID(), pair.getFirst())).findFirst().map(Pair::getSecond).map(PriorityQueue::peek).filter(controller -> controller instanceof MindOperator).isPresent()) {
+                Soullery.LOGGER.error(MARKER, "Found invalid controller player: {}", player.getDisplayName().getString());
+                MindOperator.reset(player);
+            }
+        });
     }
 
     private UUID getMobUUID(Map.Entry<UUID, Pair<UUID, PriorityQueue<Controller<?>>>> entry) {
@@ -118,7 +130,12 @@ public class SoulManager extends WorldSavedData {
         }
         Pair<UUID, PriorityQueue<Controller<?>>> pair = controllers.computeIfAbsent(mob.getUUID(), uuid -> Pair.of(player.getUUID(), makeQueue()));
         Controller<? super T> controller = type.create(mob, player);
-        pair.getSecond().add(controller);
+        PriorityQueue<Controller<?>> queue = pair.getSecond();
+        Controller<?> oldController = queue.peek();
+        if (oldController != null) {
+            stopControlling(mob, controller, true, EntityUtils.isAlive(mob));
+        }
+        queue.add(controller);
         setDirty();
         startControlling(mob, controller);
         return controller;
@@ -370,14 +387,14 @@ public class SoulManager extends WorldSavedData {
 
         public int timeRemaining(MobEntity mob, ControllerType<?> type) {
             if (!timeLimits.contains(mob.getUUID(), type)) {
-                return 0;
+                return Integer.MAX_VALUE;
             }
             return timeRemaining(timeLimits.get(mob.getUUID(), type).end);
         }
 
         public double getRemainingPercent(MobEntity mob, ControllerType<?> type) {
             if (!timeLimits.contains(mob.getUUID(), type)) {
-                return 0;
+                return 1;
             }
             TimeEntry entry = timeLimits.get(mob.getUUID(), type);
             return timeRemaining(entry.end) / (double) entry.getDuration();

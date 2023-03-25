@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -17,7 +18,7 @@ public class GhastRightClickHandler implements TargetNotNeededRightClickHandler<
     private int cooldown = 20;
 
     @Override
-    public void handleRightClick(GhastEntity operatingGhast, ServerPlayerEntity player) {
+    public void handleRightClick(GhastEntity operatingGhast, ServerPlayerEntity player, CompoundNBT data) {
         if (cooldown != 0) {
             return;
         }
@@ -30,16 +31,16 @@ public class GhastRightClickHandler implements TargetNotNeededRightClickHandler<
     }
 
     @Override
-    public void handleRightClick(GhastEntity operatingMob, LivingEntity target, ServerPlayerEntity player) {
+    public void handleRightClick(GhastEntity operatingMob, LivingEntity target, ServerPlayerEntity player, CompoundNBT data) {
         if (attackTime == 0 && cooldown == 0 && EntityUtils.isAlive(target)) {
             this.target = target;
         }
-        TargetNotNeededRightClickHandler.super.handleRightClick(operatingMob, target, player);
+        TargetNotNeededRightClickHandler.super.handleRightClick(operatingMob, target, player, data);
     }
 
     @Override
-    public void tick(GhastEntity operatingGhast, ServerPlayerEntity player) {
-        TargetNotNeededRightClickHandler.super.tick(operatingGhast, player);
+    public void tick(GhastEntity operatingGhast, ServerPlayerEntity player, CompoundNBT data) {
+        TargetNotNeededRightClickHandler.super.tick(operatingGhast, player, data);
         if (cooldown >= 0) {
             if (cooldown > 0) {
                 cooldown--;

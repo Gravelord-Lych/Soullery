@@ -32,7 +32,8 @@ public class SoulControlHighlighter extends AbstractHighlighter {
         if (!(entity instanceof MobEntity)) {
             return asColor(DEFAULT_COLOR);
         }
-        Pair<UUID, PriorityQueue<Controller<?>>> data = SoulManager.get(level).getControllerData((MobEntity) entity);
+        SoulManager manager = SoulManager.get(level);
+        Pair<UUID, PriorityQueue<Controller<?>>> data = manager.getControllerData((MobEntity) entity);
         if (data == null) {
             return null;
         }
@@ -42,7 +43,12 @@ public class SoulControlHighlighter extends AbstractHighlighter {
         }
         Controller<?> activeController = queue.element();
         ImmutableList.Builder<float[]> builder = ImmutableList.builder();
-        builder.add(activeController.getColor());
+        float[] color = activeController.getColor().clone();
+        int timeRemaining = manager.getTimes().timeRemaining((MobEntity) entity, activeController.getType());
+        if (manager.getTimes().getRemainingPercent((MobEntity) entity, activeController.getType()) <= 0.5) {
+            color[2] += applyBlink(timeRemaining, 2.5f, 2, 200);
+        }
+        builder.add(color);
         if (entity.isGlowing() || ((IEntityMixin) entity).callGetSharedFlag(IS_GLOWING)) {
             builder.add(GLOWING_COLOR);
         }

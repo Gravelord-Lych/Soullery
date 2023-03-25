@@ -4,6 +4,7 @@ package lych.soullery.util;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.ints.*;
+import lych.soullery.api.IRangedAttackGoal;
 import lych.soullery.api.shield.IShieldUser;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.entity.functional.FangsEntity;
@@ -17,10 +18,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleStatus;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.monster.ZoglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -472,6 +472,26 @@ public final class  EntityUtils {
             return ((IBrainMixin<?>) mob.getBrain()).canSwim();
         }
         return ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().anyMatch(goal -> goal.getGoal() instanceof SwimGoal);
+    }
+
+    public static boolean canUseCrossbow(MobEntity mob) {
+        if (!(mob instanceof ICrossbowUser)) {
+            return false;
+        }
+        return ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().anyMatch(goal -> goal.getGoal() instanceof SwimGoal);
+    }
+
+
+    public static boolean isWaterMob(MobEntity mob) {
+        return mob.getMobType() == CreatureAttribute.WATER || mob instanceof DrownedEntity;
+    }
+
+    public static Optional<RangedAttackGoal> findRangedAttackGoal(MobEntity mob) {
+        return ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().map(PrioritizedGoal::getGoal).filter(goalIn -> goalIn instanceof RangedAttackGoal).findFirst().map(goal -> (RangedAttackGoal) goal);
+    }
+
+    public static Optional<Goal> findAnyRangedAttackableGoal(MobEntity mob) {
+        return ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().map(PrioritizedGoal::getGoal).filter(goalIn -> goalIn instanceof RangedAttackGoal || goalIn instanceof RangedBowAttackGoal<?> || goalIn instanceof RangedCrossbowAttackGoal<?> || goalIn instanceof IRangedAttackGoal).findFirst();
     }
 
     @FieldsAreNullableByDefault

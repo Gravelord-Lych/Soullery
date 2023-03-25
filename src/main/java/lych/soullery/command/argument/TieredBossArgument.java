@@ -57,6 +57,11 @@ public class TieredBossArgument extends EntitySummonArgument {
                 .filter(location -> isTiered(getNonnull(location))), builder);
     }
 
+    @Override
+    public Collection<String> getExamples() {
+        return EXAMPLES;
+    }
+
     @Nullable
     private EntityType<?> get(ResourceLocation location) {
         return ForgeRegistries.ENTITIES.getValue(location);

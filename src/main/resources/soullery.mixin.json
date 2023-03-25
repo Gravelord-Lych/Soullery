@@ -18,6 +18,7 @@
     "FireBlockAccessor",
     "FoodStatsMixin",
     "GoalSelectorMixin",
+    "GuardianEntityAccessor",
     "IndirectEntityDamageSourceAccessor",
     "ItemEntityMixin",
     "ItemMixin",
@@ -30,6 +31,7 @@
     "PlayerEntityMixin",
     "PotionEntityMixin",
     "PotionItemMixin",
+    "RangedAttackGoalAccessor",
     "TargetGoalAccessor",
     "ThrowablePotionItemMixin",
     "TridentEntityMixin",
@@ -37,6 +39,7 @@
     "ZombieEntityMixin"
   ],
   "client": [
+    "client.ActiveRenderInfoAccessor",
     "client.BipedArmorLayerMixin",
     "client.ClientPlayerEntityMixin",
     "client.ClientPlayNetHandlerMixin",
@@ -47,7 +50,6 @@
     "client.FlatPresetsScreenMixin",
     "client.FogRendererMixin",
     "client.GameRendererMixin",
-    "client.IllagerModelAccessor",
     "client.ItemRendererMixin",
     "client.ItemStackTileEntityRendererMixin",
     "client.LivingRendererMixin",

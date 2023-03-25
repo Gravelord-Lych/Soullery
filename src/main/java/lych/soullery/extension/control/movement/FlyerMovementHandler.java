@@ -5,25 +5,16 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.JumpController;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import org.jetbrains.annotations.Nullable;
 
 public enum FlyerMovementHandler implements MovementHandler<MobEntity> {
-    NORMAL(false),
-    SPEED_INDEPENDENT(true);
-
-    private final boolean speedIndependent;
-
-    FlyerMovementHandler(boolean speedIndependent) {
-        this.speedIndependent = speedIndependent;
-    }
+    INSTANCE;
 
     @Override
-    public void handleMovement(MobEntity operatingMob, ServerPlayerEntity player, MovementData movement, @Nullable JumpController jumpControl) {
+    public void handleMovement(MobEntity operatingMob, ServerPlayerEntity player, MovementData movement, @Nullable JumpController jumpControl, CompoundNBT data) {
         operatingMob.setNoGravity(true);
         float speed = (float) operatingMob.getAttributeValue(Attributes.MOVEMENT_SPEED);
-        if (!operatingMob.isOnGround() && speedIndependent) {
-            speed = (float) operatingMob.getAttributeValue(Attributes.FLYING_SPEED);
-        }
         float forwardSpeed = speed * movement.forwardImpulse;
         float leftSpeed = (float) (operatingMob.getAttributeValue(Attributes.MOVEMENT_SPEED) * movement.leftImpulse);
         operatingMob.setSpeed(forwardSpeed);

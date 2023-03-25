@@ -47,6 +47,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.NetherrackBlock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
@@ -360,12 +361,24 @@ public final class CommonEventListener {
 
     @SubscribeEvent
     public static void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-        ClickHandlerNetwork.INSTANCE.sendToServer(ClickHandlerNetwork.Type.LEFT);
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player.isSpectator()) {
+            return;
+        }
+        if (MindOperatorSynchronizer.getOperatingMob(player) != null) {
+            ClickHandlerNetwork.INSTANCE.sendToServer(ClickHandlerNetwork.Type.LEFT);
+        }
     }
 
     @SubscribeEvent
     public static void onEmptyRightClick(PlayerInteractEvent.RightClickEmpty event) {
-        ClickHandlerNetwork.INSTANCE.sendToServer(ClickHandlerNetwork.Type.RIGHT);
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player.isSpectator()) {
+            return;
+        }
+        if (player.getMainHandItem().isEmpty() && ExtraAbility.TELEPORTATION.isOn(player) || MindOperatorSynchronizer.getOperatingMob(player) != null) {
+            ClickHandlerNetwork.INSTANCE.sendToServer(ClickHandlerNetwork.Type.RIGHT);
+        }
     }
 
     @SuppressWarnings("deprecation")
