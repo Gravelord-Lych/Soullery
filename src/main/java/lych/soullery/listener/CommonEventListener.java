@@ -20,6 +20,7 @@ import lych.soullery.entity.monster.boss.esv.SoulCrystalEntity;
 import lych.soullery.entity.monster.voidwalker.AbstractVoidwalkerEntity;
 import lych.soullery.entity.projectile.SoulArrowEntity;
 import lych.soullery.extension.ExtraAbility;
+import lych.soullery.extension.control.MindOperator;
 import lych.soullery.extension.control.MindOperatorSynchronizer;
 import lych.soullery.extension.control.SoulManager;
 import lych.soullery.extension.highlight.EntityHighlightManager;
@@ -104,6 +105,16 @@ public final class CommonEventListener {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (!event.getPlayer().level.isClientSide()) {
             EventManager.runEvents();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGameModeChange(PlayerEvent.PlayerChangeGameModeEvent event) {
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        MobEntity operatingMob = MindOperatorSynchronizer.getOperatingMob(player);
+        if (operatingMob != null) {
+            MindOperator<?> operator = SoulManager.get(player.getLevel()).remove(operatingMob, MindOperator.class);
+            operator.sendGameModeChangeMessage(player);
         }
     }
 

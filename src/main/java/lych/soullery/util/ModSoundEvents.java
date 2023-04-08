@@ -10,8 +10,10 @@ public final class ModSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Soullery.MOD_ID);
     public static final RegistryObject<SoundEvent> DEFENSIVE_META8_SHARE_SHIELD = register("mob.meta8.share_stronger_shield");
     public static final RegistryObject<SoundEvent> ENERGY_SOUND_BREAK = register("random.energy_shield_break");
+    public static final RegistryObject<SoundEvent> ETHEMOVE = register("random.ethemove");
     public static final RegistryObject<SoundEvent> META8_LASER = register("mob.meta8.laser");
     public static final RegistryObject<SoundEvent> META8_SHARE_SHIELD = register("mob.meta8.share_shield");
+    public static final RegistryObject<SoundEvent> MIND_OPERATE = register("random.mind_operate");
     public static final RegistryObject<SoundEvent> ROBOT_DEATH = register("mob.robot.death");
     public static final RegistryObject<SoundEvent> ROBOT_HURT = register("mob.robot.hurt");
     public static final RegistryObject<SoundEvent> ROBOT_STEP = register("mob.robot.step");

@@ -1,5 +1,6 @@
 package lych.soullery;
 
+import lych.soullery.config.ClientConfig;
 import lych.soullery.config.CommonConfig;
 import lych.soullery.entity.ModAttributes;
 import lych.soullery.item.crafting.ModRecipeSerializers;
@@ -27,6 +28,7 @@ public class Soullery {
         SharedConstants.IS_RUNNING_IN_IDE = true;
         SharedConstants.CHECK_DATA_FIXER_SCHEMA = false;
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.COMMON_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ModRecipeSerializers.SERIALIZERS.register(bus);
         ModAttributes.ATTRIBUTES.register(bus);

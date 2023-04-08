@@ -48,7 +48,7 @@ public final class DarkEvokerGoals {
         @Override
         protected boolean checkExtraStartConditions() {
             if (!EntityUtils.isAlive(villager)) {
-                villager = mob.level.getNearestEntity(VillagerEntity.class, EntityPredicate.DEFAULT.range(FIND_VILLAGER_RADIUS), mob, mob.getX(), mob.getY(), mob.getZ(), mob.getBoundingBox().inflate(FIND_VILLAGER_RADIUS));
+                villager = mob.level.getNearestEntity(VillagerEntity.class,  new EntityPredicate().range(FIND_VILLAGER_RADIUS), mob, mob.getX(), mob.getY(), mob.getZ(), mob.getBoundingBox().inflate(FIND_VILLAGER_RADIUS));
             }
             return villager != null && villager.isAlive();
         }

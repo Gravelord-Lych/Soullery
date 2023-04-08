@@ -67,7 +67,7 @@ public class LaserRenderingManager {
                 iterator.remove();
                 laserTicksMap.remove(data.getId());
             } else {
-                doRender(data, stack, getRenderType(entity), data.getColor());
+                doRender(data, stack, data.getCustomWidth() > 0 ? ModRenderTypes.laser(data.getCustomWidth()) : getRenderType(entity), data.getColor());
             }
         }
     }

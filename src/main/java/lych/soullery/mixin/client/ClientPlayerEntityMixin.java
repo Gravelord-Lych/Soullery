@@ -1,5 +1,7 @@
 package lych.soullery.mixin.client;
 
+import com.mojang.authlib.GameProfile;
+import lych.soullery.config.ConfigHelper;
 import lych.soullery.extension.ExtraAbility;
 import lych.soullery.util.ExtraAbilityConstants;
 import lych.soullery.util.mixin.IClientPlayerMixin;
@@ -7,10 +9,14 @@ import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.settings.PointOfView;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,10 +30,15 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Iterator;
 
 @Mixin(ClientPlayerEntity.class)
-public abstract class ClientPlayerEntityMixin implements IPlayerEntityMixin, IClientPlayerMixin {
+public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IPlayerEntityMixin, IClientPlayerMixin {
     @Shadow @Final protected Minecraft minecraft;
     @Unique
     private float enhancedJumpFlag = -1;
+
+    private ClientPlayerEntityMixin(World world, BlockPos pos, float yRot, GameProfile profile) {
+        super(world, pos, yRot, profile);
+        throw new UnsupportedOperationException();
+    }
 
     @ModifyVariable(method = "updateAutoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/player/ClientPlayerEntity;hasEffect(Lnet/minecraft/potion/Effect;)Z"), ordinal = 7)
     private float modifyMaxJumpStrength(float f7) {
@@ -57,5 +68,18 @@ public abstract class ClientPlayerEntityMixin implements IPlayerEntityMixin, ICl
             return tmp;
         }
         return 0;
+    }
+
+    @Inject(method = "onSyncedDataUpdated", at = @At("RETURN"))
+    private void handleMindOperation(DataParameter<?> data, CallbackInfo ci) {
+        if (getOperatingMobData().equals(data)) {
+            int mob = entityData.get(getOperatingMobData());
+            if (mob == -1 && ConfigHelper.doFirstPersonReset()) {
+                Minecraft.getInstance().options.setCameraType(PointOfView.FIRST_PERSON);
+            }
+            if (mob != -1 && ConfigHelper.doThirdPersonSet()) {
+                Minecraft.getInstance().options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+            }
+        }
     }
 }

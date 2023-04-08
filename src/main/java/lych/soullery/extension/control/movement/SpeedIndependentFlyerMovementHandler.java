@@ -23,7 +23,7 @@ public enum SpeedIndependentFlyerMovementHandler implements MovementHandler<MobE
         operatingMob.setSpeed(forwardSpeed);
         operatingMob.setXxa(leftSpeed);
         if (movement.jumping != movement.shiftKeyDown) {
-            operatingMob.setYya(movement.jumping ? speed : -speed);
+            operatingMob.setYya(movement.jumping ? speed : -speed * FlyerMovementHandler.DESCENDING_SPEED_MULTIPLIER);
         } else {
             operatingMob.setYya(0);
         }

@@ -24,8 +24,9 @@ public class MovementData {
     public final boolean right;
     public final boolean jumping;
     public final boolean shiftKeyDown;
+    public final boolean autoJumpEnabled;
 
-    public MovementData(int mob, MovementInput input) {
+    public MovementData(int mob, boolean autoJumpEnabled, MovementInput input) {
         this(mob,
                 input.leftImpulse,
                 input.forwardImpulse,
@@ -34,10 +35,11 @@ public class MovementData {
                 input.left,
                 input.right,
                 input.jumping,
-                input.shiftKeyDown);
+                input.shiftKeyDown,
+                autoJumpEnabled);
     }
 
-    public MovementData(int mob, float leftImpulse, float forwardImpulse, boolean up, boolean down, boolean left, boolean right, boolean jumping, boolean shiftKeyDown) {
+    public MovementData(int mob, float leftImpulse, float forwardImpulse, boolean up, boolean down, boolean left, boolean right, boolean jumping, boolean shiftKeyDown, boolean autoJumpEnabled) {
         this.mob = mob;
         this.leftImpulse = leftImpulse;
         this.forwardImpulse = forwardImpulse;
@@ -47,18 +49,20 @@ public class MovementData {
         this.right = right;
         this.jumping = jumping;
         this.shiftKeyDown = shiftKeyDown;
+        this.autoJumpEnabled = autoJumpEnabled;
     }
 
-    public MovementData(PacketBuffer buffer) {
-        this(buffer.readVarInt(),
-                buffer.readFloat(),
-                buffer.readFloat(),
-                buffer.readBoolean(),
-                buffer.readBoolean(),
-                buffer.readBoolean(),
-                buffer.readBoolean(),
-                buffer.readBoolean(),
-                buffer.readBoolean());
+    public MovementData(PacketBuffer buf) {
+        this(buf.readVarInt(),
+                buf.readFloat(),
+                buf.readFloat(),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean(),
+                buf.readBoolean());
     }
 
     @Nullable
@@ -77,6 +81,7 @@ public class MovementData {
         buf.writeBoolean(right);
         buf.writeBoolean(jumping);
         buf.writeBoolean(shiftKeyDown);
+        buf.writeBoolean(autoJumpEnabled);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -84,12 +89,9 @@ public class MovementData {
         ServerPlayerEntity sender = ctx.get().getSender();
         MobEntity mob = getMob(sender.getLevel());
         Controller<?> controller = MindOperatorSynchronizer.getActiveController(sender.getLevel(), mob);
-        if (controller == null) {
+        if (!(controller instanceof MindOperator)) {
             ctx.get().setPacketHandled(true);
             return;
-        }
-        if (!(controller instanceof MindOperator)) {
-            throw new AssertionError();
         }
         ctx.get().enqueueWork(() -> MindOperatorSynchronizer.handleMovementS(mob, sender, (MindOperator) controller, this));
         ctx.get().setPacketHandled(true);

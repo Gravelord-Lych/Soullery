@@ -446,7 +446,7 @@ public final class Meta08Goals {
             if (!meta8.isCreative()) {
                 return StopReason.NEXT_PHASE;
             }
-            List<RobotEntity> robots = level.getNearbyEntities(RobotEntity.class, EntityPredicate.DEFAULT.allowSameTeam().allowInvulnerable().allowNonAttackable().range(RANGE), meta8, meta8.getBoundingBox().inflate(RANGE));
+            List<RobotEntity> robots = level.getNearbyEntities(RobotEntity.class,  new EntityPredicate().allowSameTeam().allowInvulnerable().allowNonAttackable().range(RANGE), meta8, meta8.getBoundingBox().inflate(RANGE));
             if (robots.isEmpty()) {
                 return StopReason.NEXT_PHASE;
             }

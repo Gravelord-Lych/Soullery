@@ -8,8 +8,6 @@ import net.minecraft.nbt.CompoundNBT;
 public enum DefaultRotationHandler implements RotationHandler<MobEntity> {
     INSTANCE;
 
-    private static final float ROTATION_CONSTANT = 10;
-
     @Override
     public void handleRotation(MobEntity operatingMob, ServerPlayerEntity player, float rotationDelta, CompoundNBT data) {
         operatingMob.yRot = player.yRot + rotationDelta;

@@ -24,7 +24,9 @@ import org.spongepowered.asm.mixin.SoftOverride;
 
 import java.util.List;
 
-public abstract class CarrierItem<T extends INBT, E> extends Item implements IModeChangeable {
+import static lych.soullery.item.ModItems.next;
+
+public abstract class CarrierItem<T extends INBT, E> extends Item implements IModeChangeable, IUpgradeableItem {
     protected static final String CHANGE_MODE = Soullery.prefixMsg("item", "carrier.set_mode");
     protected static final String CAPACITY = Soullery.prefixMsg("item", "carrier.capacity");
     protected static final String TAG = "SoulCarrier.";
@@ -135,10 +137,10 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
     public Rarity getRarity(ItemStack stack) {
         Rarity rarity = super.getRarity(stack);
         if (size(stack) > 0) {
-            rarity = ModItems.next(rarity);
+            rarity = next(rarity);
         }
         if (isSpecial(stack)) {
-            rarity = ModItems.next(ModItems.next(rarity));
+            rarity = next(next(rarity));
         }
         return rarity;
     }

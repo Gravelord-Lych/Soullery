@@ -93,11 +93,14 @@
 
   "controlling.soullery.death": "%1$s died",
   "controlling.soullery.depleted": "SE depleted",
+  "controlling.soullery.far_away": "%1$s is far from you. Go near %1$s or you can't continue to operate %1$s",
+  "controlling.soullery.game_mode_changed": "Stopped operation because your game mode is changed",
   "controlling.soullery.lowSE.10000": "SE Remaining: 10000",
   "controlling.soullery.lowSE.2000": "SE Remaining: 2000",
   "controlling.soullery.lowSE.500": "SE Remaining: 500",
   "controlling.soullery.lackTime.600": "Max Operate Time Remaining: 30s",
   "controlling.soullery.lackTime.100": "Max Operate Time Remaining: 5s",
+  "controlling.soullery.too_far_away": "%1$s is too far away from you",
 
   "createWorld.soullery.customize.preset.soul_land": "Soul Land",
 
@@ -240,6 +243,7 @@
   "item.soullery.voidwalker_spawn_egg": "Soul-Walker Spawn Egg",
   "item.soullery.wanderer_spawn_egg": "Wanderer Spawn Egg",
 
+  "item.soullery.chaos_wand": "Chaos Wand",
   "item.soullery.entity_carrier": "Entity Carrier",
   "item.soullery.entity_carrier_l2": "Entity Carrier II",
   "item.soullery.extra_ability_carrier": "Extra Ability Carrier",
@@ -247,6 +251,7 @@
   "item.soullery.extra_ability_wand": "Extra Ability Wand",
   "item.soullery.mind_operator": "Mind Operator",
   "item.soullery.mind_operator_l2": "Mind Operator II",
+  "item.soullery.mind_operator_l3": "Mind Operator III",
   "item.soullery.refined_soul_metal_axe": "Refined Soul Metal Axe",
   "item.soullery.refined_soul_metal_boots": "Refined Soul Metal Boots",
   "item.soullery.refined_soul_metal_chestplate": "Refined Soul Metal Chestplate",
@@ -274,6 +279,7 @@
   "item.soullery.soul_piece": "Soul Piece",
   "item.soullery.soul_piece.typed": "Soul Piece - %s",
   "item.soullery.soul_powder": "Soul Powder",
+  "item.soullery.soul_purifier": "Soul Purifier",
   "item.soullery.soul_wart": "Soul Wart",
 
   "item.soullery.carrier.capacity": "Stored: %d / %d",
@@ -294,6 +300,7 @@
   "key.categories.soullery.exa": "Soullery - Extra Abilities",
   "key.categories.soullery.tools": "Soullery - Tool Settings",
   "key.message.soullery.change_mode": "Change Mode",
+  "key.message.soullery.perform_skill": "Perform Skill",
   "key.message.soullery.dragon_wizard": "Dragon Wizard Key",
   "key.message.soullery.fangs_summoner": "Fangs Summoner Key",
 
@@ -355,6 +362,8 @@
   "reinforcement.soullery.status.unsupported": "Unsupported",
 
   "subtitles.soullery:random.energy_shield_break": "Energy shield breaks",
+  "subtitles.soullery:random.ethemove": "Ethemove",
+  "subtitles.soullery:random.mind_operate": "Soul substitutes",
   "subtitles.soullery:mob.meta8.share_shield": "Robots share shield",
   "subtitles.soullery:mob.meta8.share_stronger_shield": "Robots share shield",
   "subtitles.soullery:mob.meta8.laser": "Robot lasers",

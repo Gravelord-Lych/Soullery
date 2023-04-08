@@ -12,7 +12,9 @@ import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 import net.minecraftforge.fml.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -21,7 +23,9 @@ import static lych.soullery.util.ModSoundEvents.*;
 public class SoundDataGen extends SoundDefinitionsProvider {
     private static final String GENERIC_FOOTSTEPS = "subtitles.block.generic.footsteps";
     private static final String BOW_PATH = "random/bow";
+    private static final ResourceLocation ETHEMOVE_PATH = Soullery.prefix("random/ethemove");
     private static final ResourceLocation LASER_PATH = Soullery.prefix("random/laser");
+    private static final ResourceLocation MIND_OPERATE_PATH = Soullery.prefix("random/mind_operate");
 
     public SoundDataGen(DataGenerator generator, ExistingFileHelper helper) {
         super(generator, Soullery.MOD_ID, helper);
@@ -30,17 +34,19 @@ public class SoundDataGen extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
         add(DEFENSIVE_META8_SHARE_SHIELD);
-        multiple(ENERGY_SOUND_BREAK, "random/explode1", "random/explode2", "random/explode3", "random/explode4");
+        multiple(ENERGY_SOUND_BREAK, paths("random/explode", 4));
+        redirect(ETHEMOVE, ETHEMOVE_PATH, 4);
+        redirect(MIND_OPERATE, MIND_OPERATE_PATH, 3);
         redirect(META8_LASER, LASER_PATH, 3);
         add(META8_SHARE_SHIELD);
-        multiple(SOUL_RABBIT_AMBIENT, 0.25, "mob/rabbit/idle1", "mob/rabbit/idle2", "mob/rabbit/idle3", "mob/rabbit/idle4");
-        multiple(SOUL_RABBIT_ATTACK, "entity/rabbit/attack1", "entity/rabbit/attack2", "entity/rabbit/attack3", "entity/rabbit/attack4");
+        multiple(SOUL_RABBIT_AMBIENT, 0.25, paths("mob/rabbit/idle", 4));
+        multiple(SOUL_RABBIT_ATTACK, paths("entity/rabbit/attack", 4));
         single(SOUL_RABBIT_DEATH, new SoundPair("mob/rabbit/bunnymurder", 0.5));
-        multiple(SOUL_RABBIT_HURT, 0.5, "mob/rabbit/hurt1", "mob/rabbit/hurt2", "mob/rabbit/hurt3", "mob/rabbit/hurt4");
-        multiple(SOUL_RABBIT_JUMP, 0.1, "mob/rabbit/hop1", "mob/rabbit/hop2", "mob/rabbit/hop3", "mob/rabbit/hop4");
+        multiple(SOUL_RABBIT_HURT, 0.5, paths("mob/rabbit/hurt", 4));
+        multiple(SOUL_RABBIT_JUMP, 0.1, paths("mob/rabbit/hop", 4));
         single(ROBOT_DEATH, "mob/irongolem/death");
-        multiple(ROBOT_HURT, "mob/irongolem/hit1", "mob/irongolem/hit2", "mob/irongolem/hit3", "mob/irongolem/hit4");
-        multiple(ROBOT_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), "mob/irongolem/walk1", "mob/irongolem/walk2", "mob/irongolem/walk3", "mob/irongolem/walk4");
+        multiple(ROBOT_HURT, paths("mob/irongolem/hit", 4));
+        multiple(ROBOT_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), paths("mob/irongolem/walk", 4));
         add(SOUL_SKELETON_AMBIENT, 3);
         add(SOUL_SKELETON_DEATH);
         add(SOUL_SKELETON_HURT, 4);
@@ -70,7 +76,7 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         add(sound, Util.make(definition().with(sound(pair.name).volume(pair.volume).pitch(pair.pitch)).subtitle(makeSubtitle(sound)), additionalOperations::accept));
     }
 
-    private void multiple(RegistryObject<SoundEvent> sound,  String... names) {
+    private void multiple(RegistryObject<SoundEvent> sound, String... names) {
         multiple(sound, DefaultValues.dummyConsumer(), names);
     }
 
@@ -94,7 +100,6 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         multiple(sound, additionalOperations, Arrays.stream(names).map(name -> new SoundPair(name, volume, pitch)).toArray(SoundPair[]::new));
     }
 
-
     private void multiple(RegistryObject<SoundEvent> sound,  SoundPair... pairs) {
         multiple(sound, DefaultValues.dummyConsumer(), pairs);
     }
@@ -108,6 +113,17 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         }
         additionalOperations.accept(definition);
         add(sound, definition);
+    }
+
+    private String[] paths(String type, int count) {
+        if (count == 1) {
+            return new String[]{type};
+        }
+        List<String> paths = new ArrayList<>(count);
+        for (int i = 1; i <= count; i++) {
+            paths.add(type + i);
+        }
+        return paths.toArray(new String[0]);
     }
 
     private void add(RegistryObject<SoundEvent> sound) {

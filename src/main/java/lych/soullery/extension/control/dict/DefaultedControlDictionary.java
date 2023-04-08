@@ -80,6 +80,10 @@ public final class DefaultedControlDictionary implements ControlDictionary {
     }
 
     public static DefaultedControlDictionary only(ControllerType<?> ct) {
+        return new DefaultedControlDictionary(Collections.emptyMap(), Collections.emptySet(), ImmutableList.of(Pair.of((mob, player) -> !(mob.canChangeDimensions()), null)), ct);
+    }
+
+    public static DefaultedControlDictionary withBosses(ControllerType<?> ct) {
         return new DefaultedControlDictionary(Collections.emptyMap(), Collections.emptySet(), Collections.emptyList(), ct);
     }
 

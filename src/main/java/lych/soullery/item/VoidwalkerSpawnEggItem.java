@@ -5,10 +5,7 @@ import lych.soullery.entity.monster.voidwalker.VoidwalkerTier;
 import lych.soullery.util.Utils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -20,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class VoidwalkerSpawnEggItem extends ForgeSpawnEggItem {
+public class VoidwalkerSpawnEggItem extends ForgeSpawnEggItem implements IUpgradeableItem {
     private static final String TAG = Utils.snakeToCamel(ModEntityNames.VOIDWALKER + ModItems.SPAWN_EGG_SUFFIX) + "." + VoidwalkerTier.class.getSimpleName();
     private static VoidwalkerTier currentTier;
 
@@ -96,5 +93,18 @@ public class VoidwalkerSpawnEggItem extends ForgeSpawnEggItem {
     @Override
     public boolean isFoil(ItemStack stack) {
         return super.isFoil(stack) || getTier(stack).strongerThan(VoidwalkerTier.EXTRAORDINARY);
+    }
+
+    @Override
+    public boolean canUpgrade(ItemStack stack) {
+        return !getTier(stack).isStrongest();
+    }
+
+    @Override
+    public ItemStack upgraded(ItemStack old) {
+        checkUpgradeable(old);
+        ItemStack stack = new ItemStack(this);
+        setTier(stack, currentTier.upgraded());
+        return old;
     }
 }

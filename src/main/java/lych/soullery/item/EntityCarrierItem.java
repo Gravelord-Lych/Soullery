@@ -59,4 +59,15 @@ public class EntityCarrierItem extends CarrierItem<CompoundNBT, MobEntity> {
         mob.moveTo(context.getClickLocation());
         context.getLevel().addFreshEntity(mob);
     }
+
+    @Override
+    public boolean canUpgrade(ItemStack stack) {
+        return stack.getItem() == ModItems.ENTITY_CARRIER;
+    }
+
+    @Override
+    public ItemStack upgraded(ItemStack old) {
+        checkUpgradeable(old);
+        return new ItemStack(ModItems.ENTITY_CARRIER_II);
+    }
 }

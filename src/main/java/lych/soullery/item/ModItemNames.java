@@ -1,6 +1,7 @@
 package lych.soullery.item;
 
 public final class ModItemNames {
+    public static final String CHAOS_WAND = "chaos_wand";
     public static final String ENTITY_CARRIER = "entity_carrier";
     public static final String ENTITY_CARRIER_II = "entity_carrier_l2";
     public static final String EXTRA_ABILITY_CARRIER = "extra_ability_carrier";
@@ -10,6 +11,7 @@ public final class ModItemNames {
     public static final String HALF_USED_SPLASH_POTION = "half_used_splash_potion";
     public static final String MIND_OPERATOR = "mind_operator";
     public static final String MIND_OPERATOR_II = "mind_operator_l2";
+    public static final String MIND_OPERATOR_III = "mind_operator_l3";
     public static final String REFINED_SOUL_METAL_AXE = "refined_soul_metal_axe";
     public static final String REFINED_SOUL_METAL_BOOTS = "refined_soul_metal_boots";
     public static final String REFINED_SOUL_METAL_CHESTPLATE = "refined_soul_metal_chestplate";
@@ -35,6 +37,7 @@ public final class ModItemNames {
     public static final String SOUL_METAL_PARTICLE = "soul_metal_particle";
     public static final String SOUL_PIECE = "soul_piece";
     public static final String SOUL_POWDER = "soul_powder";
+    public static final String SOUL_PURIFIER = "soul_purifier";
 
     private ModItemNames() {}
 }

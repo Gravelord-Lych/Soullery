@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +25,8 @@ public interface IPlayerEntityMixin {
     MobEntity getOperatingMob();
 
     void setOperatingMob(@Nullable MobEntity mob);
+
+    DataParameter<Integer> getOperatingMobData();
 
     default boolean hasExtraAbility(IExtraAbility exa) {
         return getExtraAbilities().contains(exa);

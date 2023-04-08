@@ -17,7 +17,7 @@ public enum SquidMovementHandler implements MovementHandler<SquidEntity> {
     @Override
     public void handleMovement(SquidEntity operatingSquid, ServerPlayerEntity player, MovementData movement, @Nullable JumpController jumpControl, CompoundNBT data) {
         float forwardSpeed = movement.forwardImpulse;
-        float leftSpeed = movement.leftImpulse;
+        float leftSpeed = -movement.leftImpulse;
         if (movement.shiftKeyDown) {
             forwardSpeed = leftSpeed = 0;
         }

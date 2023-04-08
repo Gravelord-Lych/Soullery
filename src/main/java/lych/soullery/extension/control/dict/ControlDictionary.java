@@ -40,7 +40,8 @@ public interface ControlDictionary {
         }
         SoulManager manager = SoulManager.get(world);
         Controller<? super T> controller = manager.add(mob, player, type);
-        if (time < Integer.MAX_VALUE) {
+//      Null-check to prevent setting time for a controller that previously existed.
+        if (controller != null && time < Integer.MAX_VALUE) {
             manager.getTimes().setTime(mob, type, time);
         }
         return controller;

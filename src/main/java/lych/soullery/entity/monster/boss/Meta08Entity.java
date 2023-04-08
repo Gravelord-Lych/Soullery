@@ -281,7 +281,7 @@ public class Meta08Entity extends MonsterEntity implements ILaserAttacker, IShar
             bossInfo.setPercent(getHealth() / getMaxHealth());
         }
         if (getTarget() != null && isCreative() && isLowHealth() && distanceToSqr(getTarget()) <= 6 * 6 && random.nextDouble() < 0.01) {
-            doShockwaveAttack(level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.range(6).selector(entity -> !(entity instanceof IMeta08NonAttackable)), this, getBoundingBox().inflate(6)));
+            doShockwaveAttack(level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.get().range(6).selector(entity -> !(entity instanceof IMeta08NonAttackable)), this, getBoundingBox().inflate(6)));
         }
         if (isCreative() && tickCount % 60 == 0) {
             level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(CLEAR_EFFECT_RANGE), this::canClearEffect).forEach(this::clearEffect);

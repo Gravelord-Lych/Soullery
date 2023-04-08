@@ -29,9 +29,7 @@ public class EndermanRightClickHandler implements TargetNotNeededRightClickHandl
         if (dist <= 1.0E-04) {
             return;
         }
-        x /= dist;
-        z /= dist;
-        callTeleport(operatingEnderman, x, y, z);
+        callTeleport(operatingEnderman, operatingEnderman.getX() + x, operatingEnderman.getY() + y, operatingEnderman.getZ() + z);
         cooldown = 20;
     }
 

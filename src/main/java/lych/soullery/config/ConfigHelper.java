@@ -39,4 +39,12 @@ public final class ConfigHelper {
     public static int getRomanLimit() {
         return CommonConfig.ROMAN_LIMIT.get();
     }
+
+    public static boolean doThirdPersonSet() {
+        return ClientConfig.THIRD_PERSON_ON_OPERATION.get();
+    }
+
+    public static boolean doFirstPersonReset() {
+        return ClientConfig.FIRST_PERSON_RESET_AFTER_OPERATION.get();
+    }
 }

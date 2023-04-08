@@ -60,8 +60,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public final class  EntityUtils {
-    public static final EntityPredicate ALL = EntityPredicate.DEFAULT.allowUnseeable().allowInvulnerable().ignoreInvisibilityTesting().allowSameTeam().allowNonAttackable();
-    public static final EntityPredicate ALL_ATTACKABLE = EntityPredicate.DEFAULT.allowUnseeable().ignoreInvisibilityTesting();
+    public static final Supplier<EntityPredicate> ALL = () -> new EntityPredicate().allowUnseeable().allowInvulnerable().ignoreInvisibilityTesting().allowSameTeam().allowNonAttackable();
+    public static final Supplier<EntityPredicate> ALL_ATTACKABLE = () -> new EntityPredicate().allowUnseeable().ignoreInvisibilityTesting();
 
     private EntityUtils() {}
 
@@ -425,14 +425,18 @@ public final class  EntityUtils {
         Vector3d position = entity.getEyePosition(0);
         Vector3d viewVector = entity.getViewVector(1);
         Vector3d targetPos = position.add(viewVector.scale(reachDistance));
+        AxisAlignedBB possibleEntitiesBB = entity.getBoundingBox().expandTowards(viewVector.scale(reachDistance)).inflate(1);
+        EntityRayTraceResult entityRay = ProjectileHelper.getEntityHitResult(entity, position, targetPos, possibleEntitiesBB, entityIn -> !entityIn.isSpectator() && entityIn.isPickable(), reachDistance * reachDistance);
+        if (entityRay == null) {
+            return null;
+        }
         if (testBlock) {
-            BlockRayTraceResult blockRay = entity.level.clip(new RayTraceContext(position, targetPos, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+            BlockRayTraceResult blockRay = entity.level.clip(new RayTraceContext(position, entityRay.getLocation(), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
             if (blockRay.getType() != RayTraceResult.Type.MISS) {
                 return null;
             }
         }
-        AxisAlignedBB possibleEntitiesBB = entity.getBoundingBox().expandTowards(viewVector.scale(reachDistance)).inflate(1);
-        return ProjectileHelper.getEntityHitResult(entity, position, targetPos, possibleEntitiesBB, entityIn -> !entityIn.isSpectator() && entityIn.isPickable(), reachDistance * reachDistance);
+        return entityRay;
     }
 
     public static void disableShield(World world, IShieldUser user, @Nullable Random random) {
@@ -468,10 +472,11 @@ public final class  EntityUtils {
     }
 
     public static boolean canSwim(MobEntity mob) {
+        boolean canSwimB = false;
         if (((IBrainMixin<?>) mob.getBrain()).isValidBrain()) {
-            return ((IBrainMixin<?>) mob.getBrain()).canSwim();
+            canSwimB = ((IBrainMixin<?>) mob.getBrain()).canSwim();
         }
-        return ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().anyMatch(goal -> goal.getGoal() instanceof SwimGoal);
+        return canSwimB || ((IGoalSelectorMixin) mob.goalSelector).getAvailableGoals().stream().anyMatch(goal -> goal.getGoal() instanceof SwimGoal);
     }
 
     public static boolean canUseCrossbow(MobEntity mob) {

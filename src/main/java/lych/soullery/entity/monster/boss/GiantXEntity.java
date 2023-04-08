@@ -315,7 +315,7 @@ public class GiantXEntity extends ZombieEntity implements ITieredBoss {
     @Override
     public void aiStep() {
         super.aiStep();
-        for (LivingEntity entity : level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.selector(this::isAttackable), this, getBoundingBox().inflate(6, 6, 6))) {
+        for (LivingEntity entity : level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.get().selector(this::isAttackable), this, getBoundingBox().inflate(6, 6, 6))) {
             if (isRushing() && getBoundingBox().inflate(getCorrectExtraDamageRadius()).intersects(entity.getBoundingBox())) {
                 doHurtTarget(entity);
                 knockback(entity, getCorrectKnockbackPower());
@@ -486,7 +486,7 @@ public class GiantXEntity extends ZombieEntity implements ITieredBoss {
     private void doFallAttack() {
         AxisAlignedBB bb = getBoundingBox().inflate(6, 0, 6);
         bb = new AxisAlignedBB(bb.minX, bb.minY - 3, bb.minZ, bb.maxX, bb.minY + 3, bb.maxZ);
-        for (LivingEntity entity : level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.selector(this::isAttackable), this, bb.inflate(getCorrectExtraDamageRadius()))) {
+        for (LivingEntity entity : level.getNearbyEntities(LivingEntity.class, EntityUtils.ALL_ATTACKABLE.get().selector(this::isAttackable), this, bb.inflate(getCorrectExtraDamageRadius()))) {
             doHurtTarget(entity);
             knockback(entity, getCorrectKnockbackPower() * 2);
         }

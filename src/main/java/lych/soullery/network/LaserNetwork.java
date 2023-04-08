@@ -49,8 +49,9 @@ public class LaserNetwork {
             int g = buffer.readInt();
             int b = buffer.readInt();
             int owner = buffer.readInt();
+            int customWidth = buffer.readInt();
             int tickCount = buffer.readInt();
-            data = new LaserRenderData(new Vector3d(sx, sy, sz), new Vector3d(dx, dy, dz), new Color(r, g, b), owner, tickCount);
+            data = new LaserRenderData(new Vector3d(sx, sy, sz), new Vector3d(dx, dy, dz), new Color(r, g, b), owner, customWidth, tickCount);
         }
 
         public LaserPacket(LaserRenderData data) {
@@ -68,6 +69,7 @@ public class LaserNetwork {
             buf.writeInt(data.getColor().getGreen());
             buf.writeInt(data.getColor().getBlue());
             buf.writeInt(data.getOwner());
+            buf.writeInt(data.getCustomWidth());
             buf.writeInt(data.getRenderTickCount());
         }
 
@@ -85,12 +87,14 @@ public class LaserNetwork {
         private final Vector3d dest;
         private final int owner;
         private final int renderTickCount;
+        private final int customWidth;
 
-        public LaserRenderData(Vector3d src, Vector3d dest, Color color, int owner, int renderTickCount) {
+        public LaserRenderData(Vector3d src, Vector3d dest, Color color, int owner, int customWidth, int renderTickCount) {
             this.src = src;
             this.dest = dest;
             this.color = color;
             this.owner = owner;
+            this.customWidth = customWidth;
             this.renderTickCount = renderTickCount;
             id = ID_COUNTER.incrementAndGet();
         }
@@ -105,6 +109,10 @@ public class LaserNetwork {
 
         public Color getColor() {
             return color;
+        }
+
+        public int getCustomWidth() {
+            return customWidth;
         }
 
         public int getRenderTickCount() {
@@ -122,6 +130,7 @@ public class LaserNetwork {
                     .add("dest", dest)
                     .add("color", color)
                     .add("owner", owner)
+                    .add("customWidth", customWidth)
                     .add("renderTickCount", renderTickCount)
                     .toString();
         }

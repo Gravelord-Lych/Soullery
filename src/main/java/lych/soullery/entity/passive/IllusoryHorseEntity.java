@@ -7,6 +7,7 @@ import lych.soullery.entity.iface.IEtherealable;
 import lych.soullery.entity.monster.voidwalker.AbstractVoidwalkerEntity;
 import lych.soullery.util.ModEffectUtils;
 import lych.soullery.util.EntityUtils;
+import lych.soullery.util.ModSoundEvents;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -158,7 +159,7 @@ public class IllusoryHorseEntity extends AbstractHorseEntity implements ESVMob, 
 
     private boolean isVoidwalkersNearby() {
         double followRange = getAttributeValue(Attributes.FOLLOW_RANGE);
-        return level.getNearestEntity(AbstractVoidwalkerEntity.class, EntityUtils.ALL, this, getX(), getY(), getZ(), getBoundingBox().inflate(followRange)) != null;
+        return level.getNearestEntity(AbstractVoidwalkerEntity.class, EntityUtils.ALL.get(), this, getX(), getY(), getZ(), getBoundingBox().inflate(followRange)) != null;
     }
 
     @Override
@@ -187,6 +188,9 @@ public class IllusoryHorseEntity extends AbstractHorseEntity implements ESVMob, 
     public boolean setSneakTarget(@Nullable Vector3d sneakTarget) {
         this.sneakTarget = sneakTarget;
         setEthereal(sneakTarget != null);
+        if (sneakTarget != null) {
+            playSound(ModSoundEvents.ETHEMOVE.get(), 0.5f, 1);
+        }
         return true;
     }
 

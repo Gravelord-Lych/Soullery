@@ -51,6 +51,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     @Shadow @Final public PlayerInventory inventory;
     @Shadow protected FoodStats foodData;
 
+    @Override
     @Shadow public abstract ItemStack eat(World p_213357_1_, ItemStack p_213357_2_);
 
     @Shadow public abstract void playNotifySound(SoundEvent p_213823_1_, SoundCategory p_213823_2_, float p_213823_3_, float p_213823_4_);
@@ -300,5 +301,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     @Unique
     public void setStatic(boolean isStatic) {
         this.isStatic = isStatic;
+    }
+
+    @Override
+    public DataParameter<Integer> getOperatingMobData() {
+        return DATA_OPERATING_ID;
     }
 }

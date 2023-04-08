@@ -5,6 +5,7 @@ import lych.soullery.network.MindOperatorNetwork;
 import lych.soullery.network.MovementData;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,8 +28,8 @@ public final class MindOperatorSynchronizer {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void handleMovementC(MobEntity operatingMob, PlayerEntity player, MovementInput movement) {
-        MindOperatorNetwork.MOVEMENTS.sendToServer(new MovementData(operatingMob.getId(), movement));
+    public static void handleMovementC(MobEntity operatingMob, ClientPlayerEntity player, MovementInput movement) {
+        MindOperatorNetwork.MOVEMENTS.sendToServer(new MovementData(operatingMob.getId(), player.isAutoJumpEnabled(), movement));
     }
 
     public static <T extends MobEntity> void handleMovementS(T operatingMob, ServerPlayerEntity player, MindOperator<? super T> operator, MovementData movement) {
@@ -62,15 +63,14 @@ public final class MindOperatorSynchronizer {
 
     @OnlyIn(Dist.CLIENT)
     public static void resetPlayerMovement(MovementInput movement) {
-        if (!movement.shiftKeyDown) {
-            movement.jumping = false;
-        }
-        movement.forwardImpulse *= movement.shiftKeyDown ? 0.3 : 0;
-        movement.leftImpulse *= movement.shiftKeyDown ? 0.3 : 0;
+        movement.jumping = false;
+        movement.forwardImpulse = 0;
+        movement.leftImpulse = 0;
         movement.up = false;
         movement.down = false;
         movement.left = false;
         movement.right = false;
+        movement.shiftKeyDown = false;
     }
 
     public static void handleMelee(ServerPlayerEntity player, MobEntity operatingMob) {

@@ -24,7 +24,7 @@ import java.util.List;
 import static lych.soullery.api.ItemSEContainer.getMode;
 import static lych.soullery.api.ItemSEContainer.setMode;
 
-public class SEGemItem extends Item implements ItemSEContainer, IModeChangeable {
+public class SEGemItem extends Item implements ItemSEContainer, IModeChangeable, IUpgradeableItem {
     private static final int MAX_SE_LEVEL = 10;
     private static final int LEVEL_STEP = 5;
     private final int capacity;
@@ -109,5 +109,16 @@ public class SEGemItem extends Item implements ItemSEContainer, IModeChangeable 
             setMode(stack, TransferMode.byId(getMode(stack).getId() + 1).orElseThrow(() -> new IllegalStateException("Something wrong happened when trying to change a Soul Energy Gem's mode")));
         }
         player.sendMessage(new TranslationTextComponent(Soullery.prefixMsg("item", "item_soul_energy_container.transfer.set_mode")).append(getMode(stack).makeTranslationKey()), Util.NIL_UUID);
+    }
+
+    @Override
+    public boolean canUpgrade(ItemStack stack) {
+        return stack.getItem() == ModItems.SOUL_ENERGY_GEM;
+    }
+
+    @Override
+    public ItemStack upgraded(ItemStack old) {
+        checkUpgradeable(old);
+        return new ItemStack(ModItems.SOUL_ENERGY_GEM_II);
     }
 }

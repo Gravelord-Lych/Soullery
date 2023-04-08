@@ -142,7 +142,7 @@ public final class ClientEventListener {
 
             MobEntity operatingMob = MindOperatorSynchronizer.getOperatingMob(event.getPlayer());
             if (operatingMob != null) {
-                MindOperatorSynchronizer.handleMovementC(operatingMob, event.getPlayer(), event.getMovementInput());
+                MindOperatorSynchronizer.handleMovementC(operatingMob, (ClientPlayerEntity) event.getPlayer(), event.getMovementInput());
                 MindOperatorSynchronizer.resetPlayerMovement(event.getMovementInput());
             }
         }

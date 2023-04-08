@@ -15,11 +15,8 @@ import java.util.function.Predicate;
 @Mixin(NearestAttackableTargetGoal.class)
 public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> extends TargetGoal implements INearestAttackableTargetGoalMixin<T>, TargetGoalAccessor {
     @Shadow protected LivingEntity target;
-
     @Shadow @Final protected Class<T> targetType;
-
     @Shadow protected EntityPredicate targetConditions;
-
     @Shadow @Final protected int randomInterval;
 
     private NearestAttackableTargetGoalMixin(MobEntity mob, boolean mustSee) {

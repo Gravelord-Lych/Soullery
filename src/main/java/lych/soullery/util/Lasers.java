@@ -45,21 +45,25 @@ public final class Lasers {
     }
 
     public static void renderLaser(LaserAttackResult result, Entity laserOwner, int renderTickCount) {
-        renderLaser(result, laserOwner, renderTickCount, true);
+        renderLaser(result, laserOwner, renderTickCount, -1);
     }
 
-    public static void renderLaser(LaserAttackResult result, Entity laserOwner, int renderTickCount, boolean fixedDestination) {
-        renderCustomColoredLaser(result, laserOwner, result.getData().getColor(), renderTickCount, fixedDestination);
+    public static void renderLaser(LaserAttackResult result, Entity laserOwner, int renderTickCount, int customWidth) {
+        renderLaser(result, laserOwner, renderTickCount, customWidth, true);
     }
 
-    public static void renderCustomColoredLaser(LaserAttackResult result, Entity laserOwner, Color color, int renderTickCount, boolean fixedDestination) {
+    public static void renderLaser(LaserAttackResult result, Entity laserOwner, int renderTickCount, int customWidth, boolean fixedDestination) {
+        renderCustomColoredLaser(result, laserOwner, result.getData().getColor(), renderTickCount, customWidth, fixedDestination);
+    }
+
+    public static void renderCustomColoredLaser(LaserAttackResult result, Entity laserOwner, Color color, int renderTickCount, int customWidth, boolean fixedDestination) {
         if (!result.getLastHitPos().isPresent()) {
             return;
         }
         Vector3d src = laserOwner instanceof ILaserAttacker ? ((ILaserAttacker) laserOwner).getAttackerPosition() : new Vector3d(laserOwner.getX(), laserOwner.getEyeY(), laserOwner.getZ());
         Vector3d destPos = result.getLastHitPos().get();
         Vector3d dest = fixedDestination ? destPos : result.getLastHitPos().get();
-        INSTANCE.send(PacketDistributor.ALL.noArg(), new LaserPacket(new LaserRenderData(src, dest, color, laserOwner.getId(), renderTickCount)));
+        INSTANCE.send(PacketDistributor.ALL.noArg(), new LaserPacket(new LaserRenderData(src, dest, color, laserOwner.getId(), customWidth, renderTickCount)));
     }
 
     public static BiFunction<? super Vector3d, ? super World, ? extends LivingEntity> entities() {

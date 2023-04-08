@@ -1,12 +1,14 @@
 package lych.soullery.extension.laser;
 
 import com.google.common.collect.ImmutableList;
+import lych.soullery.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,10 @@ public class LaserAttackResult {
     private final Vector3d passedPosition;
     private final LaserData data;
     private final World world;
+
+    public LaserAttackResult(@Nullable Vector3d passedPosition, LaserData data, World world) {
+        this(Collections.emptyList(), Utils.applyIfNonnull(passedPosition, BlockPos::new), passedPosition, data, world);
+    }
 
     public LaserAttackResult(List<LivingEntity> passedEntities, @Nullable BlockPos passedBlockPos, @Nullable Vector3d passedPosition, LaserData data, World world) {
         this.passedEntities = ImmutableList.copyOf(passedEntities);

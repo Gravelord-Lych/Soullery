@@ -62,8 +62,8 @@ public final class SkeletonKingGoals {
             if (!super.checkExtraStartConditions()) {
                 return false;
             }
-            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL, mob, mob.getBoundingBox().inflate(12, 8, 12)).size() <= 15 &&
-                   mob.level.getNearbyEntities(SkeletonFollowerEntity.class, EntityUtils.ALL, mob, mob.getBoundingBox().inflate(12, 8, 12)).size() <= 10;
+            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL.get(), mob, mob.getBoundingBox().inflate(12, 8, 12)).size() <= 15 &&
+                   mob.level.getNearbyEntities(SkeletonFollowerEntity.class, EntityUtils.ALL.get(), mob, mob.getBoundingBox().inflate(12, 8, 12)).size() <= 10;
         }
 
         @Override
@@ -312,11 +312,11 @@ public final class SkeletonKingGoals {
             if (!(mob.reachedTier(5) && super.checkExtraStartConditions())) {
                 return false;
             }
-            return mob.getHealth() <= mob.getMaxHealth() * 0.25 || getSkeletonsNearby().size() >= 4 || mob.level.getNearbyEntities(SkeletonFollowerEntity.class, EntityUtils.ALL, mob, mob.getBoundingBox().inflate(12, 8, 12)).size() >= 2;
+            return mob.getHealth() <= mob.getMaxHealth() * 0.25 || getSkeletonsNearby().size() >= 4 || mob.level.getNearbyEntities(SkeletonFollowerEntity.class, EntityUtils.ALL.get(), mob, mob.getBoundingBox().inflate(12, 8, 12)).size() >= 2;
         }
 
         private List<AbstractSkeletonEntity> getSkeletonsNearby() {
-            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL, mob, mob.getBoundingBox().inflate(12, 8, 12));
+            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL.get(), mob, mob.getBoundingBox().inflate(12, 8, 12));
         }
 
         private ImmutableSet<EffectInstance> getCorrectEffects() {
@@ -363,7 +363,7 @@ public final class SkeletonKingGoals {
         }
 
         private List<AbstractSkeletonEntity> getSkeletonsNearby() {
-            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL, mob, mob.getBoundingBox().inflate(12, 8, 12));
+            return mob.level.getNearbyEntities(AbstractSkeletonEntity.class, EntityUtils.ALL.get(), mob, mob.getBoundingBox().inflate(12, 8, 12));
         }
 
         @Override

@@ -17,6 +17,7 @@ public enum DefaultMovementHandler implements MovementHandler<MobEntity> {
     SPEED_LIMITED(0.28f),
     WATER(0.8f);
 
+    private static final double MOD = 0.1;
     private final float limitedSpeed;
 
     DefaultMovementHandler(float limitedSpeed) {
@@ -50,7 +51,7 @@ public enum DefaultMovementHandler implements MovementHandler<MobEntity> {
             return;
         }
         if (inLiquid) {
-            if (EntityUtils.canSwim(operatingMob) || EntityUtils.isWaterMob(operatingMob)) {
+            if (EntityUtils.canSwim(operatingMob) || EntityUtils.isWaterMob(operatingMob) || operatingMob.isInLava() && operatingMob.fireImmune()) {
                 double yMul = EntityUtils.isWaterMob(operatingMob) ? 0.4 : 1;
                 if (movement.jumping) {
                     operatingMob.setDeltaMovement(operatingMob.getDeltaMovement().add(0, 0.04 * yMul * operatingMob.getAttributeValue(ForgeMod.SWIM_SPEED.get()), 0));
@@ -60,6 +61,13 @@ public enum DefaultMovementHandler implements MovementHandler<MobEntity> {
             }
         } else if (!movement.shiftKeyDown && movement.jumping) {
             jumpControl.jump();
-        }
+        }/* else if (movement.autoJumpEnabled) {
+            Vector3d moveVector = operatingMob.getLookAngle();
+            double fx = moveVector.x;
+            double fz = moveVector.z;
+            if (MovementHandler.updateAutoJump(operatingMob, fx, fz, MOD, new Vector2f(movement.leftImpulse, movement.forwardImpulse))) {
+                jumpControl.jump();
+            }
+        }*/
     }
 }

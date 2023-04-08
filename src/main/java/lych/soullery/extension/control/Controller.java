@@ -2,11 +2,15 @@ package lych.soullery.extension.control;
 
 import com.google.common.base.MoreObjects;
 import lych.soullery.Soullery;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.GoalSelector;
+import lych.soullery.util.mixin.IGoalSelectorMixin;
+import lych.soullery.util.mixin.INearestAttackableTargetGoalMixin;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
@@ -16,6 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class Controller<T extends MobEntity> {
+    protected static final int REMOVE_DISTANCE = 40;
+    protected static final int WARN_DISTANCE = 30;
     private final ControllerType<T> type;
     private final UUID mob;
     private final UUID player;
@@ -35,6 +41,29 @@ public abstract class Controller<T extends MobEntity> {
         this.player = compoundNBT.getUUID("Player");
         this.preparing = compoundNBT.getBoolean("Preparing");
         this.level = level;
+    }
+
+    protected static void handleBrainedMonster(MobEntity mob, GoalSelector goalSelector, boolean brainValid) {
+        if (brainValid && mob instanceof MonsterEntity) {
+            if (mob instanceof ICrossbowUser && mob.getMainHandItem().getItem() instanceof CrossbowItem) {
+                goalSelector.addGoal(2, new RangedCrossbowAttackGoal<>((MonsterEntity & ICrossbowUser) mob, 1, 8));
+            } else if (mob instanceof IRangedAttackMob && !(mob instanceof ICrossbowUser) && !(mob.getMainHandItem().getItem() instanceof SwordItem)) {
+                goalSelector.addGoal(2, new RangedAttackGoal((IRangedAttackMob) mob, 1, 40, 10));
+            } else {
+                goalSelector.addGoal(2, new MeleeAttackGoal((CreatureEntity) mob, 1, true));
+            }
+        }
+    }
+
+    @Nullable
+    protected NearestAttackableTargetGoal<?> findTargetGoalTowards(Class<?> type, GoalSelector targetSelector) {
+        return ((IGoalSelectorMixin) targetSelector).getAvailableGoals().stream()
+                .map(PrioritizedGoal::getGoal)
+                .filter(goal -> goal instanceof NearestAttackableTargetGoal)
+                .map(goal -> (NearestAttackableTargetGoal<?>) goal)
+                .filter(goal -> type.isAssignableFrom(((INearestAttackableTargetGoalMixin<?>) goal).getTargetType()))
+                .findFirst()
+                .orElse(null);
     }
 
     public UUID getMobUUID() {
@@ -65,7 +94,45 @@ public abstract class Controller<T extends MobEntity> {
     }
 
     public boolean tick() {
+        Optional<T> optional = getMob();
+        ServerPlayerEntity player = (ServerPlayerEntity) getPlayer();
+        if (optional.isPresent() && player != null) {
+            T mob = optional.get();
+            if (isNotLoaded(mob, player)) {
+                handleNotLoaded(mob, player);
+                return false;
+            } else if (shouldWarnNotLoaded(mob, player)) {
+                warnNotLoaded(mob, player);
+            }
+        }
         return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    protected boolean isNotLoaded(T mob, ServerPlayerEntity player) {
+        if (!level.hasChunkAt(mob.blockPosition())) {
+            return true;
+        } else if (noDistanceRestrictions()) {
+            return false;
+        }
+        double removeDistance = getRemoveDistance(mob, player);
+        return mob.distanceToSqr(player) >= removeDistance * removeDistance;
+    }
+
+    protected boolean shouldWarnNotLoaded(T mob, ServerPlayerEntity player) {
+        if (noDistanceRestrictions()) {
+            return false;
+        }
+        double warnDistance = getWarnDistance(mob, player);
+        return mob.distanceToSqr(player) >= warnDistance * warnDistance;
+    }
+
+    protected int getRemoveDistance(T mob, ServerPlayerEntity player) {
+        return REMOVE_DISTANCE;
+    }
+
+    protected int getWarnDistance(T mob, ServerPlayerEntity player) {
+        return WARN_DISTANCE;
     }
 
     public CompoundNBT save() {
@@ -105,7 +172,7 @@ public abstract class Controller<T extends MobEntity> {
     }
 
     public int getPriority() {
-        return 0;
+        return 1000;
     }
 
     public float[] getColor() {
@@ -135,4 +202,20 @@ public abstract class Controller<T extends MobEntity> {
     protected void handleDeath(T mob, ServerPlayerEntity player) {}
 
     protected void handleDepleted(ServerPlayerEntity player) {}
+
+    protected void handleNotLoaded(T mob, ServerPlayerEntity player) {}
+
+    protected void warnNotLoaded(T mob, ServerPlayerEntity player) {}
+
+    protected boolean noDistanceRestrictions() {
+        return true;
+    }
+
+    public boolean shouldDisableBrain() {
+        return true;
+    }
+
+    public boolean shouldDisableTargetTasksAdditionally() {
+        return false;
+    }
 }

@@ -15,6 +15,7 @@ import lych.soullery.entity.iface.IHasOwner;
 import lych.soullery.entity.monster.boss.esv.SoulControllerEntity;
 import lych.soullery.entity.passive.IllusoryHorseEntity;
 import lych.soullery.util.EntityUtils;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -346,7 +347,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
         if (hasProperVehicle()) {
             return true;
         }
-        VoidDefenderEntity nearbyDefender = level.getNearestEntity(VoidDefenderEntity.class, EntityUtils.ALL, this, getX(), getY(), getZ(), getBoundingBox().inflate(VoidDefenderEntity.PROTECTIVE_RANGE));
+        VoidDefenderEntity nearbyDefender = level.getNearestEntity(VoidDefenderEntity.class, EntityUtils.ALL.get(), this, getX(), getY(), getZ(), getBoundingBox().inflate(VoidDefenderEntity.PROTECTIVE_RANGE));
         if (nearbyDefender != null) {
             return distanceToSqr(nearbyDefender) <= VoidDefenderEntity.PROTECTIVE_RANGE * VoidDefenderEntity.PROTECTIVE_RANGE;
         }
@@ -354,7 +355,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
     }
 
     public boolean isMagicallyProtected() {
-        VoidAlchemistEntity nearbyAlchemist = level.getNearestEntity(VoidAlchemistEntity.class, EntityUtils.ALL, this, getX(), getY(), getZ(), getBoundingBox().inflate(VoidAlchemistEntity.PROTECTIVE_RANGE));
+        VoidAlchemistEntity nearbyAlchemist = level.getNearestEntity(VoidAlchemistEntity.class, EntityUtils.ALL.get(), this, getX(), getY(), getZ(), getBoundingBox().inflate(VoidAlchemistEntity.PROTECTIVE_RANGE));
         if (nearbyAlchemist != null) {
             return distanceToSqr(nearbyAlchemist) <= VoidDefenderEntity.PROTECTIVE_RANGE * VoidDefenderEntity.PROTECTIVE_RANGE;
         }
@@ -533,6 +534,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
         if (getVehicle() instanceof IEtherealable) {
             ((IEtherealable) getVehicle()).setSneakTarget(sneakTarget);
         }
+        playSound(ModSoundEvents.ETHEMOVE.get(), 0.5f, 1);
         return true;
     }
 

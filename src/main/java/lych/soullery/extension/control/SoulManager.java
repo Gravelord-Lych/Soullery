@@ -51,6 +51,10 @@ public class SoulManager extends WorldSavedData {
             Map.Entry<UUID, Pair<UUID, PriorityQueue<Controller<?>>>> entry = itr.next();
             MobEntity mob = getMob(entry);
             PriorityQueue<Controller<?>> controllers = getControllers(entry);
+            if (controllers.isEmpty()) {
+                itr.remove();
+                return;
+            }
             Controller<?> controller = controllers.element();
             PlayerEntity playerController = Utils.applyIfNonnull(mob, this::getPlayerController);
             boolean dead = EntityUtils.isDead(mob);
@@ -71,8 +75,11 @@ public class SoulManager extends WorldSavedData {
                 setDirty();
             }
             if (!controller.tick()) {
-                itr.remove();
+                controllers.remove();
                 stopControlling(mob, controller, true, EntityUtils.isAlive(mob));
+                if (!controllers.isEmpty()) {
+                    startControlling(mob, controllers.element());
+                }
                 setDirty();
                 continue;
             }
@@ -85,8 +92,8 @@ public class SoulManager extends WorldSavedData {
         }
         times.tick();
         level.players().stream().filter(player -> MindOperatorSynchronizer.getOperatingMob(player) != null).forEach(player -> {
-            if (!controllers.values().stream().filter(pair -> Objects.equals(player.getUUID(), pair.getFirst())).findFirst().map(Pair::getSecond).map(PriorityQueue::peek).filter(controller -> controller instanceof MindOperator).isPresent()) {
-                Soullery.LOGGER.error(MARKER, "Found invalid controller player: {}", player.getDisplayName().getString());
+            if (controllers.values().stream().filter(pair -> Objects.equals(player.getUUID(), pair.getFirst())).map(Pair::getSecond).map(PriorityQueue::peek).noneMatch(controller -> controller instanceof MindOperator)) {
+                Soullery.LOGGER.error(MARKER, "Found invalid controller player: {}, resetting...", player.getDisplayName().getString());
                 MindOperator.reset(player);
             }
         });
@@ -124,7 +131,7 @@ public class SoulManager extends WorldSavedData {
         if (type == null) {
             return null;
         }
-//      A mob can only be controlled by one player.
+//      A mob can only be controlled by one player and one controller for each type.
         if (controllers.containsKey(mob.getUUID()) && controllers.get(mob.getUUID()).getSecond().stream().anyMatch(c -> c.getType() == type)) {
             return null;
         }
@@ -192,17 +199,28 @@ public class SoulManager extends WorldSavedData {
         }
     }
 
-    public void remove(MobEntity mob, ControllerType<?> type) {
-        removeIf(mob, c -> c.getType() == type, true);
+    public Controller<?> remove(MobEntity mob, ControllerType<?> type) {
+        return removeIf(mob, c -> c.getType() == type, true);
     }
 
-    public void removeIf(MobEntity mob, Predicate<? super Controller<?>> removePredicate) {
-        removeIf(mob, removePredicate, false);
+    @SuppressWarnings("unchecked")
+    public <T extends Controller<?>> T remove(MobEntity mob, Class<T> cls) {
+        return (T) removeIf(mob, cls::isInstance, true);
     }
 
-    private void removeIf(MobEntity mob, Predicate<? super Controller<?>> removePredicate, boolean checkDuplication) {
+    @SuppressWarnings("unchecked")
+    public <T extends Controller<?>> T remove(MobEntity mob, T controller) {
+        return (T) removeIf(mob, c -> c == controller, true);
+    }
+
+    public Controller<?> removeIf(MobEntity mob, Predicate<? super Controller<?>> removePredicate) {
+        return removeIf(mob, removePredicate, false);
+    }
+
+    @Nullable
+    private Controller<?> removeIf(MobEntity mob, Predicate<? super Controller<?>> removePredicate, boolean checkDuplication) {
         if (controllers.get(mob.getUUID()) == null) {
-            return;
+            return null;
         }
 
         PriorityQueue<Controller<?>> queue = controllers.get(mob.getUUID()).getSecond();
@@ -242,6 +260,7 @@ public class SoulManager extends WorldSavedData {
                 startControlling(mob, queue.element());
             }
         }
+        return removedController;
     }
 
     private void postRemoval(MobEntity mob, Controller<?> controller, boolean active) {
@@ -250,7 +269,14 @@ public class SoulManager extends WorldSavedData {
     }
 
     void startControlling(MobEntity mob, Controller<?> controller) {
-        ((IBrainMixin<?>) mob.getBrain()).setDisabledIfValid(true);
+        if (((IBrainMixin<?>) mob.getBrain()).isValidBrain()) {
+            if (controller.shouldDisableBrain()) {
+                ((IBrainMixin<?>) mob.getBrain()).setDisabledIfValid(true);
+            }
+            if (controller.shouldDisableTargetTasksAdditionally()) {
+                ((IBrainMixin<?>) mob.getBrain()).disableTargetTasksRaw(level, mob, level.getGameTime());
+            }
+        }
         controller.startControlling(mob, ((IGoalSelectorMixin) mob.goalSelector).getAlt(), (((IGoalSelectorMixin) mob.targetSelector)).getAlt());
         if (!controller.overrideBehaviorGoals()) {
             ((IGoalSelectorMixin) mob.goalSelector).transferGoals();
@@ -262,7 +288,14 @@ public class SoulManager extends WorldSavedData {
 
     void stopControlling(MobEntity mob, Controller<?> controller, boolean stoppedActiveController, boolean mobAlive) {
         if (stoppedActiveController && mobAlive) {
-            ((IBrainMixin<?>) mob.getBrain()).setDisabledIfValid(false);
+            if (((IBrainMixin<?>) mob.getBrain()).isValidBrain()) {
+                if (controller.shouldDisableBrain()) {
+                    ((IBrainMixin<?>) mob.getBrain()).setDisabledIfValid(false);
+                }
+                if (controller.shouldDisableTargetTasksAdditionally()) {
+                    ((IBrainMixin<?>) mob.getBrain()).restartTargetTasks();
+                }
+            }
             ((IGoalSelectorMixin) mob.goalSelector).removeAllAltGoals();
             ((IGoalSelectorMixin) mob.targetSelector).removeAllAltGoals();
         }

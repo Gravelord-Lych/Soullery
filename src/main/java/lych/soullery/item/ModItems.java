@@ -34,15 +34,17 @@ import static lych.soullery.util.ModConstants.VOIDWALKER_SPAWN_EGG_BACKGROUND_CO
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
     public static final String SPAWN_EGG_SUFFIX = "_spawn_egg";
-    public static final Item ENTITY_CARRIER = new EntityCarrierItem(common(), 1);
-    public static final Item ENTITY_CARRIER_II = new EntityCarrierItem(common(), 8);
+    public static final Item CHAOS_WAND = new ChaosWandItem(common().stacksTo(1));
+    public static final Item ENTITY_CARRIER = new EntityCarrierItem(common().stacksTo(1), 1);
+    public static final Item ENTITY_CARRIER_II = new EntityCarrierItem(common().stacksTo(1).fireResistant(), 8);
     public static final Item EXTRA_ABILITY_CARRIER = new ExtraAbilityCarrierItem(common().stacksTo(1));
     public static final Item EXTRA_ABILITY_WAND = new ExtraAbilityWandItem(common().stacksTo(1), 2);
     public static final Item HALF_USED_LINGERING_POTION = new HalfUsedLingeringPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item MIND_OPERATOR = new MindOperatorItem(common().stacksTo(1), 1);
-    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().stacksTo(1), 2);
+    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.EPIC), 3);
     public static final Item REFINED_SOUL_METAL_AXE = new AxeItem(Tool.REFINED_SOUL_METAL, 5, -3, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_BOOTS = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.FEET, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_CHESTPLATE = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.CHEST, common().fireResistant());
@@ -68,6 +70,7 @@ public final class ModItems {
     public static final Item SOUL_METAL_PARTICLE = new Item(common());
     public static final Item SOUL_PIECE = new SoulPieceItem(common().stacksTo(16));
     public static final Item SOUL_POWDER = new SoulPowderItem(common());
+    public static final Item SOUL_PURIFIER = new SoulPurifierItem(common());
 
     public static final BlockItem CHISELED_SOUL_STONE_BRICKS = new BlockItem(ModBlocks.CHISELED_SOUL_STONE_BRICKS, common());
     public static final BlockItem CRACKED_DECAYED_STONE_BRICK_SLAB = new BlockItem(ModBlocks.CRACKED_DECAYED_STONE_BRICK_SLAB, common());
@@ -171,6 +174,7 @@ public final class ModItems {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
+        registry.register(make(CHAOS_WAND, ModItemNames.CHAOS_WAND));
         registry.register(make(ENTITY_CARRIER, ModItemNames.ENTITY_CARRIER));
         registry.register(make(ENTITY_CARRIER_II, ModItemNames.ENTITY_CARRIER_II));
         registry.register(make(EXTRA_ABILITY_CARRIER, ModItemNames.EXTRA_ABILITY_CARRIER));
@@ -180,6 +184,7 @@ public final class ModItems {
         registry.register(make(HALF_USED_SPLASH_POTION, ModItemNames.HALF_USED_SPLASH_POTION));
         registry.register(make(MIND_OPERATOR, ModItemNames.MIND_OPERATOR));
         registry.register(make(MIND_OPERATOR_II, ModItemNames.MIND_OPERATOR_II));
+        registry.register(make(MIND_OPERATOR_III, ModItemNames.MIND_OPERATOR_III));
         registry.register(make(REFINED_SOUL_METAL_AXE, ModItemNames.REFINED_SOUL_METAL_AXE));
         registry.register(make(REFINED_SOUL_METAL_BOOTS, ModItemNames.REFINED_SOUL_METAL_BOOTS));
         registry.register(make(REFINED_SOUL_METAL_CHESTPLATE, ModItemNames.REFINED_SOUL_METAL_CHESTPLATE));
@@ -205,6 +210,7 @@ public final class ModItems {
         registry.register(make(SOUL_METAL_PARTICLE, ModItemNames.SOUL_METAL_PARTICLE));
         registry.register(make(SOUL_PIECE, ModItemNames.SOUL_PIECE));
         registry.register(make(SOUL_POWDER, ModItemNames.SOUL_POWDER));
+        registry.register(make(SOUL_PURIFIER, ModItemNames.SOUL_PURIFIER));
         registerBlockItems(registry);
         registerSpawnEggs(registry);
     }
@@ -286,7 +292,7 @@ public final class ModItems {
         registry.register(make(spawnEgg, entityName + SPAWN_EGG_SUFFIX));
     }
 
-    static Rarity next(Rarity rarity) {
+    public static Rarity next(Rarity rarity) {
         switch (rarity) {
             case COMMON:
                 return Rarity.UNCOMMON;

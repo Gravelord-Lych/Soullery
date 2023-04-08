@@ -40,6 +40,7 @@ public class ItemModelDataGen extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        simple(registryNameToString(CHAOS_WAND), HANDHELD, prefix(CHAOS_WAND));
         simple(registryNameToString(ENTITY_CARRIER), HANDHELD, prefix(ENTITY_CARRIER));
         simple(registryNameToString(ENTITY_CARRIER_II), HANDHELD, prefix(ENTITY_CARRIER_II));
         simple(registryNameToString(EXTRA_ABILITY_CARRIER), GENERATED, prefix(EXTRA_ABILITY_CARRIER));
@@ -49,6 +50,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         halfUsedPotion(registryNameToString(HALF_USED_SPLASH_POTION), SPLASH_POTION);
         simple(registryNameToString(MIND_OPERATOR), HANDHELD, prefix(MIND_OPERATOR));
         simple(registryNameToString(MIND_OPERATOR_II), HANDHELD, prefix(MIND_OPERATOR_II));
+        simple(registryNameToString(MIND_OPERATOR_III), HANDHELD, prefix(MIND_OPERATOR_III));
         simple(registryNameToString(REFINED_SOUL_METAL_AXE), HANDHELD, prefix(REFINED_SOUL_METAL_AXE));
         simple(registryNameToString(REFINED_SOUL_METAL_BOOTS), GENERATED, prefix(REFINED_SOUL_METAL_BOOTS));
         simple(registryNameToString(REFINED_SOUL_METAL_CHESTPLATE), GENERATED, prefix(REFINED_SOUL_METAL_CHESTPLATE));
@@ -80,6 +82,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(SOUL_METAL_PARTICLE), GENERATED, prefix(SOUL_METAL_PARTICLE));
         simple(registryNameToString(SOUL_PIECE), GENERATED, prefix(SOUL_PIECE));
         simple(registryNameToString(SOUL_POWDER), GENERATED, prefix(SOUL_POWDER));
+        simple(registryNameToString(SOUL_PURIFIER), HANDHELD, prefix(SOUL_PURIFIER));
         registerBlockItemModels();
         registerSpawnEggModels();
     }

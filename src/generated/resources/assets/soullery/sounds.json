@@ -14,6 +14,23 @@
       "random/explode4"
     ]
   },
+  "random.ethemove": {
+    "subtitle": "subtitles.soullery:random.ethemove",
+    "sounds": [
+      "soullery:random/ethemove1",
+      "soullery:random/ethemove2",
+      "soullery:random/ethemove3",
+      "soullery:random/ethemove4"
+    ]
+  },
+  "random.mind_operate": {
+    "subtitle": "subtitles.soullery:random.mind_operate",
+    "sounds": [
+      "soullery:random/mind_operate1",
+      "soullery:random/mind_operate2",
+      "soullery:random/mind_operate3"
+    ]
+  },
   "mob.meta8.laser": {
     "subtitle": "subtitles.soullery:mob.meta8.laser",
     "sounds": [

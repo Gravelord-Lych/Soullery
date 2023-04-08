@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 public enum FlyerMovementHandler implements MovementHandler<MobEntity> {
     INSTANCE;
 
+    static final float DESCENDING_SPEED_MULTIPLIER = 2f;
+
     @Override
     public void handleMovement(MobEntity operatingMob, ServerPlayerEntity player, MovementData movement, @Nullable JumpController jumpControl, CompoundNBT data) {
         operatingMob.setNoGravity(true);
@@ -20,7 +22,7 @@ public enum FlyerMovementHandler implements MovementHandler<MobEntity> {
         operatingMob.setSpeed(forwardSpeed);
         operatingMob.setXxa(leftSpeed);
         if (movement.jumping != movement.shiftKeyDown) {
-            operatingMob.setYya(movement.jumping ? speed : -speed);
+            operatingMob.setYya(movement.jumping ? speed : -speed * DESCENDING_SPEED_MULTIPLIER);
         } else {
             operatingMob.setYya(0);
         }
