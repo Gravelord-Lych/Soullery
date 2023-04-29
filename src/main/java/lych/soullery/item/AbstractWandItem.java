@@ -1,5 +1,6 @@
 package lych.soullery.item;
 
+import lych.soullery.network.WandSoundNetwork;
 import lych.soullery.util.SoulEnergies;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -8,11 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -61,7 +64,7 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
                 if (result != null && result.consumesAction()) {
                     SoulEnergies.cost(player, energyCost);
                     if (getSound() != null) {
-                        player.playSound(getSound(), 1, 1);
+                        WandSoundNetwork.INSTANCE.send(PacketDistributor.NEAR.with(() -> PacketDistributor.TargetPoint.p(player.getX(), player.getY(), player.getZ(), 30, player.level.dimension()).get()), getId(this));
                     }
                 }
             }
@@ -84,8 +87,14 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
     protected abstract ActionResultType performWandUse(ServerWorld level, ServerPlayerEntity player, Hand hand);
 
     @Nullable
-    protected SoundEvent getSound() {
-        return null;
+    public abstract SoundEvent getSound();
+
+    public float getVolume(Random random) {
+        return 1;
+    }
+
+    public float getPitch(Random random) {
+        return 1;
     }
 
     @Override

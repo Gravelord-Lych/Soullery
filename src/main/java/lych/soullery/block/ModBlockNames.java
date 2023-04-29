@@ -1,8 +1,11 @@
 package lych.soullery.block;
 
 public final class ModBlockNames {
+    public static final String BROKEN_REFINED_SOUL_METAL_BARS = "broken_refined_soul_metal_bars";
+    public static final String CHIPPED_REFINED_SOUL_METAL_BARS = "chipped_refined_soul_metal_bars";
     public static final String CHIPPED_SOUL_METAL_BARS = "chipped_soul_metal_bars";
     public static final String CRIMSON_HYPHAL_SOIL = "crimson_hyphal_soil";
+    public static final String DAMAGED_REFINED_SOUL_METAL_BARS = "damaged_refined_soul_metal_bars";
     public static final String DAMAGED_SOUL_METAL_BARS = "damaged_soul_metal_bars";
     public static final String DEPTH_SEGEN = "depth_segen";
     public static final String DEPTH_SEGEN_II = "depth_segen_l2";
@@ -16,6 +19,7 @@ public final class ModBlockNames {
     public static final String POISONOUS_FIRE = "poisonous_fire";
     public static final String POTTED_SOULIFIED_BUSH = "potted_soulified_bush";
     public static final String PURE_SOUL_FIRE = "pure_soul_fire";
+    public static final String REFINED_SOUL_METAL_BARS = "refined_soul_metal_bars";
     public static final String REFINED_SOUL_METAL_BLOCK = "refined_soul_metal_block";
     public static final String REFINED_SOUL_SAND = "refined_soul_sand";
     public static final String REFINED_SOUL_SOIL = "refined_soul_soil";

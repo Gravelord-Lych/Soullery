@@ -3,20 +3,25 @@ package lych.soullery.entity.functional;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.monster.SoulSkeletonEntity;
+import lych.soullery.item.ModItems;
 import lych.soullery.util.PositionCalculators;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +38,7 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
     private int absorbingTicks;
     private int explosionTicks = -1;
     private int explosionCooldown;
+    private int destroyTicks = -1;
 
     public FortifiedSoulCrystalEntity(EntityType<? extends FortifiedSoulCrystalEntity> type, World world) {
         super(type, world);
@@ -52,6 +58,16 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
     @Override
     public void tick() {
         super.tick();
+        if (!level.isClientSide() && destroyTicks >= 0) {
+            destroyTicks++;
+            if (destroyTicks >= 100) {
+                remove();
+                level.explode(null, getX(), getY(), getZ(), 8, true, Explosion.Mode.DESTROY);
+            } else {
+                ((ServerWorld) level).sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 0);
+            }
+            return;
+        }
         if (!level.isClientSide()) {
             SoulSkeletonEntity skeleton = getAbsorbingSkeleton();
             if (skeleton != null) {
@@ -83,7 +99,7 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
                 setBeamTarget(null);
                 explosionCooldown--;
             } else if (explosionTicks < 0 && (tickCount & 7) == 0) {
-                level.players().stream().filter(player -> player.canSee(this)).filter(EntityPredicates.ATTACK_ALLOWED).min(Comparator.comparingDouble(this::distanceToSqr)).ifPresent(player -> {
+                level.players().stream().filter(EntityPredicates.ATTACK_ALLOWED).min(Comparator.comparingDouble(this::distanceToSqr)).ifPresent(player -> {
                     BlockPos pos = player.blockPosition();
                     Block block = level.getBlockState(pos).getBlock();
                     for (int i = 0; i < 5; i++) {
@@ -101,6 +117,19 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
                 });
             }
         }
+    }
+
+    @Override
+    protected void destroy(DamageSource source) {
+        destroyTicks = 0;
+    }
+
+    @Override
+    protected boolean canBeDestroyed(DamageSource source) {
+        if (!"player".equals(source.getMsgId()) || source.getEntity() != source.getDirectEntity()) {
+            return false;
+        }
+        return source.getEntity() instanceof PlayerEntity && ((PlayerEntity) source.getEntity()).getMainHandItem().getItem() == ModItems.REFINED_SOUL_METAL_PICKAXE;
     }
 
     private void findSkeleton() {
@@ -148,6 +177,7 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putInt("ExplosionTicks", explosionTicks);
         compoundNBT.putInt("ExplosionCooldown", explosionCooldown);
+        compoundNBT.putInt("DestroyTicks", destroyTicks);
     }
 
     @Override
@@ -157,5 +187,8 @@ public class FortifiedSoulCrystalEntity extends SoulCrystalEntity {
             explosionTicks = compoundNBT.getInt("ExplosionTicks");
         }
         explosionCooldown = compoundNBT.getInt("ExplosionCooldown");
+        if (compoundNBT.contains("DestroyTicks", Constants.NBT.TAG_INT)) {
+            destroyTicks = compoundNBT.getInt("DestroyTicks");
+        }
     }
 }

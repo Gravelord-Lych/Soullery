@@ -74,6 +74,8 @@ public final class ModItems {
     public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().stacksTo(1), 1);
     public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
 
+    public static final BlockItem BROKEN_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.BROKEN_REFINED_SOUL_METAL_BARS, common());
+    public static final BlockItem CHIPPED_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.CHIPPED_REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem CHIPPED_SOUL_METAL_BARS = new BlockItem(ModBlocks.CHIPPED_SOUL_METAL_BARS, common());
     public static final BlockItem CHISELED_SOUL_STONE_BRICKS = new BlockItem(ModBlocks.CHISELED_SOUL_STONE_BRICKS, common());
     public static final BlockItem CRACKED_DECAYED_STONE_BRICK_SLAB = new BlockItem(ModBlocks.CRACKED_DECAYED_STONE_BRICK_SLAB, common());
@@ -85,6 +87,7 @@ public final class ModItems {
     public static final BlockItem CRACKED_SOUL_STONE_BRICK_WALL = new BlockItem(ModBlocks.CRACKED_SOUL_STONE_BRICK_WALL, common());
     public static final BlockItem CRACKED_SOUL_STONE_BRICKS = new BlockItem(ModBlocks.CRACKED_SOUL_STONE_BRICKS, common());
     public static final BlockItem CRIMSON_HYPHAL_SOIL = new BlockItem(ModBlocks.CRIMSON_HYPHAL_SOIL, common());
+    public static final BlockItem DAMAGED_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.DAMAGED_REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem DAMAGED_SOUL_METAL_BARS = new BlockItem(ModBlocks.DAMAGED_SOUL_METAL_BARS, common());
     public static final BlockItem DECAYED_STONE = new BlockItem(ModBlocks.DECAYED_STONE, common());
     public static final BlockItem DECAYED_STONE_BRICK_SLAB = new BlockItem(ModBlocks.DECAYED_STONE_BRICK_SLAB, common());
@@ -101,6 +104,7 @@ public final class ModItems {
     public static final SEGeneratorBlockItem NETHER_SEGEN = new SEGeneratorBlockItem(ModBlocks.NETHER_SEGEN, getCapacity(1), se());
     public static final SEGeneratorBlockItem NETHER_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.NETHER_SEGEN_II, getCapacity(2), se());
     public static final BlockItem PARCHED_SOIL = new BlockItem(ModBlocks.PARCHED_SOIL, common());
+    public static final BlockItem REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem REFINED_SOUL_METAL_BLOCK = new BlockItem(ModBlocks.REFINED_SOUL_METAL_BLOCK, common().fireResistant());
     public static final BlockItem REFINED_SOUL_SAND = new BlockItem(ModBlocks.REFINED_SOUL_SAND, common());
     public static final BlockItem REFINED_SOUL_SOIL = new BlockItem(ModBlocks.REFINED_SOUL_SOIL, common());
@@ -224,6 +228,8 @@ public final class ModItems {
     }
 
     private static void registerBlockItems(IForgeRegistry<Item> registry) {
+        registry.register(make(BROKEN_REFINED_SOUL_METAL_BARS, ModBlockNames.BROKEN_REFINED_SOUL_METAL_BARS));
+        registry.register(make(CHIPPED_REFINED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_REFINED_SOUL_METAL_BARS));
         registry.register(make(CHIPPED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_SOUL_METAL_BARS));
         registry.register(make(CHISELED_SOUL_STONE_BRICKS, ModBlockNames.CHISELED_SOUL_STONE_BRICKS));
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_SLAB, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_SLAB));
@@ -235,6 +241,7 @@ public final class ModItems {
         registry.register(make(CRACKED_SOUL_STONE_BRICK_WALL, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL));
         registry.register(make(CRACKED_SOUL_STONE_BRICKS, ModBlockNames.CRACKED_SOUL_STONE_BRICKS));
         registry.register(make(CRIMSON_HYPHAL_SOIL, ModBlockNames.CRIMSON_HYPHAL_SOIL));
+        registry.register(make(DAMAGED_REFINED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_REFINED_SOUL_METAL_BARS));
         registry.register(make(DAMAGED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_SOUL_METAL_BARS));
         registry.register(make(DECAYED_STONE, ModBlockNames.DECAYED_STONE));
         registry.register(make(DECAYED_STONE_BRICK_SLAB, ModBlockNames.DECAYED_STONE_BRICK_SLAB));
@@ -251,6 +258,7 @@ public final class ModItems {
         registry.register(make(NETHER_SEGEN, ModBlockNames.NETHER_SEGEN));
         registry.register(make(NETHER_SEGEN_II, ModBlockNames.NETHER_SEGEN_II));
         registry.register(make(PARCHED_SOIL, ModBlockNames.PARCHED_SOIL));
+        registry.register(make(REFINED_SOUL_METAL_BARS, ModBlockNames.REFINED_SOUL_METAL_BARS));
         registry.register(make(REFINED_SOUL_METAL_BLOCK, ModBlockNames.REFINED_SOUL_METAL_BLOCK));
         registry.register(make(REFINED_SOUL_SAND, ModBlockNames.REFINED_SOUL_SAND));
         registry.register(make(REFINED_SOUL_SOIL, ModBlockNames.REFINED_SOUL_SOIL));

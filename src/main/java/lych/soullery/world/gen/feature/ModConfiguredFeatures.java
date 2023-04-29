@@ -35,6 +35,7 @@ public final class ModConfiguredFeatures {
     public static final BlockClusterFeatureConfig SOULIFIED_BUSH_CONFIG = new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(ModBlocks.SOULIFIED_BUSH.defaultBlockState()), SimpleBlockPlacer.INSTANCE).tries(4).build();
     public static final HugeFungusConfig WARPED_PLAINS_WARPED_FUNGI_NOT_PLANTED_CONFIG = new HugeFungusConfig(ModBlocks.WARPED_HYPHAL_SOIL.defaultBlockState(), Blocks.WARPED_STEM.defaultBlockState(), Blocks.WARPED_WART_BLOCK.defaultBlockState(), Blocks.SHROOMLIGHT.defaultBlockState(), false);
 
+    public static final ConfiguredFeature<?, ?> CENTRAL_SOUL_CRYSTAL = ModFeatures.CENTRAL_CRYSTAL.configured(NoFeatureConfig.INSTANCE);
     public static final ConfiguredFeature<?, ?> HIGH_SOUL_SAND_SPIKE = ModFeatures.SL_SPIKE.configured(HIGH_SOUL_SAND_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1);
     public static final ConfiguredFeature<?, ?> HIGH_SOUL_SOIL_SPIKE = ModFeatures.SL_SPIKE.configured(HIGH_SOUL_SOIL_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1);
     public static final ConfiguredFeature<?, ?> PARCHED_SOIL_SPIKE = ModFeatures.SL_SPIKE.configured(PARCHED_SOIL_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1).chance(30);
@@ -61,6 +62,7 @@ public final class ModConfiguredFeatures {
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
+        register("central_soul_crystal", CENTRAL_SOUL_CRYSTAL);
         register("high_soul_sand_spike", HIGH_SOUL_SAND_SPIKE);
         register("high_soul_soil_spike", HIGH_SOUL_SOIL_SPIKE);
         register("parched_soil_spike", PARCHED_SOIL_SPIKE);

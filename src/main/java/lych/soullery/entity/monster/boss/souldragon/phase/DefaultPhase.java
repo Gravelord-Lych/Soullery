@@ -42,13 +42,13 @@ public class DefaultPhase extends AbstractPhase {
         if (currentPath != null && currentPath.isDone()) {
             BlockPos pos = level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, dragon.getFightCenter());
             int crystalsAlive = dragon.getFight() == null ? 0 : dragon.getFight().getCrystalsAlive();
-            if (dragon.getRandom().nextInt(crystalsAlive + 3) == 0) {
+            if (dragon.getHealthStatus() == SoulDragonEntity.HealthStatus.HIGH && dragon.getRandom().nextInt(crystalsAlive + 3) == 0) {
                 dragon.setPhase(PhaseType.LANDING_APPROACH);
                 return;
             }
 
             double distanceSqr = 64 * 64;
-            PlayerEntity player = this.dragon.level.getNearestPlayer(NEW_TARGET_TARGETING, pos.getX(), pos.getY(), pos.getZ());
+            PlayerEntity player = dragon.level.getNearestPlayer(NEW_TARGET_TARGETING, pos.getX(), pos.getY(), pos.getZ());
             if (player != null) {
                 distanceSqr = pos.distSqr(player.position(), true) / 512;
             }

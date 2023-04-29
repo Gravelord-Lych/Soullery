@@ -5,10 +5,12 @@ import lych.soullery.extension.laser.LaserAttackResult;
 import lych.soullery.extension.laser.LaserData;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.Lasers;
+import lych.soullery.util.ModSoundEvents;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
@@ -44,6 +46,12 @@ public class SoulPurifierItem extends TargetedWandItem<SoulPurifierItem> {
             return null;
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSound() {
+        return ModSoundEvents.SOUL_PURIFY.get();
     }
 
     @Override

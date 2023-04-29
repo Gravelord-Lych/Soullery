@@ -1,10 +1,11 @@
 package lych.soullery.entity.monster.boss.souldragon.phase;
 
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
+import lych.soullery.util.PositionCalculators;
+import lych.soullery.util.WorldUtils;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.gen.Heightmap.Type;
 import org.jetbrains.annotations.Nullable;
 
 public class DyingPhase extends AbstractPhase {
@@ -29,7 +30,7 @@ public class DyingPhase extends AbstractPhase {
     public void doServerTick() {
         time++;
         if (targetLocation == null) {
-            BlockPos pos = level.getHeightmapPos(Type.MOTION_BLOCKING, dragon.getFightCenter());
+            BlockPos pos = WorldUtils.calculateSummonPosition3(dragon.getFightCenter().below(30), level, PositionCalculators::ud);
             targetLocation = Vector3d.atBottomCenterOf(pos).add(0, 4, 0);
         }
         double distanceSqr = targetLocation.distanceToSqr(dragon.getX(), dragon.getY(), dragon.getZ());

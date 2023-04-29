@@ -74,6 +74,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         specialSave(ModRecipeSerializers.SOUL_CONTAINER.get(), prefix(ModItemNames.SOUL_CONTAINER + "_creation"), consumer);
         shaped(SOUL_REINFORCEMENT_TABLE).pattern("---").pattern("#W#").pattern("###").define('-', SOUL_METAL_INGOT).define('#', SOUL_STONE).define('W', CRAFTING_TABLE).unlockedBy(stHas(ModBlockNames.SOUL_REINFORCEMENT_TABLE), has(SOUL_REINFORCEMENT_TABLE)).save(consumer);
         shaped(SOUL_METAL_BARS, 16).pattern("###").pattern("###").define('#', SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
+        shaped(REFINED_SOUL_METAL_BARS, 16).pattern("###").pattern("###").define('#', REFINED_SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_INGOT), has(REFINED_SOUL_METAL_INGOT)).save(consumer);
         shaped(SEGEN).pattern("---").pattern("-#-").pattern("---").define('-', SOUL_METAL_INGOT).define('#', SOUL_STONE).unlockedBy(stHasTwo(ModItemNames.SOUL_METAL_INGOT, ModBlockNames.SOUL_STONE), hasAll(SOUL_METAL_INGOT, SOUL_STONE)).save(consumer);
         shaped(EXTRA_ABILITY_CARRIER).pattern("###").pattern("# #").pattern("###").define('#', SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
         shaped(MIND_OPERATOR).pattern(" IS").pattern(" II").pattern("I  ").define('I', GOLD_INGOT).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);

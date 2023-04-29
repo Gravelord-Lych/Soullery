@@ -2,9 +2,12 @@ package lych.soullery.network;
 
 import lych.soullery.Soullery;
 import lych.soullery.client.particle.ModParticles;
+import lych.soullery.entity.functional.FortifiedSoulCrystalEntity;
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -60,8 +63,7 @@ public class SoulDragonNetwork {
                     level.addParticle(message.pure ? ModParticles.SOUL_DRAGON_BREATH_PURE : ModParticles.SOUL_DRAGON_BREATH, pos.getX() + xd * 0.1, pos.getY() + 0.3, pos.getZ() + zd * 0.1, xd, yd, zd);
                 }
                 if (!message.silent) {
-//                  TODO - sound
-                    level.playLocalSound(pos, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundCategory.HOSTILE, 1, random.nextFloat() * 0.1f + 0.9f, false);
+                    level.playLocalSound(pos, ModSoundEvents.SOULBALL_EXPLODE.get(), SoundCategory.HOSTILE, 1, random.nextFloat() * 0.1f + 0.9f, false);
                 }
             }
         },
@@ -80,6 +82,52 @@ public class SoulDragonNetwork {
                     level.addParticle(ModParticles.SOUL_DRAGON_BREATH, rx, ry, rz, -lookVec.x * 0.08 + movement.x, -lookVec.y * 0.3 + movement.y, -lookVec.z * 0.08 + movement.z);
                 }
             }
+        },
+        RECOGNIZE_FORTIFIED_CRYSTAL {
+            @Override
+            public void handle(Supplier<NetworkEvent.Context> ctx, Message message) {
+                Entity entity = Minecraft.getInstance().level.getEntity(message.msg);
+                if (entity instanceof FortifiedSoulCrystalEntity) {
+                    message.getDragon(Minecraft.getInstance().level).nearestCrystal = (FortifiedSoulCrystalEntity) entity;
+                } else {
+                    throw new AssertionError();
+                }
+            }
+        },
+        PLAY_SHOOT_SOUND {
+            @Override
+            public void handle(Supplier<NetworkEvent.Context> ctx, Message message) {
+                if (message.silent) {
+                    return;
+                }
+                ClientWorld level = Minecraft.getInstance().level;
+                Random random = level.random;
+                level.playLocalSound(message.pos, SoundEvents.ENDER_DRAGON_SHOOT, SoundCategory.HOSTILE, 10, (random.nextFloat() - random.nextFloat()) * 0.2f + 1, false);
+            }
+        },
+        DRAGON_DEATH {
+            @Override
+            public void handle(Supplier<NetworkEvent.Context> ctx, Message message) {
+                if (message.silent) {
+                    return;
+                }
+                ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
+                if (info.isInitialized()) {
+                    double dx = (double) message.pos.getX() - info.getPosition().x;
+                    double dy = (double) message.pos.getY() - info.getPosition().y;
+                    double dz = (double) message.pos.getZ() - info.getPosition().z;
+                    double dis = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                    double x = info.getPosition().x;
+                    double y = info.getPosition().y;
+                    double z = info.getPosition().z;
+                    if (dis > 0) {
+                        x += dx / dis * 2;
+                        y += dy / dis * 2;
+                        z += dz / dis * 2;
+                    }
+                    Minecraft.getInstance().level.playLocalSound(x, y, z, ModSoundEvents.SOUL_RABBIT_DEATH.get(), SoundCategory.HOSTILE, 5, 1, false);
+                }
+            }
         };
 
         public abstract void handle(Supplier<NetworkEvent.Context> ctx, Message message);
@@ -91,17 +139,23 @@ public class SoulDragonNetwork {
         public final BlockPos pos;
         public final boolean silent;
         public final boolean pure;
+        public final int msg;
 
         public Message(MessageType type, BlockPos pos, int dragon, boolean silent, boolean pure) {
+            this(type, pos, dragon, silent, pure, -1);
+        }
+
+        public Message(MessageType type, BlockPos pos, int dragon, boolean silent, boolean pure, int msg) {
             this.type = type;
             this.pos = pos;
             this.dragon = dragon;
             this.silent = silent;
             this.pure = pure;
+            this.msg = msg;
         }
 
         public Message(PacketBuffer buffer) {
-            this(buffer.readEnum(MessageType.class), buffer.readBlockPos(), buffer.readVarInt(), buffer.readBoolean(), buffer.readBoolean());
+            this(buffer.readEnum(MessageType.class), buffer.readBlockPos(), buffer.readVarInt(), buffer.readBoolean(), buffer.readBoolean(), buffer.readVarInt());
         }
 
         @SuppressWarnings("UnnecessaryCallToStringValueOf")
@@ -119,6 +173,7 @@ public class SoulDragonNetwork {
             buffer.writeVarInt(dragon);
             buffer.writeBoolean(silent);
             buffer.writeBoolean(pure);
+            buffer.writeVarInt(msg);
         }
 
         public void handle(Supplier<NetworkEvent.Context> ctx) {

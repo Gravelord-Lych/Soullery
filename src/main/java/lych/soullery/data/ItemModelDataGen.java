@@ -165,6 +165,10 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.SOUL_METAL_BARS));
         simple(registryNameToString(CHIPPED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.CHIPPED_SOUL_METAL_BARS));
         simple(registryNameToString(DAMAGED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.DAMAGED_SOUL_METAL_BARS));
+        simple(registryNameToString(REFINED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.REFINED_SOUL_METAL_BARS));
+        simple(registryNameToString(CHIPPED_REFINED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.CHIPPED_REFINED_SOUL_METAL_BARS));
+        simple(registryNameToString(DAMAGED_REFINED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.DAMAGED_REFINED_SOUL_METAL_BARS));
+        simple(registryNameToString(BROKEN_REFINED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.BROKEN_REFINED_SOUL_METAL_BARS));
         blockItem(SOUL_METAL_BLOCK);
         blockItem(SOUL_OBSIDIAN);
         blockItem(SOUL_REINFORCEMENT_TABLE);

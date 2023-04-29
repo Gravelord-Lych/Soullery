@@ -3,6 +3,7 @@ package lych.soullery.entity.functional;
 import com.google.common.base.Preconditions;
 import lych.soullery.entity.iface.IHasOwner;
 import lych.soullery.util.BoundingBoxUtils;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.mixin.IEntityMixin;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -44,11 +46,18 @@ public class SoulBoltEntity extends Entity implements IHasOwner<LivingEntity> {
     }
 
     @Override
+    public SoundCategory getSoundSource() {
+        return SoundCategory.WEATHER;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (firstTick) {
             spawnFire();
             doShockwaveAttack();
+            level.playSound(null, getX(), getY(), getZ(), ModSoundEvents.SOUL_BOLT_THUNDER.get(), SoundCategory.WEATHER, 10000, 0.8F + random.nextFloat() * 0.2F);
+            level.playSound(null, getX(), getY(), getZ(), ModSoundEvents.SOUL_BOLT_IMPACT.get(), SoundCategory.WEATHER, 2, 0.5F + random.nextFloat() * 0.2F);
             firstTick = false;
         }
         life--;

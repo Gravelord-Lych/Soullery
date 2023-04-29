@@ -13,6 +13,7 @@ import static lych.soullery.Soullery.make;
 
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModFeatures {
+    public static final Feature<NoFeatureConfig> CENTRAL_CRYSTAL = new CentralSoulCrystalFeature(NoFeatureConfig.CODEC);
     public static final Feature<PlateauSpikeConfig> PLATEAU_SPIKE = new PlateauSpikeFeature(PlateauSpikeConfig.CODEC);
     public static final Feature<SLSpikeConfig> SL_SPIKE = new SLSpikeFeature(SLSpikeConfig.CODEC);
     public static final Feature<NoFeatureConfig> SL_TWISTING_VINE = new SLTwistingVineFeature(NoFeatureConfig.CODEC);
@@ -21,6 +22,7 @@ public final class ModFeatures {
     @SubscribeEvent
     public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
         IForgeRegistry<Feature<?>> registry = event.getRegistry();
+        registry.register(make(CENTRAL_CRYSTAL, "central_crystal"));
         registry.register(make(PLATEAU_SPIKE, "plateau_spike"));
         registry.register(make(SL_SPIKE, "sl_spike"));
         registry.register(make(SL_TWISTING_VINE, "sl_twisting_vine"));

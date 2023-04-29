@@ -22,8 +22,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SoulMetalBarsBlock extends PaneBlock {
-    public static final int MAX_LINKED_DAMAGE_DIG = 20;
-    public static final int MAX_LINKED_DAMAGE_PROJECTILE = 10;
+    private static final int MAX_LINKED_DAMAGE_DIG = 20;
+    private static final int MAX_LINKED_DAMAGE_PROJECTILE = 10;
     private static final LazyValue<Map<Integer, SoulMetalBarsBlock>> SOUL_METAL_BARS = new LazyValue<>(SoulMetalBarsBlock::init);
     private final int health;
 
@@ -33,7 +33,7 @@ public class SoulMetalBarsBlock extends PaneBlock {
     }
 
     private static Map<Integer, SoulMetalBarsBlock> init() {
-        return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> block instanceof SoulMetalBarsBlock).map(block -> (SoulMetalBarsBlock) block).collect(Collectors.toMap(block -> block.health, Function.identity()));
+        return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> block.getClass() == SoulMetalBarsBlock.class).map(block -> (SoulMetalBarsBlock) block).collect(Collectors.toMap(SoulMetalBarsBlock::getHealth, Function.identity()));
     }
 
     public BlockState getState(IBlockReader level, BlockPos pos) {
@@ -78,9 +78,13 @@ public class SoulMetalBarsBlock extends PaneBlock {
         if (health <= 1) {
             level.destroyBlock(pos, dropResources);
         } else {
-            SoulMetalBarsBlock newBlock = get(health - 1);
-            level.setBlock(pos, newBlock.getState(level, pos), Constants.BlockFlags.DEFAULT);
+            SoulMetalBarsBlock newBlock = block.get(health - 1);
+            adjust(level, pos, newBlock);
         }
+    }
+
+    private static void adjust(IWorld level, BlockPos pos, SoulMetalBarsBlock block) {
+        level.setBlock(pos, block.getState(level, pos), Constants.BlockFlags.DEFAULT);
     }
 
     public static void addParticles(ServerWorld level, Vector3d position, Random random) {
@@ -101,7 +105,15 @@ public class SoulMetalBarsBlock extends PaneBlock {
         return health;
     }
 
-    public static SoulMetalBarsBlock get(int health) {
+    public int getMaxLinkedDamageDig() {
+        return MAX_LINKED_DAMAGE_DIG;
+    }
+
+    public int getMaxLinkedDamageProjectile() {
+        return MAX_LINKED_DAMAGE_PROJECTILE;
+    }
+
+    public SoulMetalBarsBlock get(int health) {
         return SOUL_METAL_BARS.get().get(health);
     }
 }

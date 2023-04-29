@@ -19,12 +19,12 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
     public void addTags() {
         tag(BlockTags.BEACON_BASE_BLOCKS).add(REFINED_SOUL_METAL_BLOCK,
                 SOUL_METAL_BLOCK);
-        tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(CHIPPED_SOUL_METAL_BARS,
+        tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(
+                CHIPPED_SOUL_METAL_BARS,
                 CRACKED_SOUL_STONE_BRICKS,
                 DAMAGED_SOUL_METAL_BARS,
                 DECAYED_STONE,
                 DECAYED_STONE_BRICKS,
-                REFINED_SOUL_METAL_BLOCK,
                 SMOOTH_SOUL_STONE,
                 SOUL_METAL_BARS,
                 SOUL_METAL_BLOCK,
@@ -44,7 +44,13 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
         tag(ModBlockTags.POISONOUS_FIRE_BASE_BLOCKS)
                 .addTag(BlockTags.WARPED_STEMS)
                 .add(WARPED_NYLIUM, WARPED_PLANKS, WARPED_WART_BLOCK, WARPED_HYPHAL_SOIL);
-        tag(ModBlockTags.PURE_SOUL_FIRE_BASED_BLOCKS).add(REFINED_SOUL_SAND, REFINED_SOUL_SOIL);
+        tag(ModBlockTags.PURE_SOUL_FIRE_BASED_BLOCKS).add(BROKEN_REFINED_SOUL_METAL_BARS,
+                CHIPPED_REFINED_SOUL_METAL_BARS,
+                DAMAGED_REFINED_SOUL_METAL_BARS,
+                REFINED_SOUL_SAND,
+                REFINED_SOUL_SOIL,
+                REFINED_SOUL_METAL_BARS,
+                REFINED_SOUL_METAL_BLOCK);
         tag(ModBlockTags.SOUL_RABBIT_SPAWNABLE_BLOCKS).add(CRIMSON_HYPHAL_SOIL,
                 PARCHED_SOIL,
                 REFINED_SOUL_SAND,
@@ -70,6 +76,10 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
                 SOUL_METAL_BARS,
                 CHIPPED_SOUL_METAL_BARS,
                 DAMAGED_SOUL_METAL_BARS,
+                REFINED_SOUL_METAL_BARS,
+                CHIPPED_REFINED_SOUL_METAL_BARS,
+                DAMAGED_REFINED_SOUL_METAL_BARS,
+                BROKEN_REFINED_SOUL_METAL_BARS,
                 SOUL_STONE,
                 BEDROCK);
         tag(BlockTags.ENDERMAN_HOLDABLE).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);

@@ -1,4 +1,13 @@
 {
+  "item.chaos_wand.chaos": {
+    "subtitle": "subtitles.soullery:item.chaos_wand.chaos",
+    "sounds": [
+      "soullery:item/chaos_wand/chaos1",
+      "soullery:item/chaos_wand/chaos2",
+      "soullery:item/chaos_wand/chaos3",
+      "soullery:item/chaos_wand/chaos4"
+    ]
+  },
   "mob.meta8.share_stronger_shield": {
     "subtitle": "subtitles.soullery:mob.meta8.share_stronger_shield",
     "sounds": [
@@ -43,6 +52,106 @@
     "subtitle": "subtitles.soullery:mob.meta8.share_shield",
     "sounds": [
       "soullery:mob/meta8/share_shield"
+    ]
+  },
+  "mob.robot.death": {
+    "subtitle": "subtitles.soullery:mob.robot.death",
+    "sounds": [
+      "mob/irongolem/death"
+    ]
+  },
+  "mob.robot.hurt": {
+    "subtitle": "subtitles.soullery:mob.robot.hurt",
+    "sounds": [
+      "mob/irongolem/hit1",
+      "mob/irongolem/hit2",
+      "mob/irongolem/hit3",
+      "mob/irongolem/hit4"
+    ]
+  },
+  "mob.robot.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "mob/irongolem/walk1",
+      "mob/irongolem/walk2",
+      "mob/irongolem/walk3",
+      "mob/irongolem/walk4"
+    ]
+  },
+  "entity.soul_bolt.impact": {
+    "subtitle": "subtitles.soullery:entity.soul_bolt.impact",
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ]
+  },
+  "entity.soul_bolt.thunder": {
+    "subtitle": "subtitles.soullery:entity.soul_bolt.thunder",
+    "sounds": [
+      "ambient/weather/thunder1",
+      "ambient/weather/thunder2",
+      "ambient/weather/thunder3"
+    ]
+  },
+  "mob.soul_dragon.ambient": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.ambient",
+    "sounds": [
+      "mob/enderdragon/growl1",
+      "mob/enderdragon/growl2",
+      "mob/enderdragon/growl3",
+      "mob/enderdragon/growl4"
+    ]
+  },
+  "mob.soul_dragon.death": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.death",
+    "sounds": [
+      "mob/enderdragon/end"
+    ]
+  },
+  "mob.soul_dragon.flap": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.flap",
+    "sounds": [
+      "mob/enderdragon/wings1",
+      "mob/enderdragon/wings2",
+      "mob/enderdragon/wings3",
+      "mob/enderdragon/wings4",
+      "mob/enderdragon/wings5",
+      "mob/enderdragon/wings6"
+    ]
+  },
+  "mob.soul_dragon.growl": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.growl",
+    "sounds": [
+      "mob/enderdragon/growl1",
+      "mob/enderdragon/growl2",
+      "mob/enderdragon/growl3",
+      "mob/enderdragon/growl4"
+    ]
+  },
+  "mob.soul_dragon.hurt": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.hurt",
+    "sounds": [
+      "mob/enderdragon/hit1",
+      "mob/enderdragon/hit2",
+      "mob/enderdragon/hit3",
+      "mob/enderdragon/hit4"
+    ]
+  },
+  "mob.soul_dragon.shoot": {
+    "subtitle": "subtitles.soullery:mob.soul_dragon.shoot",
+    "sounds": [
+      "mob/ghast/fireball4"
+    ]
+  },
+  "entity.soulball.explode": {
+    "subtitle": "subtitles.entity.generic.explode",
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
     ]
   },
   "mob.soul_rabbit.ambient": {
@@ -126,28 +235,12 @@
       }
     ]
   },
-  "mob.robot.death": {
-    "subtitle": "subtitles.soullery:mob.robot.death",
+  "item.soul_purifier.soul_purify": {
+    "subtitle": "subtitles.soullery:item.soul_purifier.soul_purify",
     "sounds": [
-      "mob/irongolem/death"
-    ]
-  },
-  "mob.robot.hurt": {
-    "subtitle": "subtitles.soullery:mob.robot.hurt",
-    "sounds": [
-      "mob/irongolem/hit1",
-      "mob/irongolem/hit2",
-      "mob/irongolem/hit3",
-      "mob/irongolem/hit4"
-    ]
-  },
-  "mob.robot.step": {
-    "subtitle": "subtitles.block.generic.footsteps",
-    "sounds": [
-      "mob/irongolem/walk1",
-      "mob/irongolem/walk2",
-      "mob/irongolem/walk3",
-      "mob/irongolem/walk4"
+      "soullery:random/mind_operate1",
+      "soullery:random/mind_operate2",
+      "soullery:random/mind_operate3"
     ]
   },
   "mob.soul_skeleton.ambient": {

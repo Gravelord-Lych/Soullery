@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import static lych.soullery.util.ModSoundEvents.*;
 
 public class SoundDataGen extends SoundDefinitionsProvider {
+    private static final String GENERIC_EXPLODE = "subtitles.entity.generic.explode";
     private static final String GENERIC_FOOTSTEPS = "subtitles.block.generic.footsteps";
     private static final String BOW_PATH = "random/bow";
     private static final ResourceLocation ETHEMOVE_PATH = Soullery.prefix("random/ethemove");
@@ -33,20 +34,31 @@ public class SoundDataGen extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
+        add(CHAOS, 4);
         add(DEFENSIVE_META8_SHARE_SHIELD);
         multiple(ENERGY_SOUND_BREAK, paths("random/explode", 4));
         redirect(ETHEMOVE, ETHEMOVE_PATH, 4);
         redirect(MIND_OPERATE, MIND_OPERATE_PATH, 3);
         redirect(META8_LASER, LASER_PATH, 3);
         add(META8_SHARE_SHIELD);
+        single(ROBOT_DEATH, "mob/irongolem/death");
+        multiple(ROBOT_HURT, paths("mob/irongolem/hit", 4));
+        multiple(ROBOT_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), paths("mob/irongolem/walk", 4));
+        multiple(SOUL_BOLT_IMPACT, paths("random/explode", 4));
+        multiple(SOUL_BOLT_THUNDER, paths("ambient/weather/thunder", 3));
+        multiple(SOUL_DRAGON_AMBIENT, paths("mob/enderdragon/growl", 4));
+        single(SOUL_DRAGON_DEATH, "mob/enderdragon/end");
+        multiple(SOUL_DRAGON_FLAP, paths("mob/enderdragon/wings", 6));
+        multiple(SOUL_DRAGON_GROWL, paths("mob/enderdragon/growl", 4));
+        multiple(SOUL_DRAGON_HURT, paths("mob/enderdragon/hit", 4));
+        single(SOUL_DRAGON_SHOOT, "mob/ghast/fireball4");
+        multiple(SOULBALL_EXPLODE, def -> def.subtitle(GENERIC_EXPLODE), paths("random/explode", 4));
         multiple(SOUL_RABBIT_AMBIENT, 0.25, paths("mob/rabbit/idle", 4));
         multiple(SOUL_RABBIT_ATTACK, paths("entity/rabbit/attack", 4));
         single(SOUL_RABBIT_DEATH, new SoundPair("mob/rabbit/bunnymurder", 0.5));
         multiple(SOUL_RABBIT_HURT, 0.5, paths("mob/rabbit/hurt", 4));
         multiple(SOUL_RABBIT_JUMP, 0.1, paths("mob/rabbit/hop", 4));
-        single(ROBOT_DEATH, "mob/irongolem/death");
-        multiple(ROBOT_HURT, paths("mob/irongolem/hit", 4));
-        multiple(ROBOT_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), paths("mob/irongolem/walk", 4));
+        redirect(SOUL_PURIFY, MIND_OPERATE_PATH, 3);
         add(SOUL_SKELETON_AMBIENT, 3);
         add(SOUL_SKELETON_DEATH);
         add(SOUL_SKELETON_HURT, 4);

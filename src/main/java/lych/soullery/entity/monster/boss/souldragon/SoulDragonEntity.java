@@ -1,15 +1,28 @@
 package lych.soullery.entity.monster.boss.souldragon;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import lych.soullery.client.particle.ModParticles;
-import lych.soullery.entity.monster.IPurifiable;
+import lych.soullery.config.ConfigHelper;
+import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.functional.SoulCrystalEntity;
+import lych.soullery.entity.monster.IPurifiable;
+import lych.soullery.entity.monster.SoulSkeletonEntity;
 import lych.soullery.entity.monster.boss.souldragon.phase.Phase;
 import lych.soullery.entity.monster.boss.souldragon.phase.PhaseManager;
 import lych.soullery.entity.monster.boss.souldragon.phase.PhaseType;
+import lych.soullery.extension.soulpower.reinforce.Reinforcement;
+import lych.soullery.extension.soulpower.reinforce.ReinforcementHelper;
+import lych.soullery.extension.soulpower.reinforce.Reinforcements;
+import lych.soullery.item.ModItems;
+import lych.soullery.network.SoulDragonNetwork;
+import lych.soullery.network.SoulDragonNetwork.Message;
+import lych.soullery.network.SoulDragonNetwork.MessageType;
 import lych.soullery.tag.ModBlockTags;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.EnumConstantNotFoundException;
 import lych.soullery.util.IIdentifiableEnum;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.world.event.SoulDragonFight;
 import lych.soullery.world.event.manager.SoulDragonFightManager;
 import net.minecraft.block.Block;
@@ -18,10 +31,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -31,9 +46,8 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathHeap;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -49,15 +63,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.commons.lang3.math.Fraction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
+    private static final DataParameter<Integer> DATA_HEALTH_STATUS = EntityDataManager.defineId(SoulDragonEntity.class, DataSerializers.INT);
     private static final DataParameter<Integer> DATA_PHASE = EntityDataManager.defineId(SoulDragonEntity.class, DataSerializers.INT);
     private static final DataParameter<Boolean> DATA_PURIFIED = EntityDataManager.defineId(SoulDragonEntity.class, DataSerializers.BOOLEAN);
+    private static final int MAX_HEALTH = 600;
     public static final int POINT_COUNT_INNER = 4;
     public static final int POINT_COUNT_MID = 8;
     public static final int POINT_COUNT_OUTER = 12;
@@ -85,13 +101,16 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     @Nullable
     private SoulDragonFight fight;
     @Nullable
-    public EnderCrystalEntity nearestCrystal;
+    public SoulCrystalEntity nearestCrystal;
     public int dragonDeathTime;
     public float oFlapTime;
     public float flapTime;
     private int growlTime = 100;
     private int attackStep;
     private boolean inWall;
+    private int eliteCountRemaining = 32;
+    private int eliteToSpawn;
+    private int eliteSpawnCooldown;
     public float yRotA;
 
     public SoulDragonEntity(EntityType<? extends SoulDragonEntity> type, World World) {
@@ -111,7 +130,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return createMobAttributes().add(Attributes.MAX_HEALTH, 60);
+        return createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH);
     }
 
     public double[] getLatencyPos(int index, float partialTicks) {
@@ -137,18 +156,17 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         if (spawnPos == null) {
             spawnPos = blockPosition();
         }
-
+        trySpawnSkeletonElites();
         if (level.isClientSide()) {
             setHealth(this.getHealth());
             if (!isSilent()) {
                 float cosFlapTIme = MathHelper.cos(flapTime * ((float) Math.PI * 2F));
                 float cosOFlapTime = MathHelper.cos(oFlapTime * ((float) Math.PI * 2F));
-//              TODO - sound
                 if (cosOFlapTime <= -0.3F && cosFlapTIme >= -0.3F) {
-                    level.playLocalSound(getX(), getY(), getZ(), SoundEvents.ENDER_DRAGON_FLAP, getSoundSource(), 5, 0.8f + random.nextFloat() * 0.3f, false);
+                    level.playLocalSound(getX(), getY(), getZ(), ModSoundEvents.SOUL_DRAGON_FLAP.get(), getSoundSource(), 5, 0.8f + random.nextFloat() * 0.3f, false);
                 }
                 if (--growlTime < 0) {
-                    level.playLocalSound(getX(), getY(), getZ(), SoundEvents.ENDER_DRAGON_GROWL, getSoundSource(), 2.5f, 0.8f + random.nextFloat() * 0.3f, false);
+                    level.playLocalSound(getX(), getY(), getZ(), ModSoundEvents.SOUL_DRAGON_GROWL.get(), getSoundSource(), 2.5f, 0.8f + random.nextFloat() * 0.3f, false);
                     growlTime = 200 + random.nextInt(200);
                 }
             }
@@ -162,7 +180,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             level.addParticle(ParticleTypes.EXPLOSION, getX() + rx, getY() + 2 + ry, getZ() + rz, 0, 0, 0);
         } else {
             checkCrystals();
-            Vector3d movement = this.getDeltaMovement();
+            Vector3d movement = getDeltaMovement();
             float movementLengthInv = 0.2f / (MathHelper.sqrt(getHorizontalDistanceSqr(movement)) * 10 + 1);
             movementLengthInv = movementLengthInv * (float)Math.pow(2.0D, movement.y);
             if (inWall) {
@@ -264,10 +282,10 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
                 tickPart(wing1, cosYRot * 4.5, 2, sinYRot * 4.5);
                 tickPart(wing2, cosYRot * -4.5, 2, sinYRot * -4.5);
                 if (!level.isClientSide() && hurtTime == 0) {
-                    knockBack(level.getEntities(this, wing1.getBoundingBox().inflate(4, 2, 4).move(0, -2, 0), EntityPredicates.NO_CREATIVE_OR_SPECTATOR));
-                    knockBack(level.getEntities(this, wing2.getBoundingBox().inflate(4, 2, 4).move(0, -2, 0), EntityPredicates.NO_CREATIVE_OR_SPECTATOR));
-                    hurt(level.getEntities(this, head.getBoundingBox().inflate(1), EntityPredicates.NO_CREATIVE_OR_SPECTATOR));
-                    hurt(level.getEntities(this, neck.getBoundingBox().inflate(1), EntityPredicates.NO_CREATIVE_OR_SPECTATOR));
+                    knockBack(level.getEntities(this, wing1.getBoundingBox().inflate(4, 2, 4).move(0, -2, 0), EntityPredicates.NO_CREATIVE_OR_SPECTATOR.and(SoulDragonEntity::nonSoulSkeleton)));
+                    knockBack(level.getEntities(this, wing2.getBoundingBox().inflate(4, 2, 4).move(0, -2, 0), EntityPredicates.NO_CREATIVE_OR_SPECTATOR.and(SoulDragonEntity::nonSoulSkeleton)));
+                    hurt(level.getEntities(this, head.getBoundingBox().inflate(1), EntityPredicates.NO_CREATIVE_OR_SPECTATOR.and(SoulDragonEntity::nonSoulSkeleton)));
+                    hurt(level.getEntities(this, neck.getBoundingBox().inflate(1), EntityPredicates.NO_CREATIVE_OR_SPECTATOR.and(SoulDragonEntity::nonSoulSkeleton)));
                 }
 
                 float sinYRotA = MathHelper.sin(this.yRot * ((float) Math.PI / 180) - yRotA * 0.01f);
@@ -277,7 +295,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
                 tickPart(neck, sinYRotA * 5.5 * cosRot, headYOffset + sinRot * 5.5, -cosYRotA * 5.5 * cosRot);
                 double[] posArray5 = getLatencyPos(5, 1.0F);
 
-                for(int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3; i++) {
                     SoulDragonPartEntity part = null;
                     if (i == 0) {
                         part = tail1;
@@ -317,6 +335,112 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
     }
 
+    private static boolean nonSoulSkeleton(Entity e) {
+        return !(e instanceof SoulSkeletonEntity);
+    }
+
+    private void trySpawnSkeletonElites() {
+        if (level.isClientSide() || isDeadOrDying()) {
+            return;
+        }
+        if (getHealthStatus() == HealthStatus.LOW && eliteCountRemaining > 0 && eliteToSpawn <= 0 && random.nextInt(Math.max(1, 100 + ((int) getHealth()) * 3 - eliteCountRemaining * 6)) == 0) {
+            if (eliteCountRemaining > 9) {
+                eliteToSpawn = random.nextInt(5) + 5;
+            } else {
+                eliteToSpawn = eliteCountRemaining;
+            }
+            eliteCountRemaining -= eliteToSpawn;
+        }
+        if (eliteSpawnCooldown > 0) {
+            eliteSpawnCooldown--;
+        }
+        if (eliteToSpawn > 0 && eliteSpawnCooldown <= 0 && !inWall()) {
+            SoulSkeletonEntity elite = ModEntities.SOUL_SKELETON.create(level);
+            if (elite != null) {
+                elite.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 20 * 3, 4, false, false, false));
+                elite.moveTo(getHead().getX(), getHead().getY(), getHead().getZ(), random.nextFloat() * 360, 0);
+                elite.setTarget(level.getNearestPlayer(getX(), getY(), getZ(), 99, true));
+                elite.finalizeSpawn((IServerWorld) level, level.getCurrentDifficultyAt(blockPosition()), SpawnReason.MOB_SUMMONED, null, null);
+                modifyElite(elite);
+                level.addFreshEntity(elite);
+                eliteSpawnCooldown = 30;
+                eliteToSpawn--;
+            }
+        }
+    }
+
+    private void modifyElite(SoulSkeletonEntity elite) {
+        EntityUtils.getAttribute(elite, Attributes.MAX_HEALTH).setBaseValue(1 << (5 + random.nextInt(3)));
+        EntityUtils.getAttribute(elite, Attributes.FOLLOW_RANGE).setBaseValue(49);
+        EntityUtils.getAttribute(elite, Attributes.MOVEMENT_SPEED).setBaseValue(0.33);
+        EntityUtils.getAttribute(elite, Attributes.KNOCKBACK_RESISTANCE).setBaseValue(random.nextDouble() * 0.3 + 0.3);
+        elite.setHealth(elite.getMaxHealth());
+
+        List<Pair<Reinforcement, Integer>> guardianReinforcements = new ArrayList<>(ImmutableList.of(
+                Pair.of(Reinforcements.GUARDIAN, 2),
+                Pair.of(Reinforcements.GUARDIAN, 1)
+        ));
+        List<Pair<Reinforcement, Integer>> silverfishReinforcements = new ArrayList<>(ImmutableList.of(
+                Pair.of(Reinforcements.SILVERFISH, 2),
+                Pair.of(Reinforcements.SILVERFISH, 1)
+        ));
+        Collections.shuffle(guardianReinforcements, random);
+        Collections.shuffle(silverfishReinforcements, random);
+
+        ItemStack helmet = new ItemStack(ModItems.REFINED_SOUL_METAL_HELMET);
+        ReinforcementHelper.addReinforcement(helmet, silverfishReinforcements.get(0).getFirst(), guardianReinforcements.get(0).getSecond());
+        ItemStack chestplate = new ItemStack(ModItems.REFINED_SOUL_METAL_CHESTPLATE);
+        ReinforcementHelper.addReinforcement(chestplate, guardianReinforcements.get(0).getFirst(), guardianReinforcements.get(0).getSecond());
+        ItemStack leggings = new ItemStack(ModItems.REFINED_SOUL_METAL_LEGGINGS);
+        ReinforcementHelper.addReinforcement(leggings, guardianReinforcements.get(1).getFirst(), guardianReinforcements.get(1).getSecond());
+        ItemStack boots = new ItemStack(ModItems.REFINED_SOUL_METAL_BOOTS);
+        ReinforcementHelper.addReinforcement(boots, silverfishReinforcements.get(1).getFirst(), guardianReinforcements.get(1).getSecond());
+
+        elite.setItemSlot(EquipmentSlotType.HEAD, helmet);
+        elite.setItemSlot(EquipmentSlotType.CHEST, chestplate);
+        elite.setItemSlot(EquipmentSlotType.LEGS, leggings);
+        elite.setItemSlot(EquipmentSlotType.FEET, boots);
+
+        Reinforcement mainHandWeaponReinforcement;
+        int mainHandWeaponReinforcementLevel;
+        double randomValue = random.nextDouble();
+        if (elite.getMainHandItem().getItem() instanceof BowItem) {
+            if (randomValue < 0.8) {
+                mainHandWeaponReinforcement = Reinforcements.SKELETON;
+            } else {
+                mainHandWeaponReinforcement = Reinforcements.BEE;
+            }
+            mainHandWeaponReinforcementLevel = 1;
+        } else {
+            if (randomValue < 0.4) {
+                mainHandWeaponReinforcement = Reinforcements.ZOMBIE;
+                mainHandWeaponReinforcementLevel = 2;
+            } else if (randomValue < 0.7) {
+                mainHandWeaponReinforcement = Reinforcements.WOLF;
+                mainHandWeaponReinforcementLevel = 2;
+            } else if (randomValue < 0.9) {
+                mainHandWeaponReinforcement = Reinforcements.CAVE_SPIDER;
+                mainHandWeaponReinforcementLevel = 1;
+            } else {
+                mainHandWeaponReinforcement = Reinforcements.SPIDER;
+                mainHandWeaponReinforcementLevel = 1;
+            }
+        }
+        ReinforcementHelper.addReinforcement(elite.getMainHandItem(), mainHandWeaponReinforcement, mainHandWeaponReinforcementLevel);
+
+        if (random.nextDouble() < 0.3) {
+            if (random.nextBoolean()) {
+                elite.addEffect(new EffectInstance(Effects.REGENERATION, Integer.MAX_VALUE, 0, false, false, false));
+            } else {
+                elite.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false, false));
+            }
+        } else {
+            elite.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, Integer.MAX_VALUE, 0, false, false, false));
+        }
+
+        EntityUtils.spawnAnimServerside(elite, (ServerWorld) level);
+    }
+
     private void tickPart(SoulDragonPartEntity part, double x, double y, double z) {
         part.setPos(getX() + x, getY() + y, getZ() + z);
     }
@@ -328,6 +452,12 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     }
 
     private void checkCrystals() {
+        if (getHealthStatus() != HealthStatus.HIGH && getFight() != null && EntityUtils.isAlive(getFight().getSuperCrystal())) {
+            if (!level.isClientSide()) {
+                updateSuperCrystalServerside();
+            }
+        }
+
         if (nearestCrystal != null) {
             if (!nearestCrystal.isAlive()) {
                 nearestCrystal = null;
@@ -336,12 +466,12 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             }
         }
 
-        if (random.nextInt(10) == 0) {
-            List<EnderCrystalEntity> crystalsToCheck = level.getEntitiesOfClass(EnderCrystalEntity.class, getBoundingBox().inflate(32));
-            EnderCrystalEntity closest = null;
+        if (random.nextInt(10) == 0 && getHealthStatus() == HealthStatus.HIGH) {
+            List<SoulCrystalEntity> crystalsToCheck = level.getEntitiesOfClass(SoulCrystalEntity.class, getBoundingBox().inflate(32));
+            SoulCrystalEntity closest = null;
             double minDistanceSqr = Double.MAX_VALUE;
 
-            for (EnderCrystalEntity crystal : crystalsToCheck) {
+            for (SoulCrystalEntity crystal : crystalsToCheck) {
                 double distanceSqr = crystal.distanceToSqr(this);
                 if (distanceSqr < minDistanceSqr) {
                     minDistanceSqr = distanceSqr;
@@ -350,6 +480,14 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             }
 
             nearestCrystal = closest;
+        }
+    }
+
+    private void updateSuperCrystalServerside() {
+        SoulCrystalEntity temp = nearestCrystal;
+        nearestCrystal = getFight().getSuperCrystal();
+        if (nearestCrystal != null && temp != nearestCrystal) {
+            SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new Message(MessageType.RECOGNIZE_FORTIFIED_CRYSTAL, blockPosition(), getId(), isSilent(), isPurified(), nearestCrystal.getId()));
         }
     }
 
@@ -369,6 +507,10 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
                 }
             }
         }
+    }
+
+    public HealthStatus getHealthStatus() {
+        return healthManager.getStatus();
     }
 
     public void hurt(List<? extends Entity> entities) {
@@ -495,23 +637,22 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         int exp = 3000;
 
         if (!level.isClientSide()) {
-            if (dragonDeathTime > 150 && this.dragonDeathTime % 5 == 0 && loot) {
+            if (dragonDeathTime > 150 && dragonDeathTime % 5 == 0 && loot) {
                 dropExperience(MathHelper.floor((float) exp * 0.08F));
             }
 
-            if (dragonDeathTime == 1 && !this.isSilent()) {
-//              TODO - Death sound
-                level.globalLevelEvent(1028, this.blockPosition(), 0);
+            if (dragonDeathTime == 1 && !isSilent()) {
+                SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new Message(MessageType.DRAGON_DEATH, blockPosition(), getId(), isSilent(), isPurified()));
             }
         }
 
-        move(MoverType.SELF, new Vector3d(0.0D, 0.1F, 0.0D));
+        move(MoverType.SELF, new Vector3d(0, 0.1, 0));
         yRot += 20;
         yBodyRot = yRot;
 
         if (dragonDeathTime == 200 && !level.isClientSide()) {
             if (loot) {
-                dropExperience(MathHelper.floor((float)exp * 0.2F));
+                dropExperience(MathHelper.floor(exp * 0.2f));
             }
             if (fight != null) {
                 fight.setDragonKilled(this);
@@ -533,6 +674,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         super.defineSynchedData();
         entityData.define(DATA_PHASE, PhaseType.DEFAULT.getId());
         entityData.define(DATA_PURIFIED, false);
+        entityData.define(DATA_HEALTH_STATUS, HealthStatus.HIGH.getId());
     }
 
     @Override
@@ -609,6 +751,8 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         if (fight != null) {
             compoundNBT.putInt("Fight", fight.getId());
         }
+        compoundNBT.putInt("EliteCountRemaining", eliteCountRemaining);
+        compoundNBT.putInt("EliteToSpawn", eliteToSpawn);
         getHealthManager().saveStatus(compoundNBT);
     }
 
@@ -619,12 +763,18 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             phaseManager.setPhase(PhaseType.get(compoundNBT.getInt("DragonPhase")));
         }
         setAttackStep(compoundNBT.getInt("AttackStep"));
-        setPurified(compoundNBT.getBoolean("Purified"));
         if (!level.isClientSide() && compoundNBT.contains("Fight", Constants.NBT.TAG_INT)) {
             setFight(SoulDragonFightManager.get((ServerWorld) level).getFight(compoundNBT.getInt("Fight")));
         }
+        setPurified(compoundNBT.getBoolean("Purified"));
         if (compoundNBT.contains("HealthStatus")) {
             getHealthManager().loadStatus(compoundNBT);
+        }
+        if (compoundNBT.contains("EliteCountRemaining")) {
+            eliteCountRemaining = compoundNBT.getInt("EliteCountRemaining");
+        }
+        if (compoundNBT.contains("EliteToSpawn")) {
+            eliteToSpawn = compoundNBT.getInt("EliteToSpawn");
         }
     }
 
@@ -737,6 +887,28 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     @Override
     public void setHealth(float health) {
         super.setHealth(getHealthManager().handleSetHealth(health));
+    }
+
+    @Override
+    public SoundCategory getSoundSource() {
+        return SoundCategory.HOSTILE;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.SOUL_DRAGON_AMBIENT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_DRAGON_DEATH.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.SOUL_DRAGON_HURT.get();
     }
 
     private static void initPathPoints(PathPoint[] nodes, World level, BlockPos center) {
@@ -857,6 +1029,9 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     @Override
     public void setPurified(boolean purified) {
         entityData.set(DATA_PURIFIED, purified);
+        if (getFight() != null) {
+            getFight().updateDragon(this);
+        }
     }
 
     public class PathHelper {
@@ -989,28 +1164,39 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     }
 
     public class HealthStatusManager {
-        @NotNull
-        private HealthStatus status = HealthStatus.HIGH;
-
         public float handleSetHealth(float health) {
-            return status.handleSetHealth(SoulDragonEntity.this, health, (int) getMaxHealth());
+            return getStatus().handleSetHealth(SoulDragonEntity.this, health, (int) getMaxHealth());
+        }
+
+        public HealthStatus getStatus() {
+            try {
+                return HealthStatus.byId(entityData.get(DATA_HEALTH_STATUS));
+            } catch (EnumConstantNotFoundException e) {
+                if (ConfigHelper.shouldFailhard()) {
+                    throw new RuntimeException(ConfigHelper.FAILHARD_MESSAGE + String.format("HealthStatus[%s] not found", e.getId()));
+                } else {
+                    LOGGER.error("HealthStatus[{}] not found, used default HealthStatus.{}", e.getId(), HealthStatus.HIGH);
+                }
+                setStatus(HealthStatus.HIGH);
+                return HealthStatus.HIGH;
+            }
         }
 
         private void setStatus(HealthStatus status) {
-            this.status = status;
+            entityData.set(DATA_HEALTH_STATUS, status.getId());
             status.begin(SoulDragonEntity.this);
         }
 
         public void saveStatus(CompoundNBT compoundNBT) {
-            compoundNBT.putInt("HealthStatus", status.getId());
+            compoundNBT.putInt("HealthStatus", getStatus().getId());
         }
 
         public void loadStatus(CompoundNBT compoundNBT) {
             try {
-                status = HealthStatus.byId(compoundNBT.getInt("HealthStatus"));
+                setStatus(HealthStatus.byId(compoundNBT.getInt("HealthStatus")));
             } catch (EnumConstantNotFoundException e) {
                 LOGGER.warn("HealthStatus[{}] not found, reloading...", e.getId());
-                status = reloadStatus();
+                setStatus(reloadStatus());
             }
         }
 
@@ -1046,11 +1232,17 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
                 if (!dragon.level.isClientSide()) {
                     EntityUtils.addParticlesAroundSelfServerside(dragon, (ServerWorld) dragon.level, ModParticles.SOUL_DRAGON_BREATH_PURE, 30);
                 }
+                if (dragon.getFight() != null) {
+                    dragon.getFight().placeSuperCrystal();
+                }
             }
 
             @Override
             public boolean meetsBreakCondition(SoulDragonEntity dragon) {
-                return true;
+                if (dragon.getFight() == null) {
+                    return true;
+                }
+                return dragon.getFight().getSuperCrystal() == null;
             }
         },
         LOW(Fraction.ZERO) {
@@ -1078,13 +1270,19 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
 
         public float handleSetHealth(SoulDragonEntity dragon, float health, int maxHealth) {
-            if (health < getLimit(maxHealth) && meetsBreakCondition(dragon)) {
+            if (health <= getLimit(maxHealth) && meetsBreakCondition(dragon)) {
                 try {
                     dragon.getHealthManager().setStatus(byId(getId() + 1));
                 } catch (EnumConstantNotFoundException ignored) {}
-                return health;
+                return dragon.getHealthStatus() == LOW ? health : Math.max(health, dragon.getHealthStatus().getLimit(maxHealth) + 1);
             }
-            return Math.max(health, getLimit(maxHealth) + 1);
+            int upperBound;
+            try {
+                upperBound = byId(getId() - 1).getLimit(maxHealth);
+            } catch (EnumConstantNotFoundException e) {
+                upperBound = maxHealth;
+            }
+            return MathHelper.clamp(health, getLimit(maxHealth) + 1, upperBound);
         }
 
         public static HealthStatus byId(int id) throws EnumConstantNotFoundException {

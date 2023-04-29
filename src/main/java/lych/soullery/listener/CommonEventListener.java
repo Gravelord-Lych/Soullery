@@ -331,7 +331,8 @@ public final class CommonEventListener {
             }
             BlockPos pos = new BlockPos(event.getRayTraceResult().getLocation());
             if (level.getBlockState(pos).getBlock() instanceof SoulMetalBarsBlock) {
-                SoulMetalBarsBlock.handleBlockDestroy(level, pos, (SoulMetalBarsBlock) level.getBlockState(pos).getBlock(), SoulMetalBarsBlock.MAX_LINKED_DAMAGE_PROJECTILE, false);
+                SoulMetalBarsBlock block = (SoulMetalBarsBlock) level.getBlockState(pos).getBlock();
+                SoulMetalBarsBlock.handleBlockDestroy(level, pos, block, block.getMaxLinkedDamageProjectile(), false);
                 SoulMetalBarsBlock.destroyHitProjectile(event.getEntity());
                 SoulMetalBarsBlock.addParticles((ServerWorld) level, event.getRayTraceResult().getLocation(), level.getRandom());
             }
@@ -342,10 +343,11 @@ public final class CommonEventListener {
     public static void onPlayerDestroySoulMetalBars(BlockEvent.BreakEvent event) {
         BlockState state = event.getState();
         if (state.getBlock() instanceof SoulMetalBarsBlock) {
+            SoulMetalBarsBlock block = (SoulMetalBarsBlock) state.getBlock();
             SoulMetalBarsBlock.handleBlockDestroy(event.getWorld(),
                     event.getPos(),
-                    (SoulMetalBarsBlock) state.getBlock(),
-                    SoulMetalBarsBlock.MAX_LINKED_DAMAGE_DIG,
+                    block,
+                    block.getMaxLinkedDamageDig(),
                     !event.getPlayer().abilities.instabuild && ForgeHooks.canHarvestBlock(state, event.getPlayer(), event.getWorld(), event.getPos()));
             if (event.getWorld() instanceof ServerWorld) {
                 SoulMetalBarsBlock.addParticles((ServerWorld) event.getWorld(), Vector3d.atCenterOf(event.getPos()), event.getWorld().getRandom());

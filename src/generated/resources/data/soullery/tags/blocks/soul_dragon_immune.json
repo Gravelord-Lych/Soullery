@@ -12,6 +12,10 @@
     "soullery:soul_metal_bars",
     "soullery:chipped_soul_metal_bars",
     "soullery:damaged_soul_metal_bars",
+    "soullery:refined_soul_metal_bars",
+    "soullery:chipped_refined_soul_metal_bars",
+    "soullery:damaged_refined_soul_metal_bars",
+    "soullery:broken_refined_soul_metal_bars",
     "soullery:soul_stone",
     "minecraft:bedrock"
   ]

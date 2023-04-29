@@ -8,6 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public final class ModSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Soullery.MOD_ID);
+    public static final RegistryObject<SoundEvent> CHAOS = register("item.chaos_wand.chaos");
     public static final RegistryObject<SoundEvent> DEFENSIVE_META8_SHARE_SHIELD = register("mob.meta8.share_stronger_shield");
     public static final RegistryObject<SoundEvent> ENERGY_SOUND_BREAK = register("random.energy_shield_break");
     public static final RegistryObject<SoundEvent> ETHEMOVE = register("random.ethemove");
@@ -17,6 +18,15 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> ROBOT_DEATH = register("mob.robot.death");
     public static final RegistryObject<SoundEvent> ROBOT_HURT = register("mob.robot.hurt");
     public static final RegistryObject<SoundEvent> ROBOT_STEP = register("mob.robot.step");
+    public static final RegistryObject<SoundEvent> SOUL_BOLT_IMPACT = register("entity.soul_bolt.impact");
+    public static final RegistryObject<SoundEvent> SOUL_BOLT_THUNDER = register("entity.soul_bolt.thunder");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_AMBIENT = register("mob.soul_dragon.ambient");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_DEATH = register("mob.soul_dragon.death");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_FLAP = register("mob.soul_dragon.flap");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_GROWL = register("mob.soul_dragon.growl");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_HURT = register("mob.soul_dragon.hurt");
+    public static final RegistryObject<SoundEvent> SOUL_DRAGON_SHOOT = register("mob.soul_dragon.shoot");
+    public static final RegistryObject<SoundEvent> SOUL_PURIFY = register("item.soul_purifier.soul_purify");
     public static final RegistryObject<SoundEvent> SOUL_RABBIT_AMBIENT = register("mob.soul_rabbit.ambient");
     public static final RegistryObject<SoundEvent> SOUL_RABBIT_ATTACK = register("mob.soul_rabbit.attack");
     public static final RegistryObject<SoundEvent> SOUL_RABBIT_DEATH = register("mob.soul_rabbit.death");
@@ -25,6 +35,7 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> SOUL_SKELETON_AMBIENT = register("mob.soul_skeleton.ambient");
     public static final RegistryObject<SoundEvent> SOUL_SKELETON_DEATH = register("mob.soul_skeleton.death");
     public static final RegistryObject<SoundEvent> SOUL_SKELETON_HURT = register("mob.soul_skeleton.hurt");
+    public static final RegistryObject<SoundEvent> SOULBALL_EXPLODE = register("entity.soulball.explode");
     public static final RegistryObject<SoundEvent> SOUL_SKELETON_SHOOT = register("mob.soul_skeleton.shoot");
     public static final RegistryObject<SoundEvent> SOUL_SKELETON_STEP = register("mob.soul_skeleton.step");
     public static final RegistryObject<SoundEvent> WANDERER_AMBIENT = register("mob.wanderer.ambient");

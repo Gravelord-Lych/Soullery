@@ -92,7 +92,7 @@ public final class SoulSkeletonKingGoals {
             ServerWorld level = (ServerWorld) mob.level;
             for (int i = 0; i < 2; i++) {
                 Vector3d pos = Vector3d.atBottomCenterOf(mob.blockPosition()).add(random.nextDouble() * 5 - 2, 0, random.nextDouble() * 5 - 2);
-                pos = WorldUtils.calculateSummonPosition(pos, level, PositionCalculators::smart);
+                pos = WorldUtils.calculateSummonPosition3(pos, level, PositionCalculators::smart);
                 SoulSkeletonEntity skeleton = ModEntities.SOUL_SKELETON.create(level);
                 skeleton.setOwner(mob);
                 skeleton.moveTo(pos.x, pos.y, pos.z, random.nextFloat() * 360, 0);

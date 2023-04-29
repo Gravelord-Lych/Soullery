@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import lych.soullery.Soullery;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.ModEntityNames;
+import lych.soullery.entity.functional.FortifiedSoulCrystalEntity;
 import lych.soullery.entity.functional.SoulCrystalEntity;
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.entity.monster.boss.souldragon.phase.PhaseType;
@@ -15,6 +16,8 @@ import lych.soullery.util.PositionCalculators;
 import lych.soullery.world.ModTickets;
 import lych.soullery.world.event.manager.NotLoadedException;
 import lych.soullery.world.gen.config.PlateauSpikeConfig;
+import lych.soullery.world.gen.feature.CentralSoulCrystalFeature;
+import lych.soullery.world.gen.feature.ModConfiguredFeatures;
 import lych.soullery.world.gen.feature.ModFeatures;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature.Spike;
@@ -59,6 +62,9 @@ public class SoulDragonFight extends AbstractWorldEvent {
     private final ServerBossInfo bossInfo = new ServerBossInfo(new TranslationTextComponent(String.format("entity.%s.%s", Soullery.MOD_ID, ModEntityNames.SOUL_DRAGON)), BossInfo.Color.BLUE, BossInfo.Overlay.NOTCHED_6);
     private final List<Spike> generatedSpikes = new ArrayList<>();
     @Nullable
+    private FortifiedSoulCrystalEntity superCrystal;
+    private boolean spawnedSuperCrystal;
+    @Nullable
     private UUID dragonUUID;
     private Status status;
     private Respawner respawner;
@@ -88,6 +94,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
             respawner = new Respawner(compoundNBT.getCompound("Respawner"));
         }
         generatedSpikes.addAll(loadSpikes(compoundNBT, "GeneratedSpikes"));
+        spawnedSuperCrystal = compoundNBT.getBoolean("SpawnedSuperCrystal");
     }
 
     @Override
@@ -134,13 +141,31 @@ public class SoulDragonFight extends AbstractWorldEvent {
             }
             if (!bossInfo.getPlayers().isEmpty()) {
                 level.getChunkSource().addRegionTicket(ModTickets.SOUL_DRAGON, getCenterChunk(), 9, Unit.INSTANCE);
-                tickOngoing();
+                tickCrystals();
             } else {
                 level.getChunkSource().removeRegionTicket(ModTickets.SOUL_DRAGON, getCenterChunk(), 9, Unit.INSTANCE);
             }
             if (++ticksSinceLastSetDirty >= 40) {
                 setDirty();
                 ticksSinceLastSetDirty = 0;
+            }
+            if (spawnedSuperCrystal) {
+                if (superCrystal == null || ticksSinceCrystalsScanned == 50) {
+                    boolean wasNull = superCrystal == null;
+                    checkSuperCrystal();
+                    if (superCrystal != null) {
+                        if (wasNull) {
+                            LOGGER.info(MARKER, "Found new Fortified Soul Crystal");
+                        } else {
+                            LOGGER.info(MARKER, "Found that the previous Fortified Soul Crystal is still alive");
+                        }
+                    }
+                }
+                if (EntityUtils.isDead(superCrystal)) {
+                    superCrystal = null;
+                    LOGGER.info(MARKER, "Fortified Soul Crystal is destroyed!");
+                    setDirty();
+                }
             }
         } else {
             victoryTicks++;
@@ -155,12 +180,29 @@ public class SoulDragonFight extends AbstractWorldEvent {
         return new ChunkPos(center.getX() >> 4, center.getZ() >> 4);
     }
 
-    private void tickOngoing() {
+    private void tickCrystals() {
         boolean loaded = isArenaLoaded();
         if (++ticksSinceCrystalsScanned >= 100 && loaded) {
             updateCrystalCount();
             ticksSinceCrystalsScanned = 0;
         }
+    }
+
+    private boolean checkSuperCrystal() {
+        if (EntityUtils.isAlive(superCrystal)) {
+            return false;
+        }
+        int startY = center.getY() + CentralSoulCrystalFeature.DISTANCE_TO_GROUND;
+        int endY = startY + CentralSoulCrystalFeature.HEIGHT + 4;
+        int radius = CentralSoulCrystalFeature.RADIUS + 1;
+        AxisAlignedBB bb = new AxisAlignedBB(center.getX() + 0.5 - radius, startY, center.getZ() + 0.5 - radius, center.getX() + 0.5 + radius, endY, center.getZ() + 0.5 + radius);
+        List<FortifiedSoulCrystalEntity> crystals = level.getEntitiesOfClass(FortifiedSoulCrystalEntity.class, bb, FortifiedSoulCrystalEntity::isHealable);
+        if (!crystals.isEmpty()) {
+            boolean same = superCrystal == crystals.get(0);
+            superCrystal = crystals.get(0);
+            return !same;
+        }
+        return false;
     }
 
     private boolean isArenaLoaded() {
@@ -206,6 +248,13 @@ public class SoulDragonFight extends AbstractWorldEvent {
         }
     }
 
+    public void placeSuperCrystal() {
+        ModConfiguredFeatures.CENTRAL_SOUL_CRYSTAL.place(level, level.getChunkSource().getGenerator(), level.getRandom(), getCenter().above(CentralSoulCrystalFeature.DISTANCE_TO_GROUND));
+        superCrystal = CentralSoulCrystalFeature.getCurrentCrystal();
+        LOGGER.info(MARKER, "Fortified Soul Crystal is placed!");
+        spawnedSuperCrystal = true;
+        setDirty();
+    }
 
     public List<SoulCrystalEntity> getCrystals() {
         List<SoulCrystalEntity> crystals = new ArrayList<>();
@@ -230,6 +279,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
             saveSpike(spikesNBT, spike);
         }
         compoundNBT.put("GeneratedSpikes", spikesNBT);
+        compoundNBT.putBoolean("SpawnedSuperCrystal", spawnedSuperCrystal);
     }
 
     public static ITextComponent makeText(String name, Object... args) {
@@ -243,7 +293,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
     private void updateCrystalCount(List<SoulCrystalEntity> crystals) {
         this.ticksSinceCrystalsScanned = 0;
         this.crystalsAlive = crystals.size();
-        LOGGER.info(MARKER, "Found {} soul crystals still alive", crystalsAlive);
+        LOGGER.info(MARKER, "Found {} Soul Crystal(s) still alive", crystalsAlive);
     }
 
     public int getCrystalsAlive() {
@@ -254,6 +304,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
         checkUUID(dragon);
         bossInfo.setPercent(dragon.getHealth() / dragon.getMaxHealth());
 //        ticksSinceDragonSeen = 0;
+        bossInfo.setColor(dragon.isPurified() ? BossInfo.Color.PURPLE : BossInfo.Color.BLUE);
         if (dragon.hasCustomName()) {
             bossInfo.setName(dragon.getDisplayName());
         }
@@ -281,6 +332,11 @@ public class SoulDragonFight extends AbstractWorldEvent {
         if (!dragon.getUUID().equals(dragonUUID)) {
             throw new IllegalArgumentException(String.format("Invalid UUID %s, required UUID is %s", dragon.getUUID(), dragonUUID));
         }
+    }
+
+    @Nullable
+    public FortifiedSoulCrystalEntity getSuperCrystal() {
+        return superCrystal;
     }
 
     public enum Status implements IIdentifiableEnum {
@@ -338,6 +394,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
 
         private void start() {
             guider = new SoulCrystalEntity(level, center.getX() + 0.5, center.getY(), center.getZ() + 0.5);
+            guider.setInvulnerable(true);
             level.addFreshEntity(guider);
             guider.setBeamTarget(aboveCenter60());
             setDirty();

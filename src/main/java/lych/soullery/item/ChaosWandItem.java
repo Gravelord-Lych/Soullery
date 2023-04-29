@@ -2,6 +2,7 @@ package lych.soullery.item;
 
 import lych.soullery.extension.control.dict.ControlDictionaries;
 import lych.soullery.util.EntityUtils;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.RedstoneParticles;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
@@ -11,9 +12,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class ChaosWandItem extends AbstractWandItem<ChaosWandItem> {
@@ -44,5 +47,16 @@ public class ChaosWandItem extends AbstractWandItem<ChaosWandItem> {
 
     private int getRange() {
         return getTier() > 1 ? RANGE_II : RANGE;
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getSound() {
+        return ModSoundEvents.CHAOS.get();
+    }
+
+    @Override
+    public float getPitch(Random random) {
+        return random.nextFloat() * 0.6f + 0.9f;
     }
 }

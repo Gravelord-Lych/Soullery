@@ -40,7 +40,9 @@ public class FortifiedSoulCrystalRenderer extends SoulCrystalRenderer<FortifiedS
     protected void renderBeam(FortifiedSoulCrystalEntity crystal, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, float y, float tx, float ty, float tz) {
         Color color1 = new Color(255, 200, 200);
         Color color2 = new Color(103, 10, 10);
-        SoulDragonRenderer.renderSoulCrystalBeams(-tx, -ty + y, -tz, partialTicks, crystal.time, color1, color2, stack, buffer, packedLight);
+        float offset = 2;
+        stack.translate(0, -offset, 0);
+        SoulDragonRenderer.renderSoulCrystalBeams(-tx, -ty + offset + y, -tz, partialTicks, crystal.time, color1, color2, stack, buffer, packedLight);
     }
 
     @Override

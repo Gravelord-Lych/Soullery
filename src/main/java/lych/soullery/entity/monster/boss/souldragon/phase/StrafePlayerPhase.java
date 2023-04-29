@@ -2,8 +2,11 @@ package lych.soullery.entity.monster.boss.souldragon.phase;
 
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.entity.projectile.SoulballEntity;
+import lych.soullery.network.SoulDragonNetwork;
+import lych.soullery.network.SoulDragonNetwork.Message;
+import lych.soullery.network.SoulDragonNetwork.MessageType;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class StrafePlayerPhase extends AttackPhase {
     public StrafePlayerPhase(SoulDragonEntity dragon) {
@@ -20,8 +23,7 @@ public class StrafePlayerPhase extends AttackPhase {
         double ty = attackTarget.getY(0.5) - y;
         double tz = attackTarget.getZ() - z;
         if (!dragon.isSilent()) {
-//          TODO - sound
-            level.levelEvent(null, Constants.WorldEvents.ENDERDRAGON_SHOOT_SOUND, dragon.blockPosition(), 0);
+            SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new Message(MessageType.SHOW_SOULBALL_HIT_PARTICLE, dragon.blockPosition(), dragon.getId(), dragon.isSilent(), dragon.isPurified()));
         }
         SoulballEntity soulball = new SoulballEntity(dragon, tx, ty, tz, level);
         soulball.moveTo(x, y, z, 0, 0);

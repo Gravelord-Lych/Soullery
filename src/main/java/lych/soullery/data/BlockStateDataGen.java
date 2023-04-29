@@ -21,8 +21,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static lych.soullery.block.ModBlocks.*;
-import static lych.soullery.data.BlockModelDataGen.side;
-import static lych.soullery.data.BlockModelDataGen.top;
+import static lych.soullery.data.BlockModelDataGen.*;
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 
 public class BlockStateDataGen extends BlockStateProvider {
@@ -35,26 +34,26 @@ public class BlockStateDataGen extends BlockStateProvider {
         simpleBlock(SOUL_REINFORCEMENT_TABLE, models().orientableWithBottom(name(SOUL_REINFORCEMENT_TABLE),
                 side(SOUL_REINFORCEMENT_TABLE),
                 side(SOUL_REINFORCEMENT_TABLE),
-                BlockModelDataGen.prefix(SOUL_STONE),
+                prefix(SOUL_STONE),
                 top(SOUL_REINFORCEMENT_TABLE)));
         simpleBlock(CHISELED_SOUL_STONE_BRICKS, modelFromBlock(CHISELED_SOUL_STONE_BRICKS));
         simpleBlock(CRACKED_DECAYED_STONE_BRICKS);
-        slabBlock(CRACKED_DECAYED_STONE_BRICK_SLAB, BlockModelDataGen.prefix(CRACKED_DECAYED_STONE_BRICKS), BlockModelDataGen.prefix(CRACKED_DECAYED_STONE_BRICKS));
-        stairsBlock(CRACKED_DECAYED_STONE_BRICK_STAIRS, BlockModelDataGen.prefix(CRACKED_DECAYED_STONE_BRICKS));
-        wallBlock(CRACKED_DECAYED_STONE_BRICK_WALL, BlockModelDataGen.prefix(CRACKED_DECAYED_STONE_BRICKS));
+        slabBlock(CRACKED_DECAYED_STONE_BRICK_SLAB, prefix(CRACKED_DECAYED_STONE_BRICKS), prefix(CRACKED_DECAYED_STONE_BRICKS));
+        stairsBlock(CRACKED_DECAYED_STONE_BRICK_STAIRS, prefix(CRACKED_DECAYED_STONE_BRICKS));
+        wallBlock(CRACKED_DECAYED_STONE_BRICK_WALL, prefix(CRACKED_DECAYED_STONE_BRICKS));
         simpleBlock(CRACKED_SOUL_STONE_BRICKS);
-        slabBlock(CRACKED_SOUL_STONE_BRICK_SLAB, BlockModelDataGen.prefix(CRACKED_SOUL_STONE_BRICKS), BlockModelDataGen.prefix(CRACKED_SOUL_STONE_BRICKS));
-        stairsBlock(CRACKED_SOUL_STONE_BRICK_STAIRS, BlockModelDataGen.prefix(CRACKED_SOUL_STONE_BRICKS));
-        wallBlock(CRACKED_SOUL_STONE_BRICK_WALL, BlockModelDataGen.prefix(CRACKED_SOUL_STONE_BRICKS));
+        slabBlock(CRACKED_SOUL_STONE_BRICK_SLAB, prefix(CRACKED_SOUL_STONE_BRICKS), prefix(CRACKED_SOUL_STONE_BRICKS));
+        stairsBlock(CRACKED_SOUL_STONE_BRICK_STAIRS, prefix(CRACKED_SOUL_STONE_BRICKS));
+        wallBlock(CRACKED_SOUL_STONE_BRICK_WALL, prefix(CRACKED_SOUL_STONE_BRICKS));
         simpleBlock(CRIMSON_HYPHAL_SOIL, modelFromBlock(CRIMSON_HYPHAL_SOIL));
         simpleBlock(DECAYED_STONE);
-        slabBlock(DECAYED_STONE_BRICK_SLAB, BlockModelDataGen.prefix(DECAYED_STONE_BRICKS), BlockModelDataGen.prefix(DECAYED_STONE_BRICKS));
-        stairsBlock(DECAYED_STONE_BRICK_STAIRS, BlockModelDataGen.prefix(DECAYED_STONE_BRICKS));
-        wallBlock(DECAYED_STONE_BRICK_WALL, BlockModelDataGen.prefix(DECAYED_STONE_BRICKS));
+        slabBlock(DECAYED_STONE_BRICK_SLAB, prefix(DECAYED_STONE_BRICKS), prefix(DECAYED_STONE_BRICKS));
+        stairsBlock(DECAYED_STONE_BRICK_STAIRS, prefix(DECAYED_STONE_BRICKS));
+        wallBlock(DECAYED_STONE_BRICK_WALL, prefix(DECAYED_STONE_BRICKS));
         simpleBlock(DECAYED_STONE_BRICKS);
-        slabBlock(DECAYED_STONE_SLAB, BlockModelDataGen.prefix(DECAYED_STONE), BlockModelDataGen.prefix(DECAYED_STONE));
-        stairsBlock(DECAYED_STONE_STAIRS, BlockModelDataGen.prefix(DECAYED_STONE));
-        wallBlock(DECAYED_STONE_WALL, BlockModelDataGen.prefix(DECAYED_STONE));
+        slabBlock(DECAYED_STONE_SLAB, prefix(DECAYED_STONE), prefix(DECAYED_STONE));
+        stairsBlock(DECAYED_STONE_STAIRS, prefix(DECAYED_STONE));
+        wallBlock(DECAYED_STONE_WALL, prefix(DECAYED_STONE));
         fire(INFERNO);
         simpleBlock(PARCHED_SOIL);
         fire(POISONOUS_FIRE);
@@ -64,42 +63,46 @@ public class BlockStateDataGen extends BlockStateProvider {
         simpleBlock(REFINED_SOUL_SAND);
         simpleBlock(REFINED_SOUL_SOIL);
         simpleBlock(SMOOTH_SOUL_STONE);
-        slabBlock(SMOOTH_SOUL_STONE_SLAB, BlockModelDataGen.prefix(SMOOTH_SOUL_STONE), BlockModelDataGen.prefix(SMOOTH_SOUL_STONE));
-        stairsBlock(SMOOTH_SOUL_STONE_STAIRS, BlockModelDataGen.prefix(SMOOTH_SOUL_STONE));
-        wallBlock(SMOOTH_SOUL_STONE_WALL, BlockModelDataGen.prefix(SMOOTH_SOUL_STONE));
+        slabBlock(SMOOTH_SOUL_STONE_SLAB, prefix(SMOOTH_SOUL_STONE), prefix(SMOOTH_SOUL_STONE));
+        stairsBlock(SMOOTH_SOUL_STONE_STAIRS, prefix(SMOOTH_SOUL_STONE));
+        wallBlock(SMOOTH_SOUL_STONE_WALL, prefix(SMOOTH_SOUL_STONE));
         for (int i = 0; i <= SEStorageTileEntity.MAX_SOUL_ENERGY_LEVEL; i++) {
             getVariantBuilder(SOUL_ENERGY_STORAGE)
                     .partialState()
                     .with(ModBlockStateProperties.SOUL_ENERGY_LEVEL, i)
                     .addModels(new ConfiguredModel(models().cubeColumn(
-                            String.format("%s_%d", BlockModelDataGen.prefix(SOUL_ENERGY_STORAGE), i),
-                            BlockModelDataGen.prefix(String.format("%s_%d", name(SOUL_ENERGY_STORAGE), i)),
-                            BlockModelDataGen.prefix(BlockModelDataGen.SIMPLE_MACHINE_SIDE))));
+                            String.format("%s_%d", prefix(SOUL_ENERGY_STORAGE), i),
+                            prefix(String.format("%s_%d", name(SOUL_ENERGY_STORAGE), i)),
+                            prefix(BlockModelDataGen.SIMPLE_MACHINE_SIDE))));
         }
         for (int i = 0; i <= SEStorageTileEntity.MAX_SOUL_ENERGY_LEVEL; i++) {
             getVariantBuilder(SOUL_ENERGY_STORAGE_II)
                     .partialState()
                     .with(ModBlockStateProperties.SOUL_ENERGY_LEVEL, i)
                     .addModels(new ConfiguredModel(models().cubeColumn(
-                            String.format("%s_%d", BlockModelDataGen.prefix(SOUL_ENERGY_STORAGE_II), i),
-                            BlockModelDataGen.prefix(String.format("%s_%d", name(SOUL_ENERGY_STORAGE_II), i)),
-                            BlockModelDataGen.prefix(BlockModelDataGen.SIMPLE_L2_MACHINE_SIDE))));
+                            String.format("%s_%d", prefix(SOUL_ENERGY_STORAGE_II), i),
+                            prefix(String.format("%s_%d", name(SOUL_ENERGY_STORAGE_II), i)),
+                            prefix(BlockModelDataGen.SIMPLE_L2_MACHINE_SIDE))));
         }
         segens();
         simpleBlock(SOUL_LAVA_FLUID_BLOCK, modelFromBlock(SOUL_LAVA_FLUID_BLOCK));
-        ironBarBlock(SOUL_METAL_BARS, BlockModelDataGen.prefix(SOUL_METAL_BARS));
-        ironBarBlock(CHIPPED_SOUL_METAL_BARS, BlockModelDataGen.prefix(CHIPPED_SOUL_METAL_BARS));
-        ironBarBlock(DAMAGED_SOUL_METAL_BARS, BlockModelDataGen.prefix(DAMAGED_SOUL_METAL_BARS));
+        ironBarBlock(SOUL_METAL_BARS, prefix(SOUL_METAL_BARS));
+        ironBarBlock(CHIPPED_SOUL_METAL_BARS, prefix(CHIPPED_SOUL_METAL_BARS));
+        ironBarBlock(DAMAGED_SOUL_METAL_BARS, prefix(DAMAGED_SOUL_METAL_BARS));
+        ironBarBlock(REFINED_SOUL_METAL_BARS, prefix(REFINED_SOUL_METAL_BARS));
+        ironBarBlock(CHIPPED_REFINED_SOUL_METAL_BARS, prefix(CHIPPED_REFINED_SOUL_METAL_BARS));
+        ironBarBlock(DAMAGED_REFINED_SOUL_METAL_BARS, prefix(DAMAGED_REFINED_SOUL_METAL_BARS));
+        ironBarBlock(BROKEN_REFINED_SOUL_METAL_BARS, prefix(BROKEN_REFINED_SOUL_METAL_BARS));
         simpleBlock(SOUL_METAL_BLOCK);
         simpleBlock(SOUL_OBSIDIAN);
         simpleBlock(SOUL_STONE);
-        slabBlock(SOUL_STONE_BRICK_SLAB, BlockModelDataGen.prefix(SOUL_STONE_BRICKS), BlockModelDataGen.prefix(SOUL_STONE_BRICKS));
-        stairsBlock(SOUL_STONE_BRICK_STAIRS, BlockModelDataGen.prefix(SOUL_STONE_BRICKS));
-        wallBlock(SOUL_STONE_BRICK_WALL, BlockModelDataGen.prefix(SOUL_STONE_BRICKS));
+        slabBlock(SOUL_STONE_BRICK_SLAB, prefix(SOUL_STONE_BRICKS), prefix(SOUL_STONE_BRICKS));
+        stairsBlock(SOUL_STONE_BRICK_STAIRS, prefix(SOUL_STONE_BRICKS));
+        wallBlock(SOUL_STONE_BRICK_WALL, prefix(SOUL_STONE_BRICKS));
         simpleBlock(SOUL_STONE_BRICKS);
-        slabBlock(SOUL_STONE_SLAB, BlockModelDataGen.prefix(SOUL_STONE), BlockModelDataGen.prefix(SOUL_STONE));
-        stairsBlock(SOUL_STONE_STAIRS, BlockModelDataGen.prefix(SOUL_STONE));
-        wallBlock(SOUL_STONE_WALL, BlockModelDataGen.prefix(SOUL_STONE));
+        slabBlock(SOUL_STONE_SLAB, prefix(SOUL_STONE), prefix(SOUL_STONE));
+        stairsBlock(SOUL_STONE_STAIRS, prefix(SOUL_STONE));
+        wallBlock(SOUL_STONE_WALL, prefix(SOUL_STONE));
         cropsBlock(SOUL_WART, BlockStateProperties.AGE_3, 0, 1, 1, 2);
         simpleBlock(SOULIFIED_BUSH, modelFromBlock(SOULIFIED_BUSH));
         simpleBlock(WARPED_HYPHAL_SOIL, modelFromBlock(WARPED_HYPHAL_SOIL));
@@ -124,10 +127,10 @@ public class BlockStateDataGen extends BlockStateProvider {
         getVariantBuilder(segen)
                 .partialState()
                 .with(ModBlockStateProperties.IS_GENERATING_SE, false)
-                .addModels(new ConfiguredModel(models().singleTexture(BlockModelDataGen.prefix(segen).toString(), BlockModelDataGen.CUBE_ALL.getLocation(), BlockModelDataGen.ALL_NAME, BlockModelDataGen.prefix(segen))))
+                .addModels(new ConfiguredModel(models().singleTexture(prefix(segen).toString(), BlockModelDataGen.CUBE_ALL.getLocation(), BlockModelDataGen.ALL_NAME, prefix(segen))))
                 .partialState()
                 .with(ModBlockStateProperties.IS_GENERATING_SE, true)
-                .addModels(new ConfiguredModel(models().singleTexture(BlockModelDataGen.prefix(segen) + "_gs", BlockModelDataGen.CUBE_ALL.getLocation(), BlockModelDataGen.ALL_NAME, BlockModelDataGen.prefix(name(segen) + "_gs"))));
+                .addModels(new ConfiguredModel(models().singleTexture(prefix(segen) + "_gs", BlockModelDataGen.CUBE_ALL.getLocation(), BlockModelDataGen.ALL_NAME, prefix(name(segen) + "_gs"))));
     }
 
     private void sidedSegen(Block segen, boolean l2) {
@@ -138,16 +141,16 @@ public class BlockStateDataGen extends BlockStateProvider {
         getVariantBuilder(segen)
                 .partialState()
                 .with(ModBlockStateProperties.IS_GENERATING_SE, false)
-                .addModels(new ConfiguredModel(models().orientable(BlockModelDataGen.prefix(segen).toString(),
-                        BlockModelDataGen.prefix(sideTex),
-                        BlockModelDataGen.prefix(sideTex),
-                        BlockModelDataGen.prefix(segen))))
+                .addModels(new ConfiguredModel(models().orientable(prefix(segen).toString(),
+                        prefix(sideTex),
+                        prefix(sideTex),
+                        prefix(segen))))
                 .partialState()
                 .with(ModBlockStateProperties.IS_GENERATING_SE, true)
-                .addModels(new ConfiguredModel(models().orientable(BlockModelDataGen.prefix(segen) + "_gs",
-                        BlockModelDataGen.prefix(sideTex),
-                        BlockModelDataGen.prefix(sideTex),
-                        BlockModelDataGen.prefix(name(segen) + "_gs"))));
+                .addModels(new ConfiguredModel(models().orientable(prefix(segen) + "_gs",
+                        prefix(sideTex),
+                        prefix(sideTex),
+                        prefix(name(segen) + "_gs"))));
     }
 
     public void ironBarBlock(PaneBlock block, ResourceLocation tex) {
@@ -333,15 +336,15 @@ public class BlockStateDataGen extends BlockStateProvider {
     }
 
     private BlockModelBuilder fireFloorModel(Block fireBlock, int texId) {
-        return models().withExistingParent(name(fireBlock) + "_floor" + texId, BLOCK_FOLDER + "/template_fire_floor").texture("fire", BlockModelDataGen.prefix(fireBlock) + "_" + texId);
+        return models().withExistingParent(name(fireBlock) + "_floor" + texId, BLOCK_FOLDER + "/template_fire_floor").texture("fire", prefix(fireBlock) + "_" + texId);
     }
 
     private BlockModelBuilder fireSideModel(Block fireBlock, int texId, boolean alt) {
-        return models().withExistingParent(name(fireBlock) + "_side" + (alt ? "_alt" : "") + texId, BLOCK_FOLDER + "/template_fire_side" + (alt ? "_alt" : "")).texture("fire", BlockModelDataGen.prefix(fireBlock) + "_" + texId);
+        return models().withExistingParent(name(fireBlock) + "_side" + (alt ? "_alt" : "") + texId, BLOCK_FOLDER + "/template_fire_side" + (alt ? "_alt" : "")).texture("fire", prefix(fireBlock) + "_" + texId);
     }
 
     private BlockModelBuilder fireUpModel(Block fireBlock, int texId, boolean alt) {
-        return models().withExistingParent(name(fireBlock) + "_up" + (alt ? "_alt" : "") + texId, BLOCK_FOLDER + "/template_fire_up" + (alt ? "_alt" : "")).texture("fire", BlockModelDataGen.prefix(fireBlock) + "_" + texId);
+        return models().withExistingParent(name(fireBlock) + "_up" + (alt ? "_alt" : "") + texId, BLOCK_FOLDER + "/template_fire_up" + (alt ? "_alt" : "")).texture("fire", prefix(fireBlock) + "_" + texId);
     }
 
     private static String name(Block block) {

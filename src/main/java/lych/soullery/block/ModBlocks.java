@@ -9,6 +9,7 @@ import lych.soullery.item.ModMaterials;
 import lych.soullery.tag.ModBlockTags;
 import lych.soullery.util.ModConstants;
 import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock.Properties;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityType;
@@ -29,9 +30,12 @@ import static net.minecraft.block.AbstractBlock.Properties.of;
 
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModBlocks {
-    public static final SoulMetalBarsBlock CHIPPED_SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(5, 36).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 2), 2);
+    public static final RefinedSoulMetalBarsBlock BROKEN_REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(8, 7).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 2), 1);
+    public static final RefinedSoulMetalBarsBlock CHIPPED_REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).noDrops().strength(8, 2401).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 6), 3);
+    public static final SoulMetalBarsBlock CHIPPED_SOUL_METAL_BARS = new SoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(4, 36).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 2), 2);
     public static final Block CRIMSON_HYPHAL_SOIL = new HyphalSoulSoilBlock(of(Material.DIRT, MaterialColor.CRIMSON_NYLIUM).randomTicks().strength(0.5f).sound(SoundType.SOUL_SOIL));
-    public static final SoulMetalBarsBlock DAMAGED_SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 1), 1);
+    public static final RefinedSoulMetalBarsBlock DAMAGED_REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).noDrops().strength(8, 49).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 4), 2);
+    public static final SoulMetalBarsBlock DAMAGED_SOUL_METAL_BARS = new SoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(4, 6).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 1), 1);
     public static final Block DECAYED_STONE = new Block(of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block DEPTH_SEGEN = createSegenBlock(MaterialColor.STONE, 2, 1.5f, 2, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN, 1));
     public static final Block DEPTH_SEGEN_II = createSegenBlock(MaterialColor.STONE, 3, 3, 4, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN_II, 2));
@@ -45,7 +49,8 @@ public final class ModBlocks {
     public static final AdvancedFireBlock POISONOUS_FIRE = new AdvancedFireBlock(fireProperties(MaterialColor.COLOR_LIGHT_GREEN, ModConstants.POISONOUS_FIRE_LIGHT_LEVEL), ModBlocks.POISONOUS_FIRE, ModBlockTags.POISONOUS_FIRE_BASE_BLOCKS);
     public static final Block POTTED_SOULIFIED_BUSH = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ModBlocks.SOULIFIED_BUSH, copy(Blocks.DEAD_BUSH));
     public static final SimpleFireBlock PURE_SOUL_FIRE = new SimpleFireBlock(fireProperties(MaterialColor.COLOR_BLUE, ModConstants.PURE_SOUL_FIRE_LIGHT_LEVEL), ModBlockTags.PURE_SOUL_FIRE_BASED_BLOCKS);
-    public static final Block REFINED_SOUL_METAL_BLOCK = new Block(of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(8, 24).sound(SoundType.METAL).lightLevel(state -> 10));
+    public static final RefinedSoulMetalBarsBlock REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).noDrops().strength(8, 5764801).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 8), 4);
+    public static final Block REFINED_SOUL_METAL_BLOCK = new Block(of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(8, 2400).sound(SoundType.METAL).lightLevel(state -> 10));
     public static final Block REFINED_SOUL_SAND = new SoulSandBlock(of(Material.SAND, MaterialColor.COLOR_BROWN).strength(0.5F).speedFactor(0.2F).sound(SoundType.SOUL_SAND).isValidSpawn(ModBlocks::always).isRedstoneConductor(ModBlocks::always).isViewBlocking(ModBlocks::always).isSuffocating(ModBlocks::always));
     public static final Block REFINED_SOUL_SOIL = new Block(of(Material.DIRT, MaterialColor.COLOR_BROWN).strength(0.5F).speedFactor(0.9F).sound(SoundType.SOUL_SOIL));
     public static final Block SEGEN = createSegenBlock(MaterialColor.COLOR_LIGHT_BLUE, 2, 1.5f, 5, () -> new SEGeneratorTileEntity(ModTileEntities.SEGEN, 1));
@@ -57,9 +62,9 @@ public final class ModBlocks {
     public static final Block SOUL_ENERGY_STORAGE = new SEStorageBlock(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(1.5f).lightLevel(state -> state.getValue(ModBlockStateProperties.SOUL_ENERGY_LEVEL) + 5), () -> new SEStorageTileEntity(ModTileEntities.SOUL_ENERGY_STORAGE, SEStorageTileEntity.CAPACITY, 1));
     public static final Block SOUL_ENERGY_STORAGE_II = new SEStorageBlock(of(Material.STONE, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(3).lightLevel(state -> state.getValue(ModBlockStateProperties.SOUL_ENERGY_LEVEL) + 10), () -> new SEStorageTileEntity(ModTileEntities.SOUL_ENERGY_STORAGE_II, SEStorageTileEntity.CAPACITY_II, 2));
     public static final FlowingFluidBlock SOUL_LAVA_FLUID_BLOCK = new FlowingFluidBlock(() -> ModFluids.SOUL_LAVA, of(ModMaterials.SOUL_LAVA).noCollission().randomTicks().strength(100).noDrops().lightLevel(state -> 15));
-    public static final SoulMetalBarsBlock SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(5, 1296).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 3), 3);
-    public static final Block SOUL_METAL_BLOCK = new Block(of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(4, 6).sound(SoundType.METAL).lightLevel(state -> 5));
-    public static final Block SOUL_OBSIDIAN = new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(75, 1200).isValidSpawn(ModBlocks::never).lightLevel(state -> 3));
+    public static final SoulMetalBarsBlock SOUL_METAL_BARS = new SoulMetalBarsBlock(Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(4, 1296).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 3), 3);
+    public static final Block SOUL_METAL_BLOCK = new Block(of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(4, 600).sound(SoundType.METAL).lightLevel(state -> 5));
+    public static final Block SOUL_OBSIDIAN = new Block(Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(75, 1200).isValidSpawn(ModBlocks::never).lightLevel(state -> 3));
     public static final Block SOUL_REINFORCEMENT_TABLE = new SoulReinforcementTableBlock(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(0).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block SOUL_STONE = new Block(of(Material.STONE, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block SOUL_WART = new SoulWartBlock(of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().sound(SoundType.NETHER_WART));
@@ -114,7 +119,7 @@ public final class ModBlocks {
         return false;
     }
 
-    private static AbstractBlock.Properties fireProperties(MaterialColor color, int light) {
+    private static Properties fireProperties(MaterialColor color, int light) {
         return of(Material.FIRE, color).noCollission().instabreak().lightLevel(state -> light).sound(SoundType.WOOL);
     }
 
@@ -127,6 +132,8 @@ public final class ModBlocks {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
+        registry.register(make(BROKEN_REFINED_SOUL_METAL_BARS, ModBlockNames.BROKEN_REFINED_SOUL_METAL_BARS));
+        registry.register(make(CHIPPED_REFINED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_REFINED_SOUL_METAL_BARS));
         registry.register(make(CHIPPED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_SOUL_METAL_BARS));
         registry.register(make(CHISELED_SOUL_STONE_BRICKS, ModBlockNames.CHISELED_SOUL_STONE_BRICKS));
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_SLAB, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_SLAB));
@@ -138,6 +145,7 @@ public final class ModBlocks {
         registry.register(make(CRACKED_SOUL_STONE_BRICK_WALL, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL));
         registry.register(make(CRACKED_SOUL_STONE_BRICKS, ModBlockNames.CRACKED_SOUL_STONE_BRICKS));
         registry.register(make(CRIMSON_HYPHAL_SOIL, ModBlockNames.CRIMSON_HYPHAL_SOIL));
+        registry.register(make(DAMAGED_REFINED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_REFINED_SOUL_METAL_BARS));
         registry.register(make(DAMAGED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_SOUL_METAL_BARS));
         registry.register(make(DECAYED_STONE, ModBlockNames.DECAYED_STONE));
         registry.register(make(DECAYED_STONE_BRICK_SLAB, ModBlockNames.DECAYED_STONE_BRICK_SLAB));
@@ -158,6 +166,7 @@ public final class ModBlocks {
         registry.register(make(POISONOUS_FIRE, ModBlockNames.POISONOUS_FIRE));
         registry.register(make(POTTED_SOULIFIED_BUSH, ModBlockNames.POTTED_SOULIFIED_BUSH));
         registry.register(make(PURE_SOUL_FIRE, ModBlockNames.PURE_SOUL_FIRE));
+        registry.register(make(REFINED_SOUL_METAL_BARS, ModBlockNames.REFINED_SOUL_METAL_BARS));
         registry.register(make(REFINED_SOUL_METAL_BLOCK, ModBlockNames.REFINED_SOUL_METAL_BLOCK));
         registry.register(make(REFINED_SOUL_SAND, ModBlockNames.REFINED_SOUL_SAND));
         registry.register(make(REFINED_SOUL_SOIL, ModBlockNames.REFINED_SOUL_SOIL));

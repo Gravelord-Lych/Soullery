@@ -40,14 +40,24 @@ public class SoulCrystalEntity extends EnderCrystalEntity {
             return false;
         } else {
             if (isAlive() && !level.isClientSide()) {
-                remove();
-                if (!source.isExplosion()) {
-                    level.explode(null, getX(), getY(), getZ(), 6, Explosion.Mode.DESTROY);
+                if (canBeDestroyed(source)) {
+                    destroy(source);
                 }
-                onDestroyedBy(source);
             }
             return true;
         }
+    }
+
+    protected boolean canBeDestroyed(DamageSource source) {
+        return true;
+    }
+
+    protected void destroy(DamageSource source) {
+        remove();
+        if (!source.isExplosion()) {
+            level.explode(null, getX(), getY(), getZ(), 6, Explosion.Mode.DESTROY);
+        }
+        onDestroyedBy(source);
     }
 
     @Override

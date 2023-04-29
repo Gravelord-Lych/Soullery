@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import java.util.function.Supplier;
 
 public class SkeletonReinforcement extends BowAttackReinforcement {
-    public static final double ENHANCED_ARROW_SPEED_MULTIPLIER = 0.15;
+    public static final double ENHANCED_ARROW_SPEED_MULTIPLIER = 0.1;
 
     public SkeletonReinforcement() {
         this(EntityType.SKELETON);
