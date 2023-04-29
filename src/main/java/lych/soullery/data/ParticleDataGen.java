@@ -39,17 +39,35 @@ public class ParticleDataGen implements IDataProvider {
         withName(ModParticleNames.DRIPPING_SOUL_LAVA).add(new ResourceLocation("drip_land")).save();
         withName(ModParticleNames.FALLING_SOUL_LAVA).add(new ResourceLocation("drip_fall")).save();
         withName(ModParticleNames.LANDING_SOUL_LAVA).add(new ResourceLocation("drip_land")).save();
-        TextureArray pursuerRailArray = withName(ModParticleNames.PURSUER_RAIL);
-        for (int i = 5; i >= 0; i--){
-            pursuerRailArray.add(new ResourceLocation("generic_" + i));
-        }
-        pursuerRailArray.save();
-        TextureArray pursuerRailType2Array = withName(ModParticleNames.PURSUER_RAIL_TYPE_2);
-        for (int i = 5; i >= 0; i--){
-            pursuerRailType2Array.add(new ResourceLocation("generic_" + i));
-        }
-        pursuerRailType2Array.save();
+        iterateDown(withName(ModParticleNames.PURSUER_RAIL), "generic_", 5);
+        iterateDown(withName(ModParticleNames.PURSUER_RAIL_TYPE_2), "generic_", 5);
         withName(ModParticleNames.SOUL_LAVA).add(Soullery.prefix("soul_lava")).save();
+        iterateUp(withName(ModParticleNames.SOUL_DRAGON_BREATH), "generic_", 5, 7);
+        iterateUp(withName(ModParticleNames.SOUL_DRAGON_BREATH_PURE), "generic_", 5, 7);
+    }
+
+    public static void iterateUp(TextureArray array, String name, int max) {
+        iterateUp(array, name, 0, max);
+    }
+
+    public static void iterateUp(TextureArray array, String name, int from, int to) {
+        Preconditions.checkArgument(from <= to);
+        for (int i = from; i <= to; i++){
+            array.add(new ResourceLocation(name + i));
+        }
+        array.save();
+    }
+
+    public static void iterateDown(TextureArray array, String name, int max) {
+        iterateDown(array, name, max, 0);
+    }
+
+    public static void iterateDown(TextureArray array, String name, int from, int to) {
+        Preconditions.checkArgument(from >= to);
+        for (int i = from; i >= to; i--){
+            array.add(new ResourceLocation(name + i));
+        }
+        array.save();
     }
 
     protected void generateParticles(DirectoryCache cache) {

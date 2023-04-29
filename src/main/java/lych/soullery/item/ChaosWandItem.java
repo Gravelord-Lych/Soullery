@@ -16,13 +16,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class ChaosWandItem extends AbstractWandItem {
+public class ChaosWandItem extends AbstractWandItem<ChaosWandItem> {
     private static final int RANGE = 6;
+    private static final int RANGE_II = 9;
     private static final int COST = 400;
     private static final int TIME = 100;
+    private static final int TIME_II = 150;
 
-    public ChaosWandItem(Properties properties) {
-        super(properties, COST);
+    public ChaosWandItem(Properties properties, int tier) {
+        super(properties, COST, tier);
     }
 
     @Nullable
@@ -30,13 +32,17 @@ public class ChaosWandItem extends AbstractWandItem {
     protected ActionResultType performWandUse(ServerWorld level, ServerPlayerEntity player, Hand hand) {
         Predicate<LivingEntity> selector = EntityPredicates.ATTACK_ALLOWED::test;
         boolean controlled = false;
-        for (MobEntity mob : level.getNearbyEntities(MobEntity.class,  new EntityPredicate().range(RANGE).selector(selector.and(entity -> entity instanceof IMob)), player, player.getBoundingBox().inflate(RANGE))) {
-            boolean success = ControlDictionaries.CHAOS.control(mob, player, TIME) != null;
+        for (MobEntity mob : level.getNearbyEntities(MobEntity.class,  new EntityPredicate().range(getRange()).selector(selector.and(entity -> entity instanceof IMob)), player, player.getBoundingBox().inflate(getRange()))) {
+            boolean success = ControlDictionaries.CHAOS.control(mob, player, getTier() > 1 ? TIME_II : TIME) != null;
             controlled |= success;
             if (success) {
                 EntityUtils.addParticlesAroundSelfServerside(mob, level, RedstoneParticles.YELLOW_GREEN, 6);
             }
         }
         return controlled ? ActionResultType.CONSUME : null;
+    }
+
+    private int getRange() {
+        return getTier() > 1 ? RANGE_II : RANGE;
     }
 }

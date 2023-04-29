@@ -13,5 +13,6 @@ public class ModNetworkingRegistry {
         event.enqueueWork(LaserNetwork::register);
         event.enqueueWork(MindOperatorNetwork::register);
         event.enqueueWork(StaticStatusHandler::register);
+        event.enqueueWork(SoulDragonNetwork::register);
     }
 }

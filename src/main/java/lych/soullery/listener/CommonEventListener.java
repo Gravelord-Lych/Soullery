@@ -9,6 +9,7 @@ import lych.soullery.api.shield.ISharedShieldUser;
 import lych.soullery.api.shield.IShieldUser;
 import lych.soullery.block.IArmoredBlock;
 import lych.soullery.block.ModBlocks;
+import lych.soullery.block.SoulMetalBarsBlock;
 import lych.soullery.block.plant.SoulifiedBushBlock;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.effect.ModEffects;
@@ -16,7 +17,6 @@ import lych.soullery.effect.SoulPollutionHandler;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.iface.*;
 import lych.soullery.entity.monster.boss.SkeletonKingEntity;
-import lych.soullery.entity.monster.boss.esv.SoulCrystalEntity;
 import lych.soullery.entity.monster.voidwalker.AbstractVoidwalkerEntity;
 import lych.soullery.entity.projectile.SoulArrowEntity;
 import lych.soullery.extension.ExtraAbility;
@@ -30,6 +30,7 @@ import lych.soullery.extension.soulpower.reinforce.Reinforcements;
 import lych.soullery.extension.soulpower.reinforce.WandererReinforcement;
 import lych.soullery.extension.superlink.SuperLinkManager;
 import lych.soullery.item.ModItems;
+import lych.soullery.item.SoulContainerItem;
 import lych.soullery.item.SoulPieceItem;
 import lych.soullery.item.VoidwalkerSpawnEggItem;
 import lych.soullery.mixin.EntityDamageSourceAccessor;
@@ -42,8 +43,12 @@ import lych.soullery.util.mixin.IEntityMixin;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import lych.soullery.world.CommandData;
 import lych.soullery.world.event.manager.EventManager;
+import lych.soullery.world.event.manager.SoulDragonFightManager;
 import lych.soullery.world.event.manager.WorldTickerManager;
+import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.dimension.ModDimensions;
 import lych.soullery.world.gen.feature.ModConfiguredFeatures;
+import lych.soullery.world.gen.feature.PlateauSpikeFeature;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -54,28 +59,30 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -315,6 +322,38 @@ public final class CommonEventListener {
         }
     }
 
+    @SubscribeEvent
+    public static void onProjectileImpact(ProjectileImpactEvent event) {
+        if (event.getEntity() instanceof DamagingProjectileEntity || event.getEntity() instanceof AbstractArrowEntity) {
+            World level = event.getEntity().level;
+            if (level.isClientSide()) {
+                return;
+            }
+            BlockPos pos = new BlockPos(event.getRayTraceResult().getLocation());
+            if (level.getBlockState(pos).getBlock() instanceof SoulMetalBarsBlock) {
+                SoulMetalBarsBlock.handleBlockDestroy(level, pos, (SoulMetalBarsBlock) level.getBlockState(pos).getBlock(), SoulMetalBarsBlock.MAX_LINKED_DAMAGE_PROJECTILE, false);
+                SoulMetalBarsBlock.destroyHitProjectile(event.getEntity());
+                SoulMetalBarsBlock.addParticles((ServerWorld) level, event.getRayTraceResult().getLocation(), level.getRandom());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDestroySoulMetalBars(BlockEvent.BreakEvent event) {
+        BlockState state = event.getState();
+        if (state.getBlock() instanceof SoulMetalBarsBlock) {
+            SoulMetalBarsBlock.handleBlockDestroy(event.getWorld(),
+                    event.getPos(),
+                    (SoulMetalBarsBlock) state.getBlock(),
+                    SoulMetalBarsBlock.MAX_LINKED_DAMAGE_DIG,
+                    !event.getPlayer().abilities.instabuild && ForgeHooks.canHarvestBlock(state, event.getPlayer(), event.getWorld(), event.getPos()));
+            if (event.getWorld() instanceof ServerWorld) {
+                SoulMetalBarsBlock.addParticles((ServerWorld) event.getWorld(), Vector3d.atCenterOf(event.getPos()), event.getWorld().getRandom());
+            }
+            event.setCanceled(true);
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEntityDestroyBlock(LivingDestroyBlockEvent event) {
         if (handleArmoredBlockBreak(event.getEntity().level, event.getPos(), IArmoredBlock::enableForMobs)) {
@@ -390,6 +429,51 @@ public final class CommonEventListener {
         if (player.getMainHandItem().isEmpty() && ExtraAbility.TELEPORTATION.isOn(player) || MindOperatorSynchronizer.getOperatingMob(player) != null) {
             ClickHandlerNetwork.INSTANCE.sendToServer(ClickHandlerNetwork.Type.RIGHT);
         }
+    }
+
+
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getWorld().isClientSide()) {
+            return;
+        }
+        ServerWorld level = (ServerWorld) event.getWorld();
+        if (event.getWorld().getBlockState(event.getPos()).is(Blocks.DRAGON_EGG)) {
+            if (event.getWorld().dimension() == ModDimensions.SOUL_LAND && event.getWorld().getBiomeName(event.getPos()).filter(r -> r == ModBiomes.INNERMOST_PLATEAU).isPresent() && checkBase(event, level) && SoulDragonFightManager.get(level).getNearbyEvent(event.getPos(), 100) == null) {
+                List<BlockPos> posList = checkSoulDragonFrom(event.getPos().below(), level);
+                if (!posList.isEmpty()) {
+                    SoulDragonFightManager.tryAddFight(event.getPos(), level, posList);
+                } else {
+                    SoulDragonFightManager.warnFailedPlayer(event.getPlayer());
+                }
+                event.setUseBlock(Event.Result.DENY);
+            } else if (event.getPlayer().getMainHandItem().getItem() instanceof SoulContainerItem && SoulPieceItem.getType(event.getPlayer().getMainHandItem()) == EntityType.ENDER_DRAGON) {
+                event.getPlayer().getMainHandItem().shrink(1);
+                event.getWorld().destroyBlock(event.getPos(), false);
+                for (int i = 0; i < 2; i++) {
+                    EntityUtils.spawnItem(event.getWorld(), event.getPos(), new ItemStack(Items.DRAGON_EGG));
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(ActionResultType.sidedSuccess(event.getWorld().isClientSide()));
+            }
+        }
+    }
+
+    private static boolean checkBase(PlayerInteractEvent.RightClickBlock event, ServerWorld level) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                BlockState state = level.getBlockState(event.getPos().offset(x, -1, z));
+                if (!state.is(ModBlocks.SOUL_METAL_BLOCK) && !state.is(ModBlocks.REFINED_SOUL_METAL_BLOCK)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static List<BlockPos> checkSoulDragonFrom(BlockPos pos, ServerWorld level) {
+        List<BlockPos> posList = PlateauSpikeFeature.findSpikeLocations(level, pos, level.getRandom());
+        return posList.stream().allMatch(posIn -> level.getBiomeName(posIn).filter(r -> r == ModBiomes.INNERMOST_PLATEAU).isPresent()) ? posList : Collections.emptyList();
     }
 
     @SuppressWarnings("deprecation")
@@ -551,18 +635,6 @@ public final class CommonEventListener {
     }
 
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (!event.getWorld().isClientSide() && event.getEntity() instanceof MobEntity) {
-            MobEntity mob = (MobEntity) event.getEntity();
-            if (mob instanceof SoulCrystalEntity) {
-                if (!((SoulCrystalEntity) mob).isValid()) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         PlayerEntity oldPlayer = event.getOriginal();
         PlayerEntity newPlayer = event.getPlayer();
@@ -621,6 +693,7 @@ public final class CommonEventListener {
         EntityHighlightManager.get(world).tick();
         SuperLinkManager.get(world).tick(world.getServer());
         WorldTickerManager.get(world).tick();
+        SoulDragonFightManager.get(world).tick();
         SoulManager.get(world).tick();
     }
 }

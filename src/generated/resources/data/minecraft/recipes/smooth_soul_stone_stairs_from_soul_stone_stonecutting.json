@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "soullery:soul_stone"
-  },
-  "result": "soullery:smooth_soul_stone_stairs",
-  "count": 1
-}

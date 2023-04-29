@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "soullery:soul_stone"
-  },
-  "result": "soullery:cracked_soul_stone_brick_wall",
-  "count": 1
-}

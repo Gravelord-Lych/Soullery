@@ -11,6 +11,7 @@ public class ModEntityNames {
     public static final String ETHEREAL_ARROW = "ethereal_arrow";
     public static final String FANGS = "fangs";
     public static final String FANGS_SUMMONER = "fangs_summoner";
+    public static final String FORTIFIED_SOUL_CRYSTAL = "fortified_soul_crystal";
     public static final String GIANT_X = "giant_x";
     public static final String GRAVITATIONAL_DRAGON_FIREBALL = "gravitational_dragon_fireball";
     public static final String ILLUSORY_HORSE = "illusory_horse";
@@ -23,10 +24,12 @@ public class ModEntityNames {
     public static final String ROBOT = "robot";
     public static final String SKELETON_FOLLOWER = "skeleton_follower";
     public static final String SKELETON_KING = "skeleton_king";
+    public static final String SOULBALL = "soulball";
     public static final String SOUL_ARROW = "soul_arrow";
     public static final String SOUL_BOLT = "soul_bolt";
     public static final String SOUL_CONTROLLER = "soul_controller";
     public static final String SOUL_CRYSTAL = "soul_crystal";
+    public static final String SOUL_DRAGON = "soul_dragon";
     public static final String SOUL_RABBIT = "soul_rabbit";
     public static final String SOUL_SKELETON = "soul_skeleton";
     public static final String SOUL_SKELETON_KING = "soul_skeleton_king";

@@ -4,6 +4,7 @@ import lych.soullery.entity.ai.goal.CopyOwnerTargetGoal;
 import lych.soullery.entity.ai.goal.FollowOwnerGoal;
 import lych.soullery.entity.iface.IHasOwner;
 import lych.soullery.entity.monster.boss.SoulSkeletonKingEntity;
+import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.extension.fire.Fires;
 import lych.soullery.item.ModItems;
 import lych.soullery.util.ModSoundEvents;
@@ -56,7 +57,7 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
         goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1, 10, 4, false));
         targetSelector.addGoal(2, new CopyOwnerTargetGoal<>(this));
         ((IGoalSelectorMixin) targetSelector).getAvailableGoals().removeIf(goal -> goal.getGoal() instanceof HurtByTargetGoal);
-        targetSelector.addGoal(1, new HurtByTargetGoal(this, SoulSkeletonKingEntity.class, SoulSkeletonEntity.class));
+        targetSelector.addGoal(1, new HurtByTargetGoal(this, SoulSkeletonKingEntity.class, SoulSkeletonEntity.class, SoulDragonEntity.class));
     }
 
     @Override

@@ -13,6 +13,7 @@ public final class ModBlockTags {
     public static final IOptionalNamedTag<Block> PURE_SOUL_FIRE_BASED_BLOCKS = tag(TagNames.PURE_SOUL_FIRE_BASED_BLOCKS.getPath());
     public static final IOptionalNamedTag<Block> SOUL_RABBIT_SPAWNABLE_BLOCKS = tag(TagNames.SOUL_RABBIT_SPAWNABLE_BLOCKS.getPath());
     public static final IOptionalNamedTag<Block> SOULIFIED_BUSH_PLACEABLE_BLOCKS = tag(TagNames.SOULIFIED_BUSH_PLACEABLE_BLOCKS.getPath());
+    public static final IOptionalNamedTag<Block> SOUL_DRAGON_IMMUNE = tag(TagNames.SOUL_DRAGON_IMMUNE.getPath());
 
     private ModBlockTags() {}
 

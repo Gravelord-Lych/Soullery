@@ -24,4 +24,8 @@ public interface WorldEvent {
     BlockPos getCenter();
 
     ServerWorld getLevel();
+
+    boolean isDirty();
+
+    void setDirty(boolean dirty);
 }

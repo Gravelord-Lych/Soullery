@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:soul_sand",
+    "minecraft:soul_soil",
+    "soullery:parched_soil",
+    "soullery:refined_soul_sand",
+    "soullery:refined_soul_soil",
+    "soullery:warped_hyphal_soil",
+    "soullery:crimson_hyphal_soil",
+    "soullery:soul_obsidian",
+    "soullery:soul_metal_bars",
+    "soullery:chipped_soul_metal_bars",
+    "soullery:damaged_soul_metal_bars",
+    "soullery:soul_stone",
+    "minecraft:bedrock"
+  ]
+}

@@ -22,6 +22,8 @@ public final class ModParticles {
     public static final BasicParticleType LANDING_SOUL_LAVA = new BasicParticleType(false);
     public static final BasicParticleType PURSUER_RAIL = new BasicParticleType(false);
     public static final BasicParticleType PURSUER_RAIL_TYPE_2 = new BasicParticleType(false);
+    public static final BasicParticleType SOUL_DRAGON_BREATH = new BasicParticleType(false);
+    public static final BasicParticleType SOUL_DRAGON_BREATH_PURE = new BasicParticleType(false);
     public static final BasicParticleType SOUL_LAVA = new BasicParticleType(false);
 
     private ModParticles() {}
@@ -34,6 +36,8 @@ public final class ModParticles {
         registry.register(make(LANDING_SOUL_LAVA, ModParticleNames.LANDING_SOUL_LAVA));
         registry.register(make(PURSUER_RAIL, ModParticleNames.PURSUER_RAIL));
         registry.register(make(PURSUER_RAIL_TYPE_2, ModParticleNames.PURSUER_RAIL_TYPE_2));
+        registry.register(make(SOUL_DRAGON_BREATH, ModParticleNames.SOUL_DRAGON_BREATH));
+        registry.register(make(SOUL_DRAGON_BREATH_PURE, ModParticleNames.SOUL_DRAGON_BREATH_PURE));
         registry.register(make(SOUL_LAVA, ModParticleNames.SOUL_LAVA));
     }
 
@@ -45,6 +49,8 @@ public final class ModParticles {
         manager.register(LANDING_SOUL_LAVA, LandingSoulLavaFactory::new);
         manager.register(PURSUER_RAIL, sprite -> new PursuerRailParticle.Factory(sprite, false));
         manager.register(PURSUER_RAIL_TYPE_2, sprite -> new PursuerRailParticle.Factory(sprite, true));
+        manager.register(SOUL_DRAGON_BREATH, SoulDragonBreathParticle.CommonFactory::new);
+        manager.register(SOUL_DRAGON_BREATH_PURE, SoulDragonBreathParticle.PureFactory::new);
         manager.register(SOUL_LAVA, LavaParticle.Factory::new);
     }
 }

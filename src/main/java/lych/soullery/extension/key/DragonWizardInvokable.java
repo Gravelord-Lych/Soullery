@@ -1,7 +1,7 @@
 package lych.soullery.extension.key;
 
 import lych.soullery.api.exa.IExtraAbility;
-import lych.soullery.entity.GravitationalDragonFireballEntity;
+import lych.soullery.entity.projectile.GravitationalDragonFireballEntity;
 import lych.soullery.extension.ExtraAbility;
 import net.minecraft.entity.player.ServerPlayerEntity;
 

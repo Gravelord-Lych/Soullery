@@ -29,7 +29,9 @@ import static net.minecraft.block.AbstractBlock.Properties.of;
 
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModBlocks {
+    public static final SoulMetalBarsBlock CHIPPED_SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(5, 36).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 2), 2);
     public static final Block CRIMSON_HYPHAL_SOIL = new HyphalSoulSoilBlock(of(Material.DIRT, MaterialColor.CRIMSON_NYLIUM).randomTicks().strength(0.5f).sound(SoundType.SOUL_SOIL));
+    public static final SoulMetalBarsBlock DAMAGED_SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 1), 1);
     public static final Block DECAYED_STONE = new Block(of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block DEPTH_SEGEN = createSegenBlock(MaterialColor.STONE, 2, 1.5f, 2, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN, 1));
     public static final Block DEPTH_SEGEN_II = createSegenBlock(MaterialColor.STONE, 3, 3, 4, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN_II, 2));
@@ -55,7 +57,9 @@ public final class ModBlocks {
     public static final Block SOUL_ENERGY_STORAGE = new SEStorageBlock(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(1.5f).lightLevel(state -> state.getValue(ModBlockStateProperties.SOUL_ENERGY_LEVEL) + 5), () -> new SEStorageTileEntity(ModTileEntities.SOUL_ENERGY_STORAGE, SEStorageTileEntity.CAPACITY, 1));
     public static final Block SOUL_ENERGY_STORAGE_II = new SEStorageBlock(of(Material.STONE, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(3).lightLevel(state -> state.getValue(ModBlockStateProperties.SOUL_ENERGY_LEVEL) + 10), () -> new SEStorageTileEntity(ModTileEntities.SOUL_ENERGY_STORAGE_II, SEStorageTileEntity.CAPACITY_II, 2));
     public static final FlowingFluidBlock SOUL_LAVA_FLUID_BLOCK = new FlowingFluidBlock(() -> ModFluids.SOUL_LAVA, of(ModMaterials.SOUL_LAVA).noCollission().randomTicks().strength(100).noDrops().lightLevel(state -> 15));
+    public static final SoulMetalBarsBlock SOUL_METAL_BARS = new SoulMetalBarsBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).noDrops().strength(5, 1296).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 3), 3);
     public static final Block SOUL_METAL_BLOCK = new Block(of(Material.METAL, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(2).requiresCorrectToolForDrops().strength(4, 6).sound(SoundType.METAL).lightLevel(state -> 5));
+    public static final Block SOUL_OBSIDIAN = new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(75, 1200).isValidSpawn(ModBlocks::never).lightLevel(state -> 3));
     public static final Block SOUL_REINFORCEMENT_TABLE = new SoulReinforcementTableBlock(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(0).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block SOUL_STONE = new Block(of(Material.STONE, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block SOUL_WART = new SoulWartBlock(of(Material.PLANT, MaterialColor.COLOR_CYAN).noCollission().randomTicks().sound(SoundType.NETHER_WART));
@@ -102,8 +106,12 @@ public final class ModBlocks {
         return true;
     }
 
-    private static Boolean always(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> type) {
+    private static boolean always(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> type) {
         return true;
+    }
+
+    private static boolean never(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> type) {
+        return false;
     }
 
     private static AbstractBlock.Properties fireProperties(MaterialColor color, int light) {
@@ -119,6 +127,7 @@ public final class ModBlocks {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
+        registry.register(make(CHIPPED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_SOUL_METAL_BARS));
         registry.register(make(CHISELED_SOUL_STONE_BRICKS, ModBlockNames.CHISELED_SOUL_STONE_BRICKS));
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_SLAB, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_SLAB));
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_STAIRS));
@@ -129,6 +138,7 @@ public final class ModBlocks {
         registry.register(make(CRACKED_SOUL_STONE_BRICK_WALL, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL));
         registry.register(make(CRACKED_SOUL_STONE_BRICKS, ModBlockNames.CRACKED_SOUL_STONE_BRICKS));
         registry.register(make(CRIMSON_HYPHAL_SOIL, ModBlockNames.CRIMSON_HYPHAL_SOIL));
+        registry.register(make(DAMAGED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_SOUL_METAL_BARS));
         registry.register(make(DECAYED_STONE, ModBlockNames.DECAYED_STONE));
         registry.register(make(DECAYED_STONE_BRICK_SLAB, ModBlockNames.DECAYED_STONE_BRICK_SLAB));
         registry.register(make(DECAYED_STONE_BRICK_STAIRS, ModBlockNames.DECAYED_STONE_BRICK_STAIRS));
@@ -164,7 +174,9 @@ public final class ModBlocks {
         registry.register(make(SOUL_ENERGY_STORAGE, ModBlockNames.SOUL_ENERGY_STORAGE));
         registry.register(make(SOUL_ENERGY_STORAGE_II, ModBlockNames.SOUL_ENERGY_STORAGE_II));
         registry.register(make(SOUL_LAVA_FLUID_BLOCK, ModBlockNames.SOUL_LAVA_FLUID_BLOCK));
+        registry.register(make(SOUL_METAL_BARS, ModBlockNames.SOUL_METAL_BARS));
         registry.register(make(SOUL_METAL_BLOCK, ModBlockNames.SOUL_METAL_BLOCK));
+        registry.register(make(SOUL_OBSIDIAN, ModBlockNames.SOUL_OBSIDIAN));
         registry.register(make(SOUL_REINFORCEMENT_TABLE, ModBlockNames.SOUL_REINFORCEMENT_TABLE));
         registry.register(make(SOUL_STONE, ModBlockNames.SOUL_STONE));
         registry.register(make(SOUL_STONE_BRICK_SLAB, ModBlockNames.SOUL_STONE_BRICK_SLAB));

@@ -20,6 +20,8 @@ public interface IEntityMixin {
 
     boolean callGetSharedFlag(int flag);
 
+    void calSetSharedFlag(int flag, boolean value);
+
     Fire getFireOnSelf();
 
     boolean doSetFireOnSelf(Fire fire);

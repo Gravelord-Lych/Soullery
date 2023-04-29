@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.Color;
 
-public class SoulPurifierItem extends TargetedWandItem {
+public class SoulPurifierItem extends TargetedWandItem<SoulPurifierItem> {
     public static final float HUE = 0.5f;
     public static final float SATURATION = 0.2f;
     public static final float BRIGHTNESS = 1f;
@@ -25,9 +25,10 @@ public class SoulPurifierItem extends TargetedWandItem {
     private static final int WIDTH = 6;
     private static final int COST = 400;
     private static final int TIME = 400;
+    private static final int TIME_II = 800;
 
-    public SoulPurifierItem(Properties properties) {
-        super(properties, COST);
+    public SoulPurifierItem(Properties properties, int tier) {
+        super(properties, COST, tier);
     }
 
     @Nullable
@@ -35,7 +36,7 @@ public class SoulPurifierItem extends TargetedWandItem {
     protected ActionResultType performWandOn(ServerWorld level, ServerPlayerEntity player, EntityRayTraceResult ray, Hand hand) {
         if (ray.getEntity() instanceof MobEntity) {
             MobEntity mob = (MobEntity) ray.getEntity();
-            if (ControlDictionaries.SOUL_PURIFIER.control(mob, player, TIME) != null) {
+            if (ControlDictionaries.SOUL_PURIFIER.control(mob, player, getTier() > 1 ? TIME_II : TIME) != null) {
                 Vector3d mobPos = EntityUtils.centerOf(mob);
                 Lasers.renderLaser(new LaserAttackResult(mobPos, SOUL_PURIFIER, level), player, RENDER_TIME, WIDTH);
                 return ActionResultType.CONSUME;
@@ -43,5 +44,10 @@ public class SoulPurifierItem extends TargetedWandItem {
             return null;
         }
         return null;
+    }
+
+    @Override
+    protected int getWandDistance() {
+        return getTier() > 1 ? LONG_DISTANCE : DEFAULT_DISTANCE;
     }
 }

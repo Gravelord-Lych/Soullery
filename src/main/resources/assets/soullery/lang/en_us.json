@@ -1,7 +1,10 @@
 {
+  "attribute.name.soullery.expanded_max_health": "Expanded Max Health",
   "attribute.name.soullery.jump_strength": "Jump Strength",
+  "soullery.expanded_max_health": "Expanded Max Health",
   "soullery.jump_strength": "Jump Strength",
 
+  "block.soullery.chipped_soul_metal_bars": "Chipped Soul Metal Bars",
   "block.soullery.cracked_decayed_stone_brick_slab": "Cracked Decayed Stone Brick Slab",
   "block.soullery.cracked_decayed_stone_brick_stairs": "Cracked Decayed Stone Brick Stairs",
   "block.soullery.cracked_decayed_stone_brick_wall": "Cracked Decayed Stone Brick Wall",
@@ -12,6 +15,7 @@
   "block.soullery.cracked_soul_stone_brick_wall": "Cracked Soul Stone Brick Wall",
   "block.soullery.cracked_soul_stone_bricks": "Cracked Soul Stone Bricks",
   "block.soullery.crimson_hyphal_soil": "Crimson Hyphal Soil",
+  "block.soullery.damaged_soul_metal_bars": "Damaged Soul Metal Bars",
   "block.soullery.decayed_stone": "Decayed Stone",
   "block.soullery.decayed_stone_brick_slab": "Decayed Stone Brick Slab",
   "block.soullery.decayed_stone_brick_stairs": "Decayed Stone Brick Stairs",
@@ -44,7 +48,9 @@
   "block.soullery.solar_segen_l2": "Solar SE Generator II",
   "block.soullery.soul_energy_storage": "Soul Energy Storage",
   "block.soullery.soul_energy_storage_l2": "Soul Energy Storage II",
+  "block.soullery.soul_metal_bars": "Soul Metal Bars",
   "block.soullery.soul_metal_block": "Soul Metal Block",
+  "block.soullery.soul_obsidian": "Soul Obsidian",
   "block.soullery.soul_reinforcement_table": "Soul Reinforcement Table",
   "block.soullery.soul_stone": "Soul Stone",
   "block.soullery.soul_stone_brick_slab": "Soul Stone Brick Slab",
@@ -111,8 +117,10 @@
   "death.attack.entityLightning": "%1$s was struck by %2$s's lightning",
   "death.attack.entityLightning.item": "%1$s was struck by %2$s's lightning using %3$s",
 
-  "effect.soullery.reversion": "Reversion",
   "effect.soullery.catastrophe_omen": "Catastrophe Omen",
+  "effect.soullery.pure_soul_fired": "Total Soul Ignition",
+  "effect.soullery.reversion": "Reversion",
+  "effect.soullery.soul_fired": "Soul Ignition",
   "effect.soullery.soul_pollution": "Soul Pollution",
 
   "entity.soullery.cloned_skeleton_king": "Cloned Skeleton King",
@@ -136,10 +144,12 @@
   "entity.soullery.robot": "Robot",
   "entity.soullery.skeleton_follower": "Skeleton Follower",
   "entity.soullery.skeleton_king": "Skeleton King",
+  "entity.soullery.soulball": "Soulball",
   "entity.soullery.soul_arrow": "Soul Arrow",
   "entity.soullery.soul_bolt": "Soul Bolt",
   "entity.soullery.soul_controller": "Soul Controller",
   "entity.soullery.soul_crystal": "Soul Crystal",
+  "entity.soullery.soul_dragon": "Soul Dragon",
   "entity.soullery.soul_rabbit": "Soul Rabbit",
   "entity.soullery.soul_skeleton": "Soul Skeleton",
   "entity.soullery.soul_skeleton_king": "Soul Skeleton King",
@@ -244,6 +254,7 @@
   "item.soullery.wanderer_spawn_egg": "Wanderer Spawn Egg",
 
   "item.soullery.chaos_wand": "Chaos Wand",
+  "item.soullery.chaos_wand_l2": "Chaos Wand II",
   "item.soullery.entity_carrier": "Entity Carrier",
   "item.soullery.entity_carrier_l2": "Entity Carrier II",
   "item.soullery.extra_ability_carrier": "Extra Ability Carrier",
@@ -280,6 +291,7 @@
   "item.soullery.soul_piece.typed": "Soul Piece - %s",
   "item.soullery.soul_powder": "Soul Powder",
   "item.soullery.soul_purifier": "Soul Purifier",
+  "item.soullery.soul_purifier_l2": "Soul Purifier II",
   "item.soullery.soul_wart": "Soul Wart",
 
   "item.soullery.carrier.capacity": "Stored: %d / %d",
@@ -360,6 +372,8 @@
   "reinforcement.soullery.status.level_too_high": "Level too high",
   "reinforcement.soullery.status.reinforced": "Full",
   "reinforcement.soullery.status.unsupported": "Unsupported",
+
+  "soul_dragon_fight.soullery.not_in_range": "Your position is not at central Innermost Plateau",
 
   "subtitles.soullery:random.energy_shield_break": "Energy shield breaks",
   "subtitles.soullery:random.ethemove": "Ethemove",

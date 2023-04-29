@@ -13,8 +13,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -59,7 +61,7 @@ public final class Fire {
         return DUMMY_HANDLER;
     }
 
-    static Fire noFire() {
+    static Fire createNoFire() {
         Fire noFire = new Fire(Blocks.AIR, null, new Block[]{}, null, noHandlerNeeded(), 0, Integer.MAX_VALUE, 0);
         Fires.FIRES.put(noFire.getBlock(), noFire);
         Fires.FIRE_IDS.put(0, noFire);
@@ -215,7 +217,7 @@ public final class Fire {
     }
 
     public boolean canApplyTo(Entity entity) {
-        return handler.canApplyTo(entity, this);
+        return !(isRealFire() && immune(entity)) && handler.canApplyTo(entity, this);
     }
 
     public Fire applyTo(Entity entity) {
@@ -239,6 +241,10 @@ public final class Fire {
             return true;
         }
         return fire.getPriority() <= oldFire.getPriority();
+    }
+
+    private static boolean immune(Entity entity) {
+        return entity.fireImmune() || entity instanceof LivingEntity && ((LivingEntity) entity).hasEffect(Effects.FIRE_RESISTANCE);
     }
 
     public Pair<RenderMaterial, RenderMaterial> getFireOverlays() {
@@ -283,7 +289,7 @@ public final class Fire {
         }
 
         default Fire applyTo(Entity entity, Fire fire) {
-            return fire;
+            return entity.fireImmune() || entity instanceof LivingEntity && ((LivingEntity) entity).hasEffect(Effects.FIRE_RESISTANCE) ? Fire.empty() : fire;
         }
 
         default void startApplyingTo(Entity entity, Fire newFire, Fire oldFire) {}

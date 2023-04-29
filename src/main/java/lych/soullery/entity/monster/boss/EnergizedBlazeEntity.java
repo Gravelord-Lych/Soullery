@@ -179,6 +179,11 @@ public class EnergizedBlazeEntity extends BlazeEntity {
         bossInfo.removePlayer(player);
     }
 
+    @Override
+    public boolean canChangeDimensions() {
+        return false;
+    }
+
     public enum Phase implements IIdentifiableEnum, ISkippablePhase {
         FIRESTORM(0),
         FIREBALL(0),

@@ -54,6 +54,7 @@ public class BlockModelDataGen extends BlockModelProvider {
         wallInventory(wallInventoryToString(SMOOTH_SOUL_STONE_WALL), prefix(SMOOTH_SOUL_STONE));
         getBuilder(registryNameToString(SOUL_LAVA_FLUID_BLOCK)).texture(PARTICLE, Soullery.prefix("block/soul_lava_still"));
         getBuilder(registryNameToString(SOUL_METAL_BLOCK)).parent(CUBE_ALL).texture(ALL_NAME, prefix(SOUL_METAL_BLOCK));
+        getBuilder(registryNameToString(SOUL_OBSIDIAN)).parent(CUBE_ALL).texture(ALL_NAME, prefix(SOUL_OBSIDIAN));
         getBuilder(registryNameToString(SOUL_STONE)).parent(CUBE_ALL).texture(ALL_NAME, prefix(SOUL_STONE));
         wallInventory(wallInventoryToString(SOUL_STONE_BRICK_WALL), prefix(SOUL_STONE_BRICKS));
         getBuilder(registryNameToString(SOUL_STONE_BRICKS)).parent(CUBE_ALL).texture(ALL_NAME, prefix(SOUL_STONE_BRICKS));

@@ -4,9 +4,13 @@ import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.entity.SEStorageTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.PaneBlock;
+import net.minecraft.block.SixWayBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -83,7 +87,11 @@ public class BlockStateDataGen extends BlockStateProvider {
         }
         segens();
         simpleBlock(SOUL_LAVA_FLUID_BLOCK, modelFromBlock(SOUL_LAVA_FLUID_BLOCK));
+        ironBarBlock(SOUL_METAL_BARS, BlockModelDataGen.prefix(SOUL_METAL_BARS));
+        ironBarBlock(CHIPPED_SOUL_METAL_BARS, BlockModelDataGen.prefix(CHIPPED_SOUL_METAL_BARS));
+        ironBarBlock(DAMAGED_SOUL_METAL_BARS, BlockModelDataGen.prefix(DAMAGED_SOUL_METAL_BARS));
         simpleBlock(SOUL_METAL_BLOCK);
+        simpleBlock(SOUL_OBSIDIAN);
         simpleBlock(SOUL_STONE);
         slabBlock(SOUL_STONE_BRICK_SLAB, BlockModelDataGen.prefix(SOUL_STONE_BRICKS), BlockModelDataGen.prefix(SOUL_STONE_BRICKS));
         stairsBlock(SOUL_STONE_BRICK_STAIRS, BlockModelDataGen.prefix(SOUL_STONE_BRICKS));
@@ -140,6 +148,96 @@ public class BlockStateDataGen extends BlockStateProvider {
                         BlockModelDataGen.prefix(sideTex),
                         BlockModelDataGen.prefix(sideTex),
                         BlockModelDataGen.prefix(name(segen) + "_gs"))));
+    }
+
+    public void ironBarBlock(PaneBlock block, ResourceLocation tex) {
+        ironBarBlock(block, block.getRegistryName().getPath(), tex, tex, tex);
+    }
+
+    public void ironBarBlock(PaneBlock block, String baseName, ResourceLocation particle, ResourceLocation bars, ResourceLocation edge) {
+        ModelFile postEnds = ironBarPostEnds(baseName + "_post_ends", particle, edge);
+        ModelFile post = ironBarPost(baseName + "_post", particle, bars);
+        ModelFile cap = ironBarCap(baseName + "_cap", particle, edge, bars);
+        ModelFile capAlt = ironBarCapAlt(baseName + "_cap_alt", particle, edge, bars);
+        ModelFile side = ironBarSide(baseName + "_side", particle, edge, bars);
+        ModelFile sideAlt = ironBarSideAlt(baseName + "_side_alt", particle, edge, bars);
+        ironBarBlock(block, postEnds, post, cap, capAlt, side, sideAlt);
+    }
+
+    public ModelFile ironBarPostEnds(String name, ResourceLocation particle, ResourceLocation edge) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_post_ends")
+                .texture("particle", particle)
+                .texture("edge", edge);
+    }
+
+    public ModelFile ironBarPost(String name, ResourceLocation particle, ResourceLocation bars) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_post")
+                .texture("particle", particle)
+                .texture("bars", bars);
+    }
+
+    public ModelFile ironBarCap(String name, ResourceLocation particle, ResourceLocation bars, ResourceLocation edge) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_cap")
+                .texture("particle", particle)
+                .texture("bars", bars)
+                .texture("edge", edge);
+    }
+
+    public ModelFile ironBarCapAlt(String name, ResourceLocation particle, ResourceLocation bars, ResourceLocation edge) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_cap_alt")
+                .texture("particle", particle)
+                .texture("bars", bars)
+                .texture("edge", edge);
+    }
+
+    public ModelFile ironBarSide(String name, ResourceLocation particle, ResourceLocation bars, ResourceLocation edge) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_side")
+                .texture("particle", particle)
+                .texture("bars", bars)
+                .texture("edge", edge);
+    }
+
+    public ModelFile ironBarSideAlt(String name, ResourceLocation particle, ResourceLocation bars, ResourceLocation edge) {
+        return models().withExistingParent(name, BLOCK_FOLDER + "/" + "iron_bars_side_alt")
+                .texture("particle", particle)
+                .texture("bars", bars)
+                .texture("edge", edge);
+    }
+
+    public void ironBarBlock(PaneBlock block, ModelFile postEnds, ModelFile post, ModelFile cap, ModelFile capAlt, ModelFile side, ModelFile sideAlt) {
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block)
+                .part().modelFile(postEnds).addModel().end();
+
+        MultiPartBlockStateBuilder.PartBuilder postModel = builder.part().modelFile(post).addModel();
+        SixWayBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
+            if (dir.getAxis().isHorizontal()) {
+                postModel.condition(value, false);
+            }
+        });
+        postModel.end();
+
+        SixWayBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
+            if (dir.getAxis().isHorizontal()) {
+                boolean alt = dir == Direction.SOUTH || dir == Direction.WEST;
+                boolean r90 = dir.getAxis() == Direction.Axis.X;
+                MultiPartBlockStateBuilder.PartBuilder capModel = builder.part().modelFile(alt ? capAlt : cap).rotationY(r90 ? 90 : 0).addModel();
+                SixWayBlock.PROPERTY_BY_DIRECTION.forEach((dirIn, valueIn) -> {
+                    if (dirIn.getAxis().isHorizontal()) {
+                        capModel.condition(valueIn, dirIn == dir);
+                    }
+                });
+                capModel.end();
+            }
+        });
+
+        SixWayBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
+            if (dir.getAxis().isHorizontal()) {
+                boolean alt = dir == Direction.SOUTH || dir == Direction.WEST;
+                boolean r90 = dir.getAxis() == Direction.Axis.X;
+                builder.part().modelFile(alt ? sideAlt : side).rotationY(r90 ? 90 : 0).addModel()
+                        .condition(value, true).end();
+            }
+        });
     }
 
     protected ConfiguredModel modelFromBlock(Block block) {

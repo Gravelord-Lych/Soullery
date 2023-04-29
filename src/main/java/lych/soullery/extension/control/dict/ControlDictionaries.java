@@ -9,34 +9,34 @@ import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.GuardianEntity;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
 
 public final class ControlDictionaries {
     public static final ControlDictionary CHAOS = DefaultedControlDictionary.withDefault(ControllerType.CHAOS)
             .doNotControlIf(ControlDictionaries::friendly)
             .build();
     public static final ControlDictionary MIND_OPERATOR = DefaultedControlDictionary.withDefault(ControllerType.DEFAULT_MO)
-            .specify(EntityType.ENDERMAN, ControllerType.ENDERMAN_MO)
-            .specify(EntityType.EVOKER, ControllerType.EVOKER_MO)
-            .specify(EntityType.VEX, ControllerType.AGGRESSIVE_FLYER_MO)
-            .specify(EntityType.GUARDIAN, ControllerType.GUARDIAN_MO)
+            .addCondition(ControlDictionaries::custom, ControllerType.CUSTOM_MO)
+            .specify(EntityType.ENDERMAN, EndermanEntity.class, ControllerType.ENDERMAN_MO)
+            .specify(EntityType.EVOKER, EvokerEntity.class, ControllerType.EVOKER_MO)
+            .specify(EntityType.VEX, VexEntity.class, ControllerType.AGGRESSIVE_FLYER_MO)
+            .specify(EntityType.GUARDIAN, GuardianEntity.class, ControllerType.GUARDIAN_MO)
             .specify(EntityType.ELDER_GUARDIAN, ControllerType.GUARDIAN_MO)
-            .specify(EntityType.GHAST, ControllerType.GHAST_MO)
-            .specify(EntityType.PHANTOM, ControllerType.AGGRESSIVE_FLYER_MO)
-            .specify(EntityType.PARROT, ControllerType.SPEED_INDEPENDENT_FLYER_MO)
-            .specify(EntityType.BEE, ControllerType.SPEED_INDEPENDENT_FLYER_MO)
-            .specify(EntityType.BAT, ControllerType.FLYER_MO)
-            .specify(EntityType.BLAZE, ControllerType.BLAZE_MO)
-            .specify(EntityType.CREEPER, ControllerType.CREEPER_MO)
-            .specify(EntityType.VILLAGER, ControllerType.HARMLESS_SPEED_LIMITED_MO)
-            .specify(EntityType.SQUID, ControllerType.SQUID_MO)
-            .specify(EntityType.SHULKER, ControllerType.SHULKER_MO)
-            .specify(EntityType.DOLPHIN, ControllerType.SPEED_LIMITED_MO)
+            .specify(EntityType.GHAST, GhastEntity.class, ControllerType.GHAST_MO)
+            .specify(EntityType.PHANTOM, PhantomEntity.class, ControllerType.AGGRESSIVE_FLYER_MO)
+            .specify(EntityType.PARROT, ParrotEntity.class, ControllerType.SPEED_INDEPENDENT_FLYER_MO)
+            .specify(EntityType.BEE, BeeEntity.class, ControllerType.SPEED_INDEPENDENT_FLYER_MO)
+            .specify(EntityType.BAT, BatEntity.class, ControllerType.FLYER_MO)
+            .specify(EntityType.BLAZE, BlazeEntity.class, ControllerType.BLAZE_MO)
+            .specify(EntityType.CREEPER, CreeperEntity.class, ControllerType.CREEPER_MO)
+            .specify(EntityType.VILLAGER, VillagerEntity.class, ControllerType.HARMLESS_SPEED_LIMITED_MO)
+            .specify(EntityType.SQUID, SquidEntity.class, ControllerType.SQUID_MO)
+            .specify(EntityType.SHULKER, ShulkerEntity.class, ControllerType.SHULKER_MO)
+            .specify(EntityType.DOLPHIN, DolphinEntity.class, ControllerType.SPEED_LIMITED_MO)
             .doNotControl(EntityType.BAT)
             .doNotControlIf(IStrongMinded::isStrongMinded)
-            .addCondition(ControlDictionaries::custom, ControllerType.CUSTOM_MO)
-            .addCondition(ControlDictionaries::guardian, ControllerType.GUARDIAN_MO)
             .addCondition(ControlDictionaries::watermob, ControllerType.WATER_MOB_MO)
             .addCondition(ControlDictionaries::speedIndependentlyFlyable, ControllerType.SPEED_INDEPENDENT_FLYER_MO)
             .addCondition(ControlDictionaries::aggressiveFlyable, ControllerType.AGGRESSIVE_FLYER_MO)
@@ -63,10 +63,6 @@ public final class ControlDictionaries {
 
     private static boolean aggressiveFlyable(MobEntity mob) {
         return (mob.noPhysics || mob instanceof FlyingEntity) && mob.getAttribute(Attributes.ATTACK_DAMAGE) != null;
-    }
-
-    private static boolean guardian(MobEntity mob) {
-        return mob instanceof GuardianEntity;
     }
 
     private static boolean watermob(MobEntity mob) {

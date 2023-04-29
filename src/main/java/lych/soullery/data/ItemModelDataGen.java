@@ -41,6 +41,7 @@ public class ItemModelDataGen extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simple(registryNameToString(CHAOS_WAND), HANDHELD, prefix(CHAOS_WAND));
+        simple(registryNameToString(CHAOS_WAND_II), HANDHELD, prefix(CHAOS_WAND_II));
         simple(registryNameToString(ENTITY_CARRIER), HANDHELD, prefix(ENTITY_CARRIER));
         simple(registryNameToString(ENTITY_CARRIER_II), HANDHELD, prefix(ENTITY_CARRIER_II));
         simple(registryNameToString(EXTRA_ABILITY_CARRIER), GENERATED, prefix(EXTRA_ABILITY_CARRIER));
@@ -83,6 +84,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(SOUL_PIECE), GENERATED, prefix(SOUL_PIECE));
         simple(registryNameToString(SOUL_POWDER), GENERATED, prefix(SOUL_POWDER));
         simple(registryNameToString(SOUL_PURIFIER), HANDHELD, prefix(SOUL_PURIFIER));
+        simple(registryNameToString(SOUL_PURIFIER_II), HANDHELD, prefix(SOUL_PURIFIER_II));
         registerBlockItemModels();
         registerSpawnEggModels();
     }
@@ -160,7 +162,11 @@ public class ItemModelDataGen extends ItemModelProvider {
         segenBlockItem(SOLAR_SEGEN_II);
         blockItem(registryNameToString(SOUL_ENERGY_STORAGE), new UncheckedModelFile(BlockModelDataGen.prefix(Utils.getRegistryName(SOUL_ENERGY_STORAGE.getBlock()).getPath() + "_0")));
         blockItem(registryNameToString(SOUL_ENERGY_STORAGE_II), new UncheckedModelFile(BlockModelDataGen.prefix(Utils.getRegistryName(SOUL_ENERGY_STORAGE_II.getBlock()).getPath() + "_0")));
+        simple(registryNameToString(SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.SOUL_METAL_BARS));
+        simple(registryNameToString(CHIPPED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.CHIPPED_SOUL_METAL_BARS));
+        simple(registryNameToString(DAMAGED_SOUL_METAL_BARS), GENERATED, BlockModelDataGen.prefix(ModBlocks.DAMAGED_SOUL_METAL_BARS));
         blockItem(SOUL_METAL_BLOCK);
+        blockItem(SOUL_OBSIDIAN);
         blockItem(SOUL_REINFORCEMENT_TABLE);
         blockItem(SOUL_STONE);
         blockItem(SOUL_STONE_BRICK_SLAB);

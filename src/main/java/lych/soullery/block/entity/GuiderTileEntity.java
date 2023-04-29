@@ -1,6 +1,6 @@
 package lych.soullery.block.entity;
 
-import lych.soullery.entity.monster.boss.esv.SoulCrystalEntity;
+import lych.soullery.entity.functional.SoulCrystalEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;

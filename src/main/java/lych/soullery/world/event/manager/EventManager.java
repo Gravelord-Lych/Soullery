@@ -66,6 +66,10 @@ public abstract class EventManager<T extends WorldEvent> extends WorldSavedData 
                 setDirty();
             } else {
                 event.tick();
+                if (event.isDirty()) {
+                    setDirty();
+                    event.setDirty(false);
+                }
             }
         }
 

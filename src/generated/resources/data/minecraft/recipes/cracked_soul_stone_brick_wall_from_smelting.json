@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "soullery:soul_stone_brick_wall"
-  },
-  "result": "soullery:cracked_soul_stone_brick_wall",
-  "experience": 0.1,
-  "cookingtime": 400
-}

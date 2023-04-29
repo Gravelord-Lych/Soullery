@@ -38,6 +38,7 @@ public final class TagNames {
      * Bosses who are tiered should have this tag.
      */
     public static final ResourceLocation TIERED_BOSS = new ResourceLocation(SoulleryAPI.MOD_ID, "tiered_boss");
+    public static final ResourceLocation SOUL_DRAGON_IMMUNE = new ResourceLocation(SoulleryAPI.MOD_ID, "soul_dragon_immune");
 
     private TagNames() {}
 }

@@ -98,8 +98,15 @@ public final class DefaultedControlDictionary implements ControlDictionary {
             this.defaultValue = defaultValue;
         }
 
-        public <T extends MobEntity> Builder specify(EntityType<T> type, ControllerType<? super T> ct) {
+        public <T extends MobEntity> Builder specify(EntityType<T> type,  ControllerType<? super T> ct) {
+            return specify(type, null, ct);
+        }
+
+        public <T extends MobEntity> Builder specify(EntityType<T> type, @Nullable Class<T> cls, ControllerType<? super T> ct) {
             controllerMapBuilder.put(type, ct);
+            if (cls != null) {
+                addCondition(cls::isInstance, ct);
+            }
             return this;
         }
 

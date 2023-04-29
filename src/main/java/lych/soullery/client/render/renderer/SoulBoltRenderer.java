@@ -26,10 +26,9 @@ public class SoulBoltRenderer extends EntityRenderer<SoulBoltEntity> {
 
         for (int i = 0; i < 4; ++i) {
             int l = 7;
-            int i1 = 0;
             float x = 0;
             float y = 0;
-            for (int k = l; k >= i1; --k) {
+            for (int k = l; k >= 0; --k) {
                 float x2Offs = 0.1F + (float) i * 0.2F;
                 x2Offs = (float) ((double) x2Offs * ((double) k * 0.1D + 1.0D));
                 float xOffs = 0.1F + (float) i * 0.2F;

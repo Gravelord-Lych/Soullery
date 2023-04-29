@@ -62,6 +62,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
         }
         ActionResultType type = tryControl(player, entity);
         if (type != null) {
+            player.playSound(ModSoundEvents.MIND_OPERATE.get(), 1, 1);
             return type;
         }
         return super.interactLivingEntity(stack, player, entity, hand);
@@ -128,7 +129,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
         if (operatingMob == null) {
             return false;
         }
-        SoulManager.get(player.getLevel()).remove(MindOperatorSynchronizer.getOperatingMob(player), MindOperator.class);
+        SoulManager.get(player.getLevel()).remove(operatingMob, MindOperator.class);
         Vector3d playerPos = player.position();
         player.teleportTo(operatingMob.getX(), operatingMob.getY(), operatingMob.getZ());
         operatingMob.teleportTo(playerPos.x, playerPos.y, playerPos.z);

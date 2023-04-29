@@ -1,9 +1,13 @@
 package lych.soullery.client.render.renderer;
 
+import lych.soullery.Soullery;
+import lych.soullery.entity.monster.IPurifiable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IRendersAsItem;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -12,6 +16,10 @@ import static net.minecraftforge.fml.client.registry.RenderingRegistry.registerE
 
 @OnlyIn(Dist.CLIENT)
 public final class ModEntityRenderers {
+    private static final ResourceLocation DRAGON_FIREBALL_LOCATION = new ResourceLocation("textures/entity/enderdragon/dragon_fireball.png");
+    private static final ResourceLocation SOULBALL_LOCATION = Soullery.prefixTex("entity/souldragon/soulball.png");
+    private static final ResourceLocation SOULBALL_PURE_LOCATION = Soullery.prefixTex("entity/souldragon/soulball_pure.png");
+
     private ModEntityRenderers() {}
 
     public static void registerEntityRenderers() {
@@ -25,8 +33,9 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(ETHEREAL_ARROW, EtherealArrowRenderer::new);
         registerEntityRenderingHandler(FANGS, FangsRenderer::new);
         registerEntityRenderingHandler(FANGS_SUMMONER, TippedArrowRenderer::new);
+        registerEntityRenderingHandler(FORTIFIED_SOUL_CRYSTAL, FortifiedSoulCrystalRenderer::new);
         registerEntityRenderingHandler(GIANT_X, GiantXRenderer::new);
-        registerEntityRenderingHandler(GRAVITATIONAL_DRAGON_FIREBALL, GravitationalDragonFireballRenderer::new);
+        registerEntityRenderingHandler(GRAVITATIONAL_DRAGON_FIREBALL, SimpleTexturedRenderer.single(DRAGON_FIREBALL_LOCATION));
         registerEntityRenderingHandler(ILLUSORY_HORSE, IllusoryHorseRenderer::new);
         registerEntityRenderingHandler(META8, Meta08Renderer::new);
         registerEntityRenderingHandler(PURSUER, PursuerRenderer::new);
@@ -37,10 +46,12 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(ROBOT, RobotRenderer::new);
         registerEntityRenderingHandler(SKELETON_FOLLOWER, SkeletonRenderer::new);
         registerEntityRenderingHandler(SKELETON_KING, SkeletonKingRenderer::new);
+        registerEntityRenderingHandler(SOULBALL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULBALL_PURE_LOCATION, SOULBALL_LOCATION), RenderType::entityCutoutNoCull));
         registerEntityRenderingHandler(SOUL_ARROW, SoulArrowRenderer::new);
         registerEntityRenderingHandler(SOUL_BOLT, SoulBoltRenderer::new);
         registerEntityRenderingHandler(SOUL_CONTROLLER, SoulControllerRenderer::new);
         registerEntityRenderingHandler(SOUL_CRYSTAL, SoulCrystalRenderer::new);
+        registerEntityRenderingHandler(SOUL_DRAGON, SoulDragonRenderer::new);
         registerEntityRenderingHandler(SOUL_RABBIT, SoulRabbitRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON, SoulSkeletonRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON_KING, SoulSkeletonKingRenderer::new);

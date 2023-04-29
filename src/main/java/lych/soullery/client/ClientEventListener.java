@@ -199,7 +199,7 @@ public final class ClientEventListener {
         }
 
         @SubscribeEvent
-        public static void onColorHandle(ColorHandlerEvent.Item event) {
+        public static void registerItemColors(ColorHandlerEvent.Item event) {
             event.getItemColors().register((stack, tintIndex) -> tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
                     ModItems.HALF_USED_POTION,
                     ModItems.HALF_USED_SPLASH_POTION,
@@ -225,10 +225,13 @@ public final class ClientEventListener {
         }
 
         private static void registerRenderLayers() {
+            RenderTypeLookup.setRenderLayer(ModBlocks.CHIPPED_SOUL_METAL_BARS, RenderType.cutoutMipped());
+            RenderTypeLookup.setRenderLayer(ModBlocks.DAMAGED_SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.INFERNO, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.POISONOUS_FIRE, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.POTTED_SOULIFIED_BUSH, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.PURE_SOUL_FIRE, RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.SOUL_WART, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.SOULIFIED_BUSH, RenderType.cutout());
         }

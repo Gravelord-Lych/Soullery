@@ -54,11 +54,34 @@ public final class WeightedRandom {
         return getRandomItem(random, itemList, getTotalWeight(itemList));
     }
 
+    public static <T> ItemImpl<T> makeItem(T obj, int weight) {
+        return new ItemImpl<>(obj, weight);
+    }
+
     public interface Item {
         int getWeight();
     }
 
     public interface IRandom {
         int nextInt(int bound);
+    }
+
+    public static final class ItemImpl<T> implements Item {
+        private final T obj;
+        private final int weight;
+
+        private ItemImpl(T obj, int weight) {
+            this.obj = obj;
+            this.weight = weight;
+        }
+
+        public T get() {
+            return obj;
+        }
+
+        @Override
+        public int getWeight() {
+            return weight;
+        }
     }
 }

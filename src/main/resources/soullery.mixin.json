@@ -8,7 +8,6 @@
     "AbstractBlockMixin",
     "AbstractFireBlockMixin",
     "ArrowEntityAccessor",
-    "AttributesMixin",
     "BowItemMixin",
     "BrainMixin",
     "DimensionGeneratorSettingsMixin",

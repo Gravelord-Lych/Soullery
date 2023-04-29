@@ -17,7 +17,11 @@ public final class Vectors {
     }
 
     public static double getAngle(Vector3d a, Vector3d b) {
-        return Math.acos(a.dot(b) / a.length() * b.length());
+        return Math.acos(getCosAngle(a, b));
+    }
+
+    public static double getCosAngle(Vector3d a, Vector3d b) {
+        return a.dot(b) / (a.length() * b.length());
     }
 
     public static Vector3d lerp(double amount, Vector3d a, Vector3d b) {

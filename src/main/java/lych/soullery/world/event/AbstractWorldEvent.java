@@ -17,6 +17,7 @@ public abstract class AbstractWorldEvent implements WorldEvent {
     protected final ServerWorld level;
     protected final Random random = new Random();
     private final int id;
+    private boolean dirty;
     protected boolean active;
     protected long ticksActive;
 
@@ -109,5 +110,19 @@ public abstract class AbstractWorldEvent implements WorldEvent {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public void setDirty() {
+        setDirty(true);
     }
 }

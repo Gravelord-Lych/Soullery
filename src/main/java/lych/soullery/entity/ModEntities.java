@@ -2,11 +2,13 @@ package lych.soullery.entity;
 
 import lych.soullery.Soullery;
 import lych.soullery.entity.functional.FangsEntity;
+import lych.soullery.entity.functional.FortifiedSoulCrystalEntity;
 import lych.soullery.entity.functional.SoulBoltEntity;
+import lych.soullery.entity.functional.SoulCrystalEntity;
 import lych.soullery.entity.monster.*;
 import lych.soullery.entity.monster.boss.*;
 import lych.soullery.entity.monster.boss.esv.SoulControllerEntity;
-import lych.soullery.entity.monster.boss.esv.SoulCrystalEntity;
+import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.entity.monster.raider.DarkEvokerEntity;
 import lych.soullery.entity.monster.raider.EngineerEntity;
 import lych.soullery.entity.monster.raider.RedstoneMortarEntity;
@@ -46,6 +48,7 @@ public final class ModEntities {
     public static final EntityType<EtherealArrowEntity> ETHEREAL_ARROW = Builder.<EtherealArrowEntity>of(EtherealArrowEntity::new, EntityClassification.MISC).sized(0.5f, 0.5f).clientTrackingRange(8).updateInterval(10).build(ModEntityNames.ETHEREAL_ARROW);
     public static final EntityType<FangsEntity> FANGS = Builder.<FangsEntity>of(FangsEntity::new, EntityClassification.MISC).sized(0.5f, 0.8f).clientTrackingRange(6).updateInterval(2).build(ModEntityNames.FANGS);
     public static final EntityType<FangsSummonerEntity> FANGS_SUMMONER = Builder.<FangsSummonerEntity>of(FangsSummonerEntity::new, EntityClassification.MISC).sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(ModEntityNames.FANGS_SUMMONER);
+    public static final EntityType<FortifiedSoulCrystalEntity> FORTIFIED_SOUL_CRYSTAL = Builder.<FortifiedSoulCrystalEntity>of(FortifiedSoulCrystalEntity::new, EntityClassification.MISC).sized(2, 2).clientTrackingRange(24).updateInterval(Integer.MAX_VALUE).build(ModEntityNames.FORTIFIED_SOUL_CRYSTAL);
     public static final EntityType<GiantXEntity> GIANT_X = Builder.of(GiantXEntity::new, EntityClassification.MONSTER).sized(3.6f, 12).clientTrackingRange(10).build(ModEntityNames.GIANT_X);
     public static final EntityType<GravitationalDragonFireballEntity> GRAVITATIONAL_DRAGON_FIREBALL = Builder.<GravitationalDragonFireballEntity>of(GravitationalDragonFireballEntity::new, EntityClassification.MISC).sized(0.8f, 0.8f).clientTrackingRange(4).updateInterval(10).build(ModEntityNames.GRAVITATIONAL_DRAGON_FIREBALL);
     public static final EntityType<IllusoryHorseEntity> ILLUSORY_HORSE = Builder.of(IllusoryHorseEntity::new, EntityClassification.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(10).build(ModEntityNames.ILLUSORY_HORSE);
@@ -58,10 +61,12 @@ public final class ModEntities {
     public static final EntityType<RobotEntity> ROBOT = Builder.of(RobotEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(8).build(ModEntityNames.ROBOT);
     public static final EntityType<SkeletonFollowerEntity> SKELETON_FOLLOWER = Builder.of(SkeletonFollowerEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.99f).clientTrackingRange(10).build(ModEntityNames.SKELETON_FOLLOWER);
     public static final EntityType<SkeletonKingEntity> SKELETON_KING = Builder.of(SkeletonKingEntity::new, EntityClassification.MONSTER).sized(0.7f, 2.4f).clientTrackingRange(8).build(ModEntityNames.SKELETON_KING);
+    public static final EntityType<SoulballEntity> SOULBALL = Builder.<SoulballEntity>of(SoulballEntity::new, EntityClassification.MISC).sized(1, 1).clientTrackingRange(4).updateInterval(10).build(ModEntityNames.SOULBALL);
     public static final EntityType<SoulArrowEntity> SOUL_ARROW = Builder.<SoulArrowEntity>of(SoulArrowEntity::new, EntityClassification.MISC).sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(ModEntityNames.SOUL_ARROW);
     public static final EntityType<SoulBoltEntity> SOUL_BOLT = Builder.of(SoulBoltEntity::new, EntityClassification.MISC).sized(0.0F, 0.0F).clientTrackingRange(24).updateInterval(Integer.MAX_VALUE).build(ModEntityNames.SOUL_BOLT);
     public static final EntityType<SoulControllerEntity> SOUL_CONTROLLER = Builder.of(SoulControllerEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(24).build(ModEntityNames.SOUL_CONTROLLER);
-    public static final EntityType<SoulCrystalEntity> SOUL_CRYSTAL = Builder.of(SoulCrystalEntity::new, EntityClassification.MONSTER).sized(1, 4).clientTrackingRange(24).build(ModEntityNames.SOUL_CRYSTAL);
+    public static final EntityType<SoulCrystalEntity> SOUL_CRYSTAL = Builder.<SoulCrystalEntity>of(SoulCrystalEntity::new, EntityClassification.MISC).sized(2, 2).clientTrackingRange(16).updateInterval(Integer.MAX_VALUE).build(ModEntityNames.SOUL_CRYSTAL);
+    public static final EntityType<SoulDragonEntity> SOUL_DRAGON = Builder.of(SoulDragonEntity::new, EntityClassification.MONSTER).fireImmune().sized(16.0F, 8.0F).clientTrackingRange(10).build(ModEntityNames.SOUL_DRAGON);
     public static final EntityType<SoulRabbitEntity> SOUL_RABBIT = Builder.of(SoulRabbitEntity::new, EntityClassification.CREATURE).sized(0.4F, 0.5F).fireImmune().clientTrackingRange(8).build(ModEntityNames.SOUL_RABBIT);
     public static final EntityType<SoulSkeletonEntity> SOUL_SKELETON = Builder.of(SoulSkeletonEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.99f).fireImmune().clientTrackingRange(8).build(ModEntityNames.SOUL_SKELETON);
     public static final EntityType<SoulSkeletonKingEntity> SOUL_SKELETON_KING = Builder.of(SoulSkeletonKingEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.99f).fireImmune().clientTrackingRange(10).build(ModEntityNames.SOUL_SKELETON_KING);
@@ -87,6 +92,7 @@ public final class ModEntities {
         registry.register(make(ETHEREAL_ARROW, ModEntityNames.ETHEREAL_ARROW));
         registry.register(make(FANGS, ModEntityNames.FANGS));
         registry.register(make(FANGS_SUMMONER, ModEntityNames.FANGS_SUMMONER));
+        registry.register(make(FORTIFIED_SOUL_CRYSTAL, ModEntityNames.FORTIFIED_SOUL_CRYSTAL));
         registry.register(make(GIANT_X, ModEntityNames.GIANT_X));
         registry.register(make(GRAVITATIONAL_DRAGON_FIREBALL, ModEntityNames.GRAVITATIONAL_DRAGON_FIREBALL));
         registry.register(make(ILLUSORY_HORSE, ModEntityNames.ILLUSORY_HORSE));
@@ -99,10 +105,12 @@ public final class ModEntities {
         registry.register(make(ROBOT, ModEntityNames.ROBOT));
         registry.register(make(SKELETON_FOLLOWER, ModEntityNames.SKELETON_FOLLOWER));
         registry.register(make(SKELETON_KING, ModEntityNames.SKELETON_KING));
+        registry.register(make(SOULBALL, ModEntityNames.SOULBALL));
         registry.register(make(SOUL_ARROW, ModEntityNames.SOUL_ARROW));
         registry.register(make(SOUL_BOLT, ModEntityNames.SOUL_BOLT));
         registry.register(make(SOUL_CONTROLLER, ModEntityNames.SOUL_CONTROLLER));
         registry.register(make(SOUL_CRYSTAL, ModEntityNames.SOUL_CRYSTAL));
+        registry.register(make(SOUL_DRAGON, ModEntityNames.SOUL_DRAGON));
         registry.register(make(SOUL_RABBIT, ModEntityNames.SOUL_RABBIT));
         registry.register(make(SOUL_SKELETON, ModEntityNames.SOUL_SKELETON));
         registry.register(make(SOUL_SKELETON_KING, ModEntityNames.SOUL_SKELETON_KING));
@@ -131,7 +139,7 @@ public final class ModEntities {
         event.put(SKELETON_FOLLOWER, SkeletonFollowerEntity.createAttributes().build());
         event.put(SKELETON_KING, SkeletonKingEntity.createAttributes().build());
         event.put(SOUL_CONTROLLER, SoulControllerEntity.createAttributes().build());
-        event.put(SOUL_CRYSTAL, SoulCrystalEntity.createAttributes().build());
+        event.put(SOUL_DRAGON, SoulDragonEntity.createAttributes().build());
         event.put(SOUL_RABBIT, RabbitEntity.createAttributes().build());
         event.put(SOUL_SKELETON, SoulSkeletonEntity.createAttributes().build());
         event.put(SOUL_SKELETON_KING, SoulSkeletonKingEntity.createAttributes().build());
@@ -155,7 +163,6 @@ public final class ModEntities {
         register(ROBOT, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         register(SKELETON_FOLLOWER, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         register(SOUL_CONTROLLER, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
-        register(SOUL_CRYSTAL, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
         register(SOUL_RABBIT, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, SoulRabbitEntity::checkSoulRabbitSpawnRules);
         register(SOUL_SKELETON, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         register(SOUL_SKELETON_KING, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);

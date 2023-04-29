@@ -1,7 +1,6 @@
 package lych.soullery.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import it.unimi.dsi.fastutil.longs.Long2IntArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
@@ -16,7 +15,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -99,12 +97,15 @@ public class LaserRenderingManager {
 
         matrixStack.pushPose();
 
-        SoulRenderers.translate(matrixStack);
+        Vector3d cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        double x = src.x - cameraPos.x;
+        double y = src.y - cameraPos.y;
+        double z = src.z - cameraPos.z;
+        matrixStack.translate(x, y, z);
 
         Matrix4f positionMatrix = matrixStack.last().pose();
         drawLaser(builder,
                 positionMatrix,
-                new Vector3f(src),
                 laserColor.getRed() / 255f,
                 laserColor.getGreen() / 255f,
                 laserColor.getBlue() / 255f,
@@ -114,15 +115,15 @@ public class LaserRenderingManager {
                 (float) tz);
         matrixStack.popPose();
 
-        RenderSystem.disableDepthTest();
+//        RenderSystem.disableDepthTest();
         buffer.endBatch(type);
     }
 
-    private static void drawLaser(IVertexBuilder builder, Matrix4f positionMatrix, Vector3f pos, float r, float g, float b, float alpha, float tx, float ty, float tz) {
-        builder.vertex(positionMatrix, pos.x(), pos.y(), pos.z())
+    private static void drawLaser(IVertexBuilder builder, Matrix4f positionMatrix, float r, float g, float b, float alpha, float tx, float ty, float tz) {
+        builder.vertex(positionMatrix, 0, 0, 0)
                 .color(r, g, b, alpha)
                 .endVertex();
-        builder.vertex(positionMatrix, pos.x() + tx, pos.y() + ty, pos.z() + tz)
+        builder.vertex(positionMatrix, tx, ty, tz)
                 .color(r, g, b, alpha)
                 .endVertex();
     }

@@ -33,7 +33,7 @@ public final class Fires {
     static final Map<Block, Fire> FIRES = new HashMap<>();
     static final BiMap<Integer, Fire> FIRE_IDS = HashBiMap.create();
     static int currentID = 1;
-    static final Fire NO_FIRE = Fire.noFire();
+    static final Fire NO_FIRE = Fire.createNoFire();
     public static final Fire FIRE = createAndRegister(new FireProperties()
             .setBlock(Blocks.FIRE)
             .setSpecialDegree(0)
@@ -147,7 +147,7 @@ public final class Fires {
     public interface ISoulFireHandler extends Fire.Handler {
         @Override
         default Fire applyTo(Entity entity, Fire fire) {
-            return entity instanceof PlayerEntity && ExtraAbility.SOUL_INVULNERABILITY.isOn((PlayerEntity) entity) ? Fires.FIRE : fire;
+            return entity instanceof PlayerEntity && ExtraAbility.SOUL_INVULNERABILITY.isOn((PlayerEntity) entity) ? Fires.FIRE : Fire.Handler.super.applyTo(entity, fire);
         }
     }
 }

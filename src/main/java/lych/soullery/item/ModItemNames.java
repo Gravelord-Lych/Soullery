@@ -2,6 +2,7 @@ package lych.soullery.item;
 
 public final class ModItemNames {
     public static final String CHAOS_WAND = "chaos_wand";
+    public static final String CHAOS_WAND_II = "chaos_wand_l2";
     public static final String ENTITY_CARRIER = "entity_carrier";
     public static final String ENTITY_CARRIER_II = "entity_carrier_l2";
     public static final String EXTRA_ABILITY_CARRIER = "extra_ability_carrier";
@@ -38,6 +39,7 @@ public final class ModItemNames {
     public static final String SOUL_PIECE = "soul_piece";
     public static final String SOUL_POWDER = "soul_powder";
     public static final String SOUL_PURIFIER = "soul_purifier";
+    public static final String SOUL_PURIFIER_II = "soul_purifier_l2";
 
     private ModItemNames() {}
 }

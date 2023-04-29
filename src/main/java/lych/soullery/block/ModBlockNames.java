@@ -1,7 +1,9 @@
 package lych.soullery.block;
 
 public final class ModBlockNames {
+    public static final String CHIPPED_SOUL_METAL_BARS = "chipped_soul_metal_bars";
     public static final String CRIMSON_HYPHAL_SOIL = "crimson_hyphal_soil";
+    public static final String DAMAGED_SOUL_METAL_BARS = "damaged_soul_metal_bars";
     public static final String DEPTH_SEGEN = "depth_segen";
     public static final String DEPTH_SEGEN_II = "depth_segen_l2";
     public static final String GUIDER = "guider";
@@ -26,7 +28,9 @@ public final class ModBlockNames {
     public static final String SOUL_ENERGY_STORAGE = "soul_energy_storage";
     public static final String SOUL_ENERGY_STORAGE_II = "soul_energy_storage_l2";
     public static final String SOUL_LAVA_FLUID_BLOCK = "soul_lava";
+    public static final String SOUL_METAL_BARS = "soul_metal_bars";
     public static final String SOUL_METAL_BLOCK = "soul_metal_block";
+    public static final String SOUL_OBSIDIAN = "soul_obsidian";
     public static final String SOUL_REINFORCEMENT_TABLE = "soul_reinforcement_table";
     public static final String SOUL_STONE = "soul_stone";
     public static final String SOUL_WART = "soul_wart";

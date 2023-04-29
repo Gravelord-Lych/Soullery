@@ -143,11 +143,12 @@ public class EntityHighlightManager extends WorldSavedData {
             setDirty();
             dataSaver = SAVE_FREQ;
         }
-        Iterator<UUID> itr = preparatoryHighlighters.keySet().iterator();
+        Iterator<Map.Entry<UUID, PriorityQueue<Highlighter>>> itr = preparatoryHighlighters.entrySet().iterator();
         while (itr.hasNext()) {
-            UUID uuid = itr.next();
+            Map.Entry<UUID, PriorityQueue<Highlighter>> entry = itr.next();
+            UUID uuid = entry.getKey();
             Entity entity = level.getEntity(uuid);
-            PriorityQueue<Highlighter> queue = getHighlighterQueue(uuid);
+            PriorityQueue<Highlighter> queue = entry.getValue();
             if (queue == null || queue.isEmpty()) {
                 itr.remove();
                 continue;
@@ -170,6 +171,17 @@ public class EntityHighlightManager extends WorldSavedData {
                     continue;
                 }
                 syncHighlightColor(entity, null);
+            }
+//          Tick preparatory highlighters
+            for (Iterator<Highlighter> iterator = queue.iterator(); iterator.hasNext(); ) {
+                Highlighter ph = iterator.next();
+                if (ph != highlighter) {
+                    if (ph.getHighlightTicks() < 0) {
+                        iterator.remove();
+                    } else {
+                        ph.setHighlightTicks(ph.getHighlightTicks() - 1);
+                    }
+                }
             }
         }
         Iterator<Map.Entry<UUID, Long>> invItr = invalidUUIDs.entrySet().iterator();

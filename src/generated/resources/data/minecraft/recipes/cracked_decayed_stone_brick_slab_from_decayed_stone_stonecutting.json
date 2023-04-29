@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "soullery:decayed_stone"
-  },
-  "result": "soullery:cracked_decayed_stone_brick_slab",
-  "count": 2
-}

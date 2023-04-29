@@ -34,7 +34,7 @@ public class SoulBoltEntity extends Entity implements IHasOwner<LivingEntity> {
     private int fireCount = 2;
     private int fireRadius = 1;
     private UUID ownerUUID;
-    private double knockbackStrength = 5;
+    private double knockbackStrength = 0.5;
     private double knockbackModifier;
     private float damage = 10;
 

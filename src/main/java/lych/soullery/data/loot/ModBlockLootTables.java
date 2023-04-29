@@ -53,6 +53,8 @@ public class ModBlockLootTables extends BlockLootTables {
         dropSelf(SMOOTH_SOUL_STONE_STAIRS);
         dropSelf(SMOOTH_SOUL_STONE_WALL);
         dropSelf(SOUL_METAL_BLOCK);
+        dropOther(DAMAGED_SOUL_METAL_BARS, SOUL_METAL_BARS);
+        dropSelf(SOUL_OBSIDIAN);
         dropSelf(SOUL_REINFORCEMENT_TABLE);
         dropSelf(SOUL_STONE);
         dropSelf(SOUL_STONE_BRICK_SLAB);

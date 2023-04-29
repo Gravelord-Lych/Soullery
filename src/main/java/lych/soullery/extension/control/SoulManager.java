@@ -205,7 +205,7 @@ public class SoulManager extends WorldSavedData {
 
     @SuppressWarnings("unchecked")
     public <T extends Controller<?>> T remove(MobEntity mob, Class<T> cls) {
-        return (T) removeIf(mob, cls::isInstance, true);
+        return (T) removeIf(mob, cls::isInstance, false);
     }
 
     @SuppressWarnings("unchecked")
@@ -248,7 +248,7 @@ public class SoulManager extends WorldSavedData {
             if (queue.isEmpty()) {
                 for (Controller<?> removedControllerIn : removedControllers) {
                     postRemoval(mob, removedControllerIn, active);
-//                  The rest elements can never be active because their priority cannot be the smallest
+//                  The rest elements can never be active because their priority cannot be the highest
                     active = false;
                 }
                 remove(mob);

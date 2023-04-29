@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -72,6 +73,8 @@ public abstract class EntityMixin implements IEntityMixin {
 
     @Shadow public abstract boolean fireImmune();
 
+    @Shadow protected abstract void setSharedFlag(int p_70052_1_, boolean p_70052_2_);
+
     @Unique
     private static final DataParameter<Integer> DATA_FIRE_ID = EntityDataManager.defineId(Entity.class, DataSerializers.INT);
     @Unique
@@ -109,6 +112,17 @@ public abstract class EntityMixin implements IEntityMixin {
                 continue;
             }
             cir.setReturnValue(updateFluidHeightAndDoFluidPushing(fire.getLavaTag(), d0) | cir.getReturnValueZ());
+        }
+    }
+
+    @Inject(method = "baseTick", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;firstTick:Z"))
+    @SuppressWarnings("ConstantValue")
+    private void noFireIfHasResistance(CallbackInfo ci) {
+        if (!level.isClientSide() && (Object) this instanceof LivingEntity) {
+            LivingEntity self = (LivingEntity) (Object) this;
+            if (self.hasEffect(Effects.FIRE_RESISTANCE)) {
+                self.setRemainingFireTicks(0);
+            }
         }
     }
 
@@ -232,5 +246,10 @@ public abstract class EntityMixin implements IEntityMixin {
     @Override
     public boolean callGetSharedFlag(int flag) {
         return getSharedFlag(flag);
+    }
+
+    @Override
+    public void calSetSharedFlag(int flag, boolean value) {
+        setSharedFlag(flag, value);
     }
 }

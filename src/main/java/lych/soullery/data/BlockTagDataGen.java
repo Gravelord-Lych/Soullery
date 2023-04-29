@@ -19,12 +19,16 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
     public void addTags() {
         tag(BlockTags.BEACON_BASE_BLOCKS).add(REFINED_SOUL_METAL_BLOCK,
                 SOUL_METAL_BLOCK);
-        tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(CRACKED_SOUL_STONE_BRICKS,
+        tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(CHIPPED_SOUL_METAL_BARS,
+                CRACKED_SOUL_STONE_BRICKS,
+                DAMAGED_SOUL_METAL_BARS,
                 DECAYED_STONE,
                 DECAYED_STONE_BRICKS,
                 REFINED_SOUL_METAL_BLOCK,
                 SMOOTH_SOUL_STONE,
+                SOUL_METAL_BARS,
                 SOUL_METAL_BLOCK,
+                SOUL_OBSIDIAN,
                 SOUL_REINFORCEMENT_TABLE,
                 SOUL_STONE,
                 SOUL_STONE_BRICKS);
@@ -55,6 +59,19 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
                 SOUL_SAND,
                 SOUL_SOIL,
                 WARPED_HYPHAL_SOIL);
+        tag(ModBlockTags.SOUL_DRAGON_IMMUNE).add(SOUL_SAND,
+                SOUL_SOIL,
+                PARCHED_SOIL,
+                REFINED_SOUL_SAND,
+                REFINED_SOUL_SOIL,
+                WARPED_HYPHAL_SOIL,
+                CRIMSON_HYPHAL_SOIL,
+                SOUL_OBSIDIAN,
+                SOUL_METAL_BARS,
+                CHIPPED_SOUL_METAL_BARS,
+                DAMAGED_SOUL_METAL_BARS,
+                SOUL_STONE,
+                BEDROCK);
         tag(BlockTags.ENDERMAN_HOLDABLE).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);
         tag(BlockTags.FIRE).add(INFERNO, PURE_SOUL_FIRE);
         tag(BlockTags.MUSHROOM_GROW_BLOCK).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);

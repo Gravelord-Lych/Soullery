@@ -145,7 +145,6 @@ public final class  EntityUtils {
     }
 
     public static void sharedShieldHitParticle(LivingEntity entity) {
-        addParticlesAroundSelf(entity, RedstoneParticles.CYAN, 5);
         addParticlesAroundSelf(entity, ParticleTypes.POOF, 12);
     }
 
@@ -163,7 +162,6 @@ public final class  EntityUtils {
     }
 
     public static void sharedShieldHitParticleServerside(Entity entity, ServerWorld world) {
-        addParticlesAroundSelfServerside(entity, world, RedstoneParticles.CYAN, 5);
         addParticlesAroundSelfServerside(entity, world, ParticleTypes.POOF, 12);
     }
 

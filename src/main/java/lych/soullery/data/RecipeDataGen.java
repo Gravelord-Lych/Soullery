@@ -1,19 +1,25 @@
 package lych.soullery.data;
 
+import com.google.gson.JsonObject;
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockNames;
 import lych.soullery.item.ModItemNames;
+import lych.soullery.item.SoulContainerItem;
 import lych.soullery.item.crafting.ModRecipeSerializers;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.data.ForgeRecipeProvider;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +29,6 @@ import java.util.function.Consumer;
 
 import static lych.soullery.Soullery.prefix;
 import static lych.soullery.item.ModItems.*;
-import static net.minecraft.data.CustomRecipeBuilder.special;
 import static net.minecraft.data.ShapedRecipeBuilder.shaped;
 import static net.minecraft.data.ShapelessRecipeBuilder.shapeless;
 import static net.minecraft.item.Items.*;
@@ -45,31 +50,69 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         makeShovel(REFINED_SOUL_METAL_SHOVEL, REFINED_SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_INGOT), has(REFINED_SOUL_METAL_INGOT)).save(consumer);
         makeSword(REFINED_SOUL_METAL_SWORD, REFINED_SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_INGOT), has(REFINED_SOUL_METAL_INGOT)).save(consumer);
         create9(REFINED_SOUL_METAL_BLOCK, REFINED_SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_INGOT), has(REFINED_SOUL_METAL_INGOT)).save(consumer);
-        create9(REFINED_SOUL_METAL_INGOT, REFINED_SOUL_METAL_NUGGET).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_NUGGET), has(REFINED_SOUL_METAL_NUGGET)).save(consumer, ModItemNames.REFINED_SOUL_METAL_INGOT + "_from_nuggets");
+        create9(REFINED_SOUL_METAL_INGOT, REFINED_SOUL_METAL_NUGGET).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_NUGGET), has(REFINED_SOUL_METAL_NUGGET)).save(consumer, prefix(ModItemNames.REFINED_SOUL_METAL_INGOT + "_from_nuggets"));
         to9(REFINED_SOUL_METAL_INGOT, REFINED_SOUL_METAL_BLOCK).unlockedBy(stHas(ModBlockNames.REFINED_SOUL_METAL_BLOCK), has(REFINED_SOUL_METAL_BLOCK)).save(consumer);
         to9(REFINED_SOUL_METAL_NUGGET, REFINED_SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.REFINED_SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
-        shapeless(REFINED_SOUL_METAL_INGOT).requires(DIAMOND).requires(SOUL_METAL_INGOT).requires(SOUL_BLAZE_POWDER).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer, ModItemNames.REFINED_SOUL_METAL_INGOT + "_from_refining");
+        shapeless(REFINED_SOUL_METAL_INGOT).requires(DIAMOND).requires(SOUL_METAL_INGOT).requires(SOUL_BLAZE_POWDER).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer, prefix(ModItemNames.REFINED_SOUL_METAL_INGOT + "_from_refining"));
         shapeless(SOUL_BLAZE_POWDER).requires(BLAZE_POWDER).requires(SOUL_POWDER).unlockedBy(stHasTwo(Objects.requireNonNull(BLAZE_POWDER.getRegistryName()).getPath(), ModItemNames.SOUL_POWDER), hasAll(BLAZE_POWDER, SOUL_POWDER)).save(consumer);
         shapeless(SOUL_BLAZE_POWDER, 2).requires(SOUL_BLAZE_ROD).unlockedBy(stHas(ModItemNames.SOUL_BLAZE_ROD), has(SOUL_BLAZE_ROD)).save(consumer, prefix(ModItemNames.SOUL_BLAZE_POWDER + "_from_rod"));
         shapeless(SOUL_BLAZE_ROD).requires(BLAZE_ROD).requires(SOUL_POWDER).unlockedBy(stHasTwo(Objects.requireNonNull(BLAZE_ROD.getRegistryName()).getPath(), ModItemNames.SOUL_POWDER), hasAll(BLAZE_ROD, SOUL_POWDER)).save(consumer);
         shaped(SOUL_ENERGY_GEM).pattern(" X ").pattern("X#X").pattern(" X ").define('X', SOUL_POWDER).define('#', EMERALD).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer);
         create9(SOUL_METAL_BLOCK, SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
-        create9(SOUL_METAL_INGOT, SOUL_METAL_NUGGET).unlockedBy(stHas(ModItemNames.SOUL_METAL_NUGGET), has(SOUL_METAL_NUGGET)).save(consumer, ModItemNames.SOUL_METAL_INGOT + "_from_nuggets");
+        create9(SOUL_METAL_INGOT, SOUL_METAL_NUGGET).unlockedBy(stHas(ModItemNames.SOUL_METAL_NUGGET), has(SOUL_METAL_NUGGET)).save(consumer, prefix(ModItemNames.SOUL_METAL_INGOT + "_from_nuggets"));
         to9(SOUL_METAL_INGOT, SOUL_METAL_BLOCK).unlockedBy(stHas(ModBlockNames.SOUL_METAL_BLOCK), has(SOUL_METAL_BLOCK)).save(consumer);
-        create9(SOUL_METAL_NUGGET, SOUL_METAL_PARTICLE).unlockedBy(stHas(ModItemNames.SOUL_METAL_PARTICLE), has(SOUL_METAL_PARTICLE)).save(consumer, ModItemNames.SOUL_METAL_NUGGET + "_from_particles");
+        create9(SOUL_METAL_NUGGET, SOUL_METAL_PARTICLE).unlockedBy(stHas(ModItemNames.SOUL_METAL_PARTICLE), has(SOUL_METAL_PARTICLE)).save(consumer, prefix(ModItemNames.SOUL_METAL_NUGGET + "_from_particles"));
         to9(SOUL_METAL_NUGGET, SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
         to9(SOUL_METAL_PARTICLE, SOUL_METAL_NUGGET).unlockedBy(stHas(ModItemNames.SOUL_METAL_NUGGET), has(SOUL_METAL_NUGGET)).save(consumer);
         buildStoneRecipes(consumer);
         buildSmeltingRecipes(consumer);
         shapeless(SOUL_POWDER, 3).requires(SOUL_PIECE).unlockedBy(stHas(ModItemNames.SOUL_PIECE), has(SOUL_PIECE)).save(consumer);
-        shapeless(SOUL_POWDER, 27).requires(SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer, ModItemNames.SOUL_POWDER + "_from_soul_container");
-        shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(STONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, ModBlockNames.SOUL_STONE + "_from_stone");
-        shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(COBBLESTONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, ModBlockNames.SOUL_STONE + "_from_cobblestone");
-        shapeless(SOUL_METAL_INGOT).requires(SOUL_POWDER).requires(IRON_INGOT).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, ModItemNames.SOUL_METAL_INGOT + "_from_powder");
-        special(ModRecipeSerializers.SOUL_CONTAINER.get()).save(consumer, ModItemNames.SOUL_CONTAINER + "_creation");
+        shapeless(SOUL_POWDER, 27).requires(SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer, prefix(ModItemNames.SOUL_POWDER + "_from_soul_container"));
+        shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(STONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModBlockNames.SOUL_STONE + "_from_stone"));
+        shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(COBBLESTONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModBlockNames.SOUL_STONE + "_from_cobblestone"));
+        shapeless(SOUL_METAL_INGOT).requires(SOUL_POWDER).requires(IRON_INGOT).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModItemNames.SOUL_METAL_INGOT + "_from_powder"));
+        specialSave(ModRecipeSerializers.SOUL_CONTAINER.get(), prefix(ModItemNames.SOUL_CONTAINER + "_creation"), consumer);
         shaped(SOUL_REINFORCEMENT_TABLE).pattern("---").pattern("#W#").pattern("###").define('-', SOUL_METAL_INGOT).define('#', SOUL_STONE).define('W', CRAFTING_TABLE).unlockedBy(stHas(ModBlockNames.SOUL_REINFORCEMENT_TABLE), has(SOUL_REINFORCEMENT_TABLE)).save(consumer);
+        shaped(SOUL_METAL_BARS, 16).pattern("###").pattern("###").define('#', SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
         shaped(SEGEN).pattern("---").pattern("-#-").pattern("---").define('-', SOUL_METAL_INGOT).define('#', SOUL_STONE).unlockedBy(stHasTwo(ModItemNames.SOUL_METAL_INGOT, ModBlockNames.SOUL_STONE), hasAll(SOUL_METAL_INGOT, SOUL_STONE)).save(consumer);
         shaped(EXTRA_ABILITY_CARRIER).pattern("###").pattern("# #").pattern("###").define('#', SOUL_METAL_INGOT).unlockedBy(stHas(ModItemNames.SOUL_METAL_INGOT), has(SOUL_METAL_INGOT)).save(consumer);
+        shaped(MIND_OPERATOR).pattern(" IS").pattern(" II").pattern("I  ").define('I', GOLD_INGOT).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
+        shaped(CHAOS_WAND).pattern(" ES").pattern(" IE").pattern("I  ").define('I', SOUL_BLAZE_ROD).define('E', ENDER_PEARL).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
+        shaped(SOUL_PURIFIER).pattern("  S").pattern(" I ").pattern("I  ").define('I', SOUL_BLAZE_ROD).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
+    }
+
+    protected void specialSave(SpecialRecipeSerializer<?> serializer, ResourceLocation location, Consumer<IFinishedRecipe> consumer) {
+        consumer.accept(new IFinishedRecipe() {
+            @Override
+            public void serializeRecipeData(JsonObject object) {}
+
+            @Override
+            public ResourceLocation getId() {
+                return location;
+            }
+
+            @Override
+            public IRecipeSerializer<?> getType() {
+                return serializer;
+            }
+
+            @Nullable
+            @Override
+            public JsonObject serializeAdvancement() {
+                return null;
+            }
+
+            @Override
+            public ResourceLocation getAdvancementId() {
+                return new ResourceLocation(location.getNamespace(), "");
+            }
+        });
+    }
+
+    protected Ingredient soulOf(EntityType<?> type) {
+        ItemStack stack = new ItemStack(SOUL_CONTAINER);
+        SoulContainerItem.setType(stack, type);
+        return new NBTIngredient(stack){};
     }
 
     private void buildStoneRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -226,7 +269,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
     }
 
     private static void commonSmelting(IItemProvider result, IItemProvider ingredient, float experience, String condition, ICriterionInstance instance, Consumer<IFinishedRecipe> consumer, String description) {
-        smelting(result, ingredient, experience, 200).unlockedBy(condition, instance).save(consumer, description);
+        smelting(result, ingredient, experience, 200).unlockedBy(condition, instance).save(consumer, prefix(description));
     }
 
     private static void soulSmelting(IItemProvider result, IItemProvider ingredient, float experience, String condition, ICriterionInstance instance, Consumer<IFinishedRecipe> consumer) {
@@ -234,7 +277,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
     }
 
     private static void soulSmelting(IItemProvider result, IItemProvider ingredient, float experience, String condition, ICriterionInstance instance, Consumer<IFinishedRecipe> consumer, String description) {
-        smelting(result, ingredient, experience, 400).unlockedBy(condition, instance).save(consumer, description);
+        smelting(result, ingredient, experience, 400).unlockedBy(condition, instance).save(consumer, prefix(description));
     }
 
     protected static CookingRecipeBuilder smelting(IItemProvider result, IItemProvider ingredient, float experience, int cookingTime) {
@@ -267,7 +310,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         if (resultName == null || ingredientName == null) {
             throw new NullPointerException("Registry name should be non-null");
         }
-        stonecutting(result, SOUL_STONE, result.asItem() instanceof BlockItem && ((BlockItem) result.asItem()).getBlock() instanceof SlabBlock ? 2 : 1).unlocks("has_soul_stone", has(SOUL_STONE)).save(consumer, resultName.getPath() + "_from_" + ingredientName.getPath() + "_stonecutting");
+        stonecutting(result, SOUL_STONE, result.asItem() instanceof BlockItem && ((BlockItem) result.asItem()).getBlock() instanceof SlabBlock ? 2 : 1).unlocks("has_soul_stone", has(SOUL_STONE)).save(consumer, prefix(resultName.getPath() + "_from_" + ingredientName.getPath() + "_stonecutting"));
     }
 
     private static void decayedStonecutting(IItemProvider result, Consumer<IFinishedRecipe> consumer) {
@@ -276,7 +319,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         if (resultName == null || ingredientName == null) {
             throw new NullPointerException("Registry name should be non-null");
         }
-        stonecutting(result, DECAYED_STONE, result.asItem() instanceof BlockItem && ((BlockItem) result.asItem()).getBlock() instanceof SlabBlock ? 2 : 1).unlocks("has_decayed_stone", has(DECAYED_STONE)).save(consumer, resultName.getPath() + "_from_" + ingredientName.getPath() + "_stonecutting");
+        stonecutting(result, DECAYED_STONE, result.asItem() instanceof BlockItem && ((BlockItem) result.asItem()).getBlock() instanceof SlabBlock ? 2 : 1).unlocks("has_decayed_stone", has(DECAYED_STONE)).save(consumer, prefix(resultName.getPath() + "_from_" + ingredientName.getPath() + "_stonecutting"));
     }
 
     protected static InventoryChangeTrigger.Instance hasAll(IItemProvider... providers) {
