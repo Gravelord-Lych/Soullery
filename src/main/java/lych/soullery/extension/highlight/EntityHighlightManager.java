@@ -154,7 +154,7 @@ public class EntityHighlightManager extends WorldSavedData {
                 continue;
             }
             if (entity == null) {
-                invalidUUIDs.put(uuid, level.getGameTime() + 40);
+                invalidUUIDs.putIfAbsent(uuid, level.getGameTime() + 40);
             } else {
                 invalidUUIDs.remove(entity.getUUID());
             }
