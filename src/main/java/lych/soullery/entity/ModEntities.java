@@ -68,6 +68,7 @@ public final class ModEntities {
     public static final EntityType<SoulRabbitEntity> SOUL_RABBIT = Builder.of(SoulRabbitEntity::new, EntityClassification.CREATURE).sized(0.4F, 0.5F).fireImmune().clientTrackingRange(8).build(ModEntityNames.SOUL_RABBIT);
     public static final EntityType<SoulSkeletonEntity> SOUL_SKELETON = Builder.of(SoulSkeletonEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.99f).fireImmune().clientTrackingRange(8).build(ModEntityNames.SOUL_SKELETON);
     public static final EntityType<SoulSkeletonKingEntity> SOUL_SKELETON_KING = Builder.of(SoulSkeletonKingEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.99f).fireImmune().clientTrackingRange(10).build(ModEntityNames.SOUL_SKELETON_KING);
+    public static final EntityType<SoulifiedEnderPearlEntity> SOULIFIED_ENDER_PEARL = Builder.<SoulifiedEnderPearlEntity>of(SoulifiedEnderPearlEntity::new, EntityClassification.MISC).sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build(ModEntityNames.SOULIFIED_ENDER_PEARL);
     public static final EntityType<SubZombieEntity> SUB_ZOMBIE = Builder.of(SubZombieEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(8).build(ModEntityNames.SUB_ZOMBIE);
     public static final EntityType<VoidAlchemistEntity> VOID_ALCHEMIST = Builder.of(VoidAlchemistEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.VOID_ALCHEMIST);
     public static final EntityType<VoidArcherEntity> VOID_ARCHER = Builder.of(VoidArcherEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.VOID_ARCHER);
@@ -113,6 +114,7 @@ public final class ModEntities {
         registry.register(make(SOUL_RABBIT, ModEntityNames.SOUL_RABBIT));
         registry.register(make(SOUL_SKELETON, ModEntityNames.SOUL_SKELETON));
         registry.register(make(SOUL_SKELETON_KING, ModEntityNames.SOUL_SKELETON_KING));
+        registry.register(make(SOULIFIED_ENDER_PEARL, ModEntityNames.SOULIFIED_ENDER_PEARL));
         registry.register(make(SUB_ZOMBIE, ModEntityNames.SUB_ZOMBIE));
         registry.register(make(VOID_ALCHEMIST, ModEntityNames.VOID_ALCHEMIST));
         registry.register(make(VOID_ARCHER, ModEntityNames.VOID_ARCHER));

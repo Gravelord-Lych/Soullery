@@ -251,6 +251,15 @@ public final class CommonEventListener {
     }
 
     @SubscribeEvent
+    public static void onEnderPearlUse(PlayerInteractEvent.RightClickItem event) {
+        if (event.getItemStack().getItem() == Items.ENDER_PEARL) {
+            for (Item item : ModItems.ENDER_LAUNCHER.getTierMap().values()) {
+                event.getPlayer().getCooldowns().addCooldown(item, 20);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
         if (event.getEntity() instanceof AbstractVoidwalkerEntity && event.getSpawnReason() == SpawnReason.SPAWN_EGG) {
             ((AbstractVoidwalkerEntity) event.getEntity()).setTier(VoidwalkerSpawnEggItem.getCurrentTier());

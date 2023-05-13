@@ -34,6 +34,7 @@ public class ModEntityNames {
     public static final String SOUL_RABBIT = "soul_rabbit";
     public static final String SOUL_SKELETON = "soul_skeleton";
     public static final String SOUL_SKELETON_KING = "soul_skeleton_king";
+    public static final String SOULIFIED_ENDER_PEARL = "soulified_ender_pearl";
     public static final String SUB_ZOMBIE = "sub_zombie";
     public static final String VOID_ALCHEMIST = "void_alchemist";
     public static final String VOID_ARCHER = "void_archer";

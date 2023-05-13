@@ -46,7 +46,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
         }
         EntityRayTraceResult ray = EntityUtils.getEntityRayTraceResult(player, 12 + (tier - 2) * 6);
         if (ray != null && ray.getEntity() instanceof MobEntity) {
-            ActionResultType type = tryControl(player, ray.getEntity());
+            ActionResultType type = tryControl(player, ray.getEntity(), hand);
             if (type != null) {
                 player.playSound(ModSoundEvents.MIND_OPERATE.get(), 1, 1);
                 return new ActionResult<>(type, player.getItemInHand(hand));
@@ -60,7 +60,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
         if (player.getCooldowns().isOnCooldown(this)) {
             return super.interactLivingEntity(stack, player, entity, hand);
         }
-        ActionResultType type = tryControl(player, entity);
+        ActionResultType type = tryControl(player, entity, hand);
         if (type != null) {
             player.playSound(ModSoundEvents.MIND_OPERATE.get(), 1, 1);
             return type;
@@ -69,12 +69,12 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
     }
 
     @Nullable
-    private ActionResultType tryControl(PlayerEntity player, Entity entity) {
+    private ActionResultType tryControl(PlayerEntity player, Entity entity, Hand hand) {
         if (entity instanceof MobEntity) {
             if (player.level.isClientSide()) {
                 return ActionResultType.SUCCESS;
             }
-            if (SoulEnergies.cost(player, MindOperator.SE_COST)) {
+            if (SoulEnergies.cost(player, MindOperator.SE_COST) && ModItems.damage(player, hand)) {
                 MindOperator<? super MobEntity> operator = MindOperator.cast(ControlDictionaries.MIND_OPERATOR.control((MobEntity) entity, player, getTimeForTier(tier)));
                 if (operator == null) {
                     EntityUtils.addParticlesAroundSelfServerside(entity, (ServerWorld) player.level, ParticleTypes.LARGE_SMOKE, 12);

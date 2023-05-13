@@ -3,6 +3,8 @@ package lych.soullery.item;
 public final class ModItemNames {
     public static final String CHAOS_WAND = "chaos_wand";
     public static final String CHAOS_WAND_II = "chaos_wand_l2";
+    public static final String ENDER_LAUNCHER = "ender_launcher";
+    public static final String ENDER_LAUNCHER_II = "ender_launcher_l2";
     public static final String ENTITY_CARRIER = "entity_carrier";
     public static final String ENTITY_CARRIER_II = "entity_carrier_l2";
     public static final String EXTRA_ABILITY_CARRIER = "extra_ability_carrier";

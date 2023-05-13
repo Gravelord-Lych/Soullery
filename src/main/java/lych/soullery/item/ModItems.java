@@ -16,8 +16,10 @@ import lych.soullery.item.potion.HalfUsedSplashPotionItem;
 import lych.soullery.util.ModConstants;
 import lych.soullery.util.SoulEnergies;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.RegistryEvent;
@@ -34,8 +36,10 @@ import static lych.soullery.util.ModConstants.VOIDWALKER_SPAWN_EGG_BACKGROUND_CO
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
     public static final String SPAWN_EGG_SUFFIX = "_spawn_egg";
-    public static final Item CHAOS_WAND = new ChaosWandItem(common().stacksTo(1), 1);
-    public static final Item CHAOS_WAND_II = new ChaosWandItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item CHAOS_WAND = new ChaosWandItem(common().durability(333), 1);
+    public static final Item CHAOS_WAND_II = new ChaosWandItem(common().durability(555).fireResistant().rarity(Rarity.RARE), 2);
+    public static final EnderLauncherItem ENDER_LAUNCHER = new EnderLauncherItem(common().durability(720), 1);
+    public static final EnderLauncherItem ENDER_LAUNCHER_II = new EnderLauncherItem(common().durability(1200).fireResistant().rarity(Rarity.RARE), 2);
     public static final Item ENTITY_CARRIER = new EntityCarrierItem(common().stacksTo(1), 1);
     public static final Item ENTITY_CARRIER_II = new EntityCarrierItem(common().stacksTo(1).fireResistant(), 8);
     public static final Item EXTRA_ABILITY_CARRIER = new ExtraAbilityCarrierItem(common().stacksTo(1));
@@ -44,9 +48,9 @@ public final class ModItems {
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HORCRUX_CARRIER = new HorcruxCarrierItem(common().stacksTo(1));
-    public static final Item MIND_OPERATOR = new MindOperatorItem(common().stacksTo(1), 1);
-    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
-    public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.EPIC), 3);
+    public static final Item MIND_OPERATOR = new MindOperatorItem(common().durability(667), 1);
+    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().durability(1000).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().durability(2500).fireResistant().rarity(Rarity.EPIC), 3);
     public static final Item REFINED_SOUL_METAL_AXE = new AxeItem(Tool.REFINED_SOUL_METAL, 5, -3, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_BOOTS = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.FEET, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_CHESTPLATE = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.CHEST, common().fireResistant());
@@ -72,8 +76,8 @@ public final class ModItems {
     public static final Item SOUL_METAL_PARTICLE = new Item(common());
     public static final Item SOUL_PIECE = new SoulPieceItem(common().stacksTo(16));
     public static final Item SOUL_POWDER = new SoulPowderItem(common());
-    public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().stacksTo(1), 1);
-    public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().durability(360), 1);
+    public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().durability(600).fireResistant().rarity(Rarity.RARE), 2);
 
     public static final BlockItem BROKEN_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.BROKEN_REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem CHIPPED_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.CHIPPED_REFINED_SOUL_METAL_BARS, common());
@@ -190,6 +194,8 @@ public final class ModItems {
         IForgeRegistry<Item> registry = event.getRegistry();
         registry.register(make(CHAOS_WAND, ModItemNames.CHAOS_WAND));
         registry.register(make(CHAOS_WAND_II, ModItemNames.CHAOS_WAND_II));
+        registry.register(make(ENDER_LAUNCHER, ModItemNames.ENDER_LAUNCHER));
+        registry.register(make(ENDER_LAUNCHER_II, ModItemNames.ENDER_LAUNCHER_II));
         registry.register(make(ENTITY_CARRIER, ModItemNames.ENTITY_CARRIER));
         registry.register(make(ENTITY_CARRIER_II, ModItemNames.ENTITY_CARRIER_II));
         registry.register(make(EXTRA_ABILITY_CARRIER, ModItemNames.EXTRA_ABILITY_CARRIER));
@@ -340,5 +346,58 @@ public final class ModItems {
             default:
                 return rarity == ModRarities.LEGENDARY ? ModRarities.MAX : rarity;
         }
+    }
+
+    public static boolean canDamage(ItemStack stack) {
+        return canDamage(stack, 1);
+    }
+
+    public static boolean canDamage(ItemStack stack, int amount) {
+        return stack.getDamageValue() + amount < stack.getMaxDamage();
+    }
+
+    public static boolean damage(LivingEntity user, Hand hand) {
+        return damage(user.getItemInHand(hand), user, hand);
+    }
+
+    public static boolean damage(ItemStack stack, LivingEntity user, Hand hand) {
+        return damage(stack, user, hand, 1);
+    }
+
+    public static boolean damage(ItemStack stack, LivingEntity user, Hand hand, int amount) {
+        return damage(stack, user, hand == Hand.MAIN_HAND ? EquipmentSlotType.MAINHAND : EquipmentSlotType.OFFHAND, amount);
+    }
+
+    public static boolean damage(ItemStack stack, LivingEntity user, EquipmentSlotType type) {
+        return damage(stack, user, type, 1);
+    }
+
+    public static boolean damage(ItemStack stack, LivingEntity user, EquipmentSlotType type, int amount) {
+        int newDamage = stack.getDamageValue() + amount;
+        if (newDamage >= stack.getMaxDamage()) {
+            return false;
+        }
+        forceDamage(stack, user, type, amount);
+        return true;
+    }
+
+    public static void forceDamage(LivingEntity user, Hand hand) {
+        forceDamage(user.getItemInHand(hand), user, hand);
+    }
+
+    public static void forceDamage(ItemStack stack, LivingEntity user, Hand hand) {
+        forceDamage(stack, user, hand, 1);
+    }
+
+    public static void forceDamage(ItemStack stack, LivingEntity user, Hand hand, int amount) {
+        forceDamage(stack, user, hand == Hand.MAIN_HAND ? EquipmentSlotType.MAINHAND : EquipmentSlotType.OFFHAND, amount);
+    }
+
+    public static void forceDamage(ItemStack stack, LivingEntity user, EquipmentSlotType type) {
+        forceDamage(stack, user, type, 1);
+    }
+
+    public static void forceDamage(ItemStack stack, LivingEntity user, EquipmentSlotType type, int amount) {
+        stack.hurtAndBreak(amount, user, entity -> entity.broadcastBreakEvent(type));
     }
 }

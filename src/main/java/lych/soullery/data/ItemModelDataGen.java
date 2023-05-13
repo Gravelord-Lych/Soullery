@@ -42,6 +42,8 @@ public class ItemModelDataGen extends ItemModelProvider {
     protected void registerModels() {
         simple(registryNameToString(CHAOS_WAND), HANDHELD, prefix(CHAOS_WAND));
         simple(registryNameToString(CHAOS_WAND_II), HANDHELD, prefix(CHAOS_WAND_II));
+        simple(registryNameToString(ENDER_LAUNCHER), GENERATED, prefix(ENDER_LAUNCHER));
+        simple(registryNameToString(ENDER_LAUNCHER_II), GENERATED, prefix(ENDER_LAUNCHER_II));
         simple(registryNameToString(ENTITY_CARRIER), HANDHELD, prefix(ENTITY_CARRIER));
         simple(registryNameToString(ENTITY_CARRIER_II), HANDHELD, prefix(ENTITY_CARRIER_II));
         simple(registryNameToString(EXTRA_ABILITY_CARRIER), GENERATED, prefix(EXTRA_ABILITY_CARRIER));

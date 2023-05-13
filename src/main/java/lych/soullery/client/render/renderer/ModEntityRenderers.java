@@ -19,6 +19,8 @@ public final class ModEntityRenderers {
     private static final ResourceLocation DRAGON_FIREBALL_LOCATION = new ResourceLocation("textures/entity/enderdragon/dragon_fireball.png");
     private static final ResourceLocation SOULBALL_LOCATION = Soullery.prefixTex("entity/souldragon/soulball.png");
     private static final ResourceLocation SOULBALL_PURE_LOCATION = Soullery.prefixTex("entity/souldragon/soulball_pure.png");
+    private static final ResourceLocation SOULIFIED_ENDER_PEARL_LOCATION = Soullery.prefixTex("entity/soulified_ender_pearl.png");
+    private static final ResourceLocation SOULIFIED_ENDER_PEARL_PURE_LOCATION = Soullery.prefixTex("entity/purified_soulified_ender_pearl.png");
 
     private ModEntityRenderers() {}
 
@@ -56,6 +58,7 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(SOUL_RABBIT, SoulRabbitRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON, SoulSkeletonRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON_KING, SoulSkeletonKingRenderer::new);
+        registerEntityRenderingHandler(SOULIFIED_ENDER_PEARL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULIFIED_ENDER_PEARL_LOCATION, SOULIFIED_ENDER_PEARL_PURE_LOCATION), RenderType::entityCutoutNoCull));
         registerEntityRenderingHandler(SUB_ZOMBIE, ZombieRenderer::new);
         registerEntityRenderingHandler(VOID_ALCHEMIST, VoidAlchemistRenderer::new);
         registerEntityRenderingHandler(VOID_ARCHER, VoidArcherRenderer::new);
