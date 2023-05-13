@@ -24,28 +24,38 @@ import java.util.function.Function;
 public class SimpleTexturedRenderer<T extends Entity> extends EntityRenderer<T> {
     private final Function<? super T, ? extends ResourceLocation> locationGetter;
     private final BiFunction<? super T, ? super ResourceLocation, ? extends RenderType> typeGetter;
+    private final boolean fullBright;
 
     public SimpleTexturedRenderer(EntityRendererManager manager, Function<? super T, ? extends ResourceLocation> locationGetter, BiFunction<? super T, ? super ResourceLocation, ? extends RenderType> typeGetter) {
+        this(manager, locationGetter, typeGetter, false);
+    }
+
+    private SimpleTexturedRenderer(EntityRendererManager manager, Function<? super T, ? extends ResourceLocation> locationGetter, BiFunction<? super T, ? super ResourceLocation, ? extends RenderType> typeGetter, boolean fullBright) {
         super(manager);
         this.locationGetter = locationGetter;
         this.typeGetter = typeGetter;
+        this.fullBright = fullBright;
     }
 
-    public static <T extends Entity> IRenderFactory<T> single(ResourceLocation location) {
+    public static <T extends Entity> Factory<T> single(ResourceLocation location) {
         return create(t -> location, (t, l) -> RenderType.entityCutoutNoCull(l));
     }
 
-    public static <T extends Entity> IRenderFactory<T> fixedRenderType(Function<? super T, ? extends ResourceLocation> locationGetter, Function<? super ResourceLocation, ? extends RenderType> typeGetter) {
+    public static <T extends Entity> Factory<T> fixedRenderType(Function<? super T, ? extends ResourceLocation> locationGetter, Function<? super ResourceLocation, ? extends RenderType> typeGetter) {
         return manager -> new SimpleTexturedRenderer<>(manager, locationGetter, (t, l) -> typeGetter.apply(l));
     }
 
-    public static <T extends Entity> IRenderFactory<T> create(Function<? super T, ? extends ResourceLocation> locationGetter, BiFunction<? super T, ? super ResourceLocation, ? extends RenderType> typeGetter) {
+    public static <T extends Entity> Factory<T> create(Function<? super T, ? extends ResourceLocation> locationGetter, BiFunction<? super T, ? super ResourceLocation, ? extends RenderType> typeGetter) {
         return manager -> new SimpleTexturedRenderer<>(manager, locationGetter, typeGetter);
+    }
+
+    public SimpleTexturedRenderer<T> alwaysBright() {
+        return new SimpleTexturedRenderer<>(entityRenderDispatcher, locationGetter, typeGetter, true);
     }
 
     @Override
     protected int getBlockLightLevel(T t, BlockPos pos) {
-        return 15;
+        return fullBright ? 15 : super.getBlockLightLevel(t, pos);
     }
 
     @Override
@@ -73,5 +83,15 @@ public class SimpleTexturedRenderer<T extends Entity> extends EntityRenderer<T> 
     @Override
     public ResourceLocation getTextureLocation(T t) {
         return locationGetter.apply(t);
+    }
+
+    @FunctionalInterface
+    public interface Factory<T extends Entity> extends IRenderFactory<T> {
+        @Override
+        SimpleTexturedRenderer<? super T> createRenderFor(EntityRendererManager manager);
+
+        default Factory<T> alwaysBright() {
+            return manager -> createRenderFor(manager).alwaysBright();
+        }
     }
 }

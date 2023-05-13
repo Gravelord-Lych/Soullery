@@ -1,5 +1,6 @@
 package lych.soullery.item;
 
+import com.google.common.base.Preconditions;
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockNames;
 import lych.soullery.block.ModBlocks;
@@ -192,6 +193,10 @@ public final class ModItems {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
+        registerBlockItems(registry);
+
+        registry.register(make(SOUL_ENERGY_GEM, ModItemNames.SOUL_ENERGY_GEM));
+        registry.register(make(SOUL_ENERGY_GEM_II, ModItemNames.SOUL_ENERGY_GEM_II));
         registry.register(make(CHAOS_WAND, ModItemNames.CHAOS_WAND));
         registry.register(make(CHAOS_WAND_II, ModItemNames.CHAOS_WAND_II));
         registry.register(make(ENDER_LAUNCHER, ModItemNames.ENDER_LAUNCHER));
@@ -207,102 +212,121 @@ public final class ModItems {
         registry.register(make(MIND_OPERATOR, ModItemNames.MIND_OPERATOR));
         registry.register(make(MIND_OPERATOR_II, ModItemNames.MIND_OPERATOR_II));
         registry.register(make(MIND_OPERATOR_III, ModItemNames.MIND_OPERATOR_III));
-        registry.register(make(REFINED_SOUL_METAL_AXE, ModItemNames.REFINED_SOUL_METAL_AXE));
-        registry.register(make(REFINED_SOUL_METAL_BOOTS, ModItemNames.REFINED_SOUL_METAL_BOOTS));
-        registry.register(make(REFINED_SOUL_METAL_CHESTPLATE, ModItemNames.REFINED_SOUL_METAL_CHESTPLATE));
-        registry.register(make(REFINED_SOUL_METAL_HELMET, ModItemNames.REFINED_SOUL_METAL_HELMET));
-        registry.register(make(REFINED_SOUL_METAL_HOE, ModItemNames.REFINED_SOUL_METAL_HOE));
-        registry.register(make(REFINED_SOUL_METAL_HORSE_ARMOR, ModItemNames.REFINED_SOUL_METAL_HORSE_ARMOR));
-        registry.register(make(REFINED_SOUL_METAL_INGOT, ModItemNames.REFINED_SOUL_METAL_INGOT));
-        registry.register(make(REFINED_SOUL_METAL_LEGGINGS, ModItemNames.REFINED_SOUL_METAL_LEGGINGS));
-        registry.register(make(REFINED_SOUL_METAL_NUGGET, ModItemNames.REFINED_SOUL_METAL_NUGGET));
-        registry.register(make(REFINED_SOUL_METAL_PICKAXE, ModItemNames.REFINED_SOUL_METAL_PICKAXE));
-        registry.register(make(REFINED_SOUL_METAL_SHOVEL, ModItemNames.REFINED_SOUL_METAL_SHOVEL));
-        registry.register(make(REFINED_SOUL_METAL_SWORD, ModItemNames.REFINED_SOUL_METAL_SWORD));
-        registry.register(make(SOUL_ARROW, ModItemNames.SOUL_ARROW));
-        registry.register(make(SOUL_BLAZE_POWDER, ModItemNames.SOUL_BLAZE_POWDER));
-        registry.register(make(SOUL_BLAZE_ROD, ModItemNames.SOUL_BLAZE_ROD));
-        registry.register(make(SOUL_BOW, ModItemNames.SOUL_BOW));
+        registry.register(make(SOUL_PURIFIER, ModItemNames.SOUL_PURIFIER));
+        registry.register(make(SOUL_PURIFIER_II, ModItemNames.SOUL_PURIFIER_II));
+
+        registry.register(make(SOUL_PIECE, ModItemNames.SOUL_PIECE));
         registry.register(make(SOUL_CONTAINER, ModItemNames.SOUL_CONTAINER));
-        registry.register(make(SOUL_ENERGY_GEM, ModItemNames.SOUL_ENERGY_GEM));
-        registry.register(make(SOUL_ENERGY_GEM_II, ModItemNames.SOUL_ENERGY_GEM_II));
-        registry.register(make(SOUL_LAVA_BUCKET, ModItemNames.SOUL_LAVA_BUCKET));
+
+        registry.register(make(SOUL_BOW, ModItemNames.SOUL_BOW));
+        registry.register(make(SOUL_ARROW, ModItemNames.SOUL_ARROW));
+
+        registry.register(make(REFINED_SOUL_METAL_SWORD, ModItemNames.REFINED_SOUL_METAL_SWORD));
+        registry.register(make(REFINED_SOUL_METAL_HELMET, ModItemNames.REFINED_SOUL_METAL_HELMET));
+        registry.register(make(REFINED_SOUL_METAL_CHESTPLATE, ModItemNames.REFINED_SOUL_METAL_CHESTPLATE));
+        registry.register(make(REFINED_SOUL_METAL_LEGGINGS, ModItemNames.REFINED_SOUL_METAL_LEGGINGS));
+        registry.register(make(REFINED_SOUL_METAL_BOOTS, ModItemNames.REFINED_SOUL_METAL_BOOTS));
+
+        registry.register(make(REFINED_SOUL_METAL_SHOVEL, ModItemNames.REFINED_SOUL_METAL_SHOVEL));
+        registry.register(make(REFINED_SOUL_METAL_PICKAXE, ModItemNames.REFINED_SOUL_METAL_PICKAXE));
+        registry.register(make(REFINED_SOUL_METAL_AXE, ModItemNames.REFINED_SOUL_METAL_AXE));
+        registry.register(make(REFINED_SOUL_METAL_HOE, ModItemNames.REFINED_SOUL_METAL_HOE));
+
         registry.register(make(SOUL_METAL_INGOT, ModItemNames.SOUL_METAL_INGOT));
         registry.register(make(SOUL_METAL_NUGGET, ModItemNames.SOUL_METAL_NUGGET));
         registry.register(make(SOUL_METAL_PARTICLE, ModItemNames.SOUL_METAL_PARTICLE));
-        registry.register(make(SOUL_PIECE, ModItemNames.SOUL_PIECE));
+        registry.register(make(REFINED_SOUL_METAL_INGOT, ModItemNames.REFINED_SOUL_METAL_INGOT));
+        registry.register(make(REFINED_SOUL_METAL_NUGGET, ModItemNames.REFINED_SOUL_METAL_NUGGET));
+
+        registry.register(make(SOUL_BLAZE_POWDER, ModItemNames.SOUL_BLAZE_POWDER));
+        registry.register(make(SOUL_BLAZE_ROD, ModItemNames.SOUL_BLAZE_ROD));
+        registry.register(make(SOUL_LAVA_BUCKET, ModItemNames.SOUL_LAVA_BUCKET));
         registry.register(make(SOUL_POWDER, ModItemNames.SOUL_POWDER));
-        registry.register(make(SOUL_PURIFIER, ModItemNames.SOUL_PURIFIER));
-        registry.register(make(SOUL_PURIFIER_II, ModItemNames.SOUL_PURIFIER_II));
-        registerBlockItems(registry);
+        registry.register(make(REFINED_SOUL_METAL_HORSE_ARMOR, ModItemNames.REFINED_SOUL_METAL_HORSE_ARMOR));
+
         registerSpawnEggs(registry);
     }
 
     private static void registerBlockItems(IForgeRegistry<Item> registry) {
-        registry.register(make(BROKEN_REFINED_SOUL_METAL_BARS, ModBlockNames.BROKEN_REFINED_SOUL_METAL_BARS));
-        registry.register(make(CHIPPED_REFINED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_REFINED_SOUL_METAL_BARS));
-        registry.register(make(CHIPPED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_SOUL_METAL_BARS));
-        registry.register(make(CHISELED_SOUL_STONE_BRICKS, ModBlockNames.CHISELED_SOUL_STONE_BRICKS));
-        registry.register(make(CRACKED_DECAYED_STONE_BRICK_SLAB, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_SLAB));
-        registry.register(make(CRACKED_DECAYED_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_STAIRS));
-        registry.register(make(CRACKED_DECAYED_STONE_BRICK_WALL, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_WALL));
-        registry.register(make(CRACKED_DECAYED_STONE_BRICKS, ModBlockNames.CRACKED_DECAYED_STONE_BRICKS));
-        registry.register(make(CRACKED_SOUL_STONE_BRICK_SLAB, ModBlockNames.CRACKED_SOUL_STONE_BRICK_SLAB));
-        registry.register(make(CRACKED_SOUL_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_SOUL_STONE_BRICK_STAIRS));
-        registry.register(make(CRACKED_SOUL_STONE_BRICK_WALL, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL));
-        registry.register(make(CRACKED_SOUL_STONE_BRICKS, ModBlockNames.CRACKED_SOUL_STONE_BRICKS));
-        registry.register(make(CRIMSON_HYPHAL_SOIL, ModBlockNames.CRIMSON_HYPHAL_SOIL));
-        registry.register(make(DAMAGED_REFINED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_REFINED_SOUL_METAL_BARS));
-        registry.register(make(DAMAGED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_SOUL_METAL_BARS));
-        registry.register(make(DECAYED_STONE, ModBlockNames.DECAYED_STONE));
-        registry.register(make(DECAYED_STONE_BRICK_SLAB, ModBlockNames.DECAYED_STONE_BRICK_SLAB));
-        registry.register(make(DECAYED_STONE_BRICK_STAIRS, ModBlockNames.DECAYED_STONE_BRICK_STAIRS));
-        registry.register(make(DECAYED_STONE_BRICK_WALL, ModBlockNames.DECAYED_STONE_BRICK_WALL));
-        registry.register(make(DECAYED_STONE_BRICKS, ModBlockNames.DECAYED_STONE_BRICKS));
-        registry.register(make(DECAYED_STONE_SLAB, ModBlockNames.DECAYED_STONE_SLAB));
-        registry.register(make(DECAYED_STONE_STAIRS, ModBlockNames.DECAYED_STONE_STAIRS));
-        registry.register(make(DECAYED_STONE_WALL, ModBlockNames.DECAYED_STONE_WALL));
-        registry.register(make(DEPTH_SEGEN, ModBlockNames.DEPTH_SEGEN));
-        registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
-        registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
-        registry.register(make(HEAT_SEGEN_II, ModBlockNames.HEAT_SEGEN_II));
-        registry.register(make(MAGNETIC_FIELD_GENERATOR, ModBlockNames.MAGNETIC_FIELD_GENERATOR));
-        registry.register(make(NETHER_SEGEN, ModBlockNames.NETHER_SEGEN));
-        registry.register(make(NETHER_SEGEN_II, ModBlockNames.NETHER_SEGEN_II));
-        registry.register(make(PARCHED_SOIL, ModBlockNames.PARCHED_SOIL));
-        registry.register(make(PURIFIED_SOULIFIED_BEDROCK, ModBlockNames.PURIFIED_SOULIFIED_BEDROCK));
-        registry.register(make(REFINED_SOUL_METAL_BARS, ModBlockNames.REFINED_SOUL_METAL_BARS));
-        registry.register(make(REFINED_SOUL_METAL_BLOCK, ModBlockNames.REFINED_SOUL_METAL_BLOCK));
-        registry.register(make(REFINED_SOUL_SAND, ModBlockNames.REFINED_SOUL_SAND));
-        registry.register(make(REFINED_SOUL_SOIL, ModBlockNames.REFINED_SOUL_SOIL));
-        registry.register(make(SEGEN, ModBlockNames.SEGEN));
-        registry.register(make(SEGEN_II, ModBlockNames.SEGEN_II));
-        registry.register(make(SKY_SEGEN, ModBlockNames.SKY_SEGEN));
-        registry.register(make(SKY_SEGEN_II, ModBlockNames.SKY_SEGEN_II));
+        registry.register(make(SOUL_STONE, ModBlockNames.SOUL_STONE));
+        registry.register(make(SOUL_STONE_SLAB, ModBlockNames.SOUL_STONE_SLAB));
+        registry.register(make(SOUL_STONE_STAIRS, ModBlockNames.SOUL_STONE_STAIRS));
+        registry.register(make(SOUL_STONE_WALL, ModBlockNames.SOUL_STONE_WALL));
+
         registry.register(make(SMOOTH_SOUL_STONE, ModBlockNames.SMOOTH_SOUL_STONE));
         registry.register(make(SMOOTH_SOUL_STONE_SLAB, ModBlockNames.SMOOTH_SOUL_STONE_SLAB));
         registry.register(make(SMOOTH_SOUL_STONE_STAIRS, ModBlockNames.SMOOTH_SOUL_STONE_STAIRS));
         registry.register(make(SMOOTH_SOUL_STONE_WALL, ModBlockNames.SMOOTH_SOUL_STONE_WALL));
+
+        registry.register(make(SOUL_STONE_BRICKS, ModBlockNames.SOUL_STONE_BRICKS));
+        registry.register(make(SOUL_STONE_BRICK_SLAB, ModBlockNames.SOUL_STONE_BRICK_SLAB));
+        registry.register(make(SOUL_STONE_BRICK_STAIRS, ModBlockNames.SOUL_STONE_BRICK_STAIRS));
+        registry.register(make(SOUL_STONE_BRICK_WALL, ModBlockNames.SOUL_STONE_BRICK_WALL));
+
+        registry.register(make(CHISELED_SOUL_STONE_BRICKS, ModBlockNames.CHISELED_SOUL_STONE_BRICKS));
+
+        registry.register(make(CRACKED_SOUL_STONE_BRICKS, ModBlockNames.CRACKED_SOUL_STONE_BRICKS));
+        registry.register(make(CRACKED_SOUL_STONE_BRICK_SLAB, ModBlockNames.CRACKED_SOUL_STONE_BRICK_SLAB));
+        registry.register(make(CRACKED_SOUL_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_SOUL_STONE_BRICK_STAIRS));
+        registry.register(make(CRACKED_SOUL_STONE_BRICK_WALL, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL));
+
+        registry.register(make(DECAYED_STONE, ModBlockNames.DECAYED_STONE));
+        registry.register(make(DECAYED_STONE_SLAB, ModBlockNames.DECAYED_STONE_SLAB));
+        registry.register(make(DECAYED_STONE_STAIRS, ModBlockNames.DECAYED_STONE_STAIRS));
+        registry.register(make(DECAYED_STONE_WALL, ModBlockNames.DECAYED_STONE_WALL));
+
+        registry.register(make(DECAYED_STONE_BRICKS, ModBlockNames.DECAYED_STONE_BRICKS));
+        registry.register(make(DECAYED_STONE_BRICK_SLAB, ModBlockNames.DECAYED_STONE_BRICK_SLAB));
+        registry.register(make(DECAYED_STONE_BRICK_STAIRS, ModBlockNames.DECAYED_STONE_BRICK_STAIRS));
+        registry.register(make(DECAYED_STONE_BRICK_WALL, ModBlockNames.DECAYED_STONE_BRICK_WALL));
+
+        registry.register(make(CRACKED_DECAYED_STONE_BRICKS, ModBlockNames.CRACKED_DECAYED_STONE_BRICKS));
+        registry.register(make(CRACKED_DECAYED_STONE_BRICK_SLAB, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_SLAB));
+        registry.register(make(CRACKED_DECAYED_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_STAIRS));
+        registry.register(make(CRACKED_DECAYED_STONE_BRICK_WALL, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_WALL));
+
+        registry.register(make(SOUL_OBSIDIAN, ModBlockNames.SOUL_OBSIDIAN));
+        registry.register(make(SOULIFIED_BEDROCK, ModBlockNames.SOULIFIED_BEDROCK));
+        registry.register(make(PURIFIED_SOULIFIED_BEDROCK, ModBlockNames.PURIFIED_SOULIFIED_BEDROCK));
+
+        registry.register(make(SOUL_METAL_BLOCK, ModBlockNames.SOUL_METAL_BLOCK));
+        registry.register(make(REFINED_SOUL_METAL_BLOCK, ModBlockNames.REFINED_SOUL_METAL_BLOCK));
+
+        registry.register(make(SOUL_METAL_BARS, ModBlockNames.SOUL_METAL_BARS));
+        registry.register(make(CHIPPED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_SOUL_METAL_BARS));
+        registry.register(make(DAMAGED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_SOUL_METAL_BARS));
+
+        registry.register(make(REFINED_SOUL_METAL_BARS, ModBlockNames.REFINED_SOUL_METAL_BARS));
+        registry.register(make(CHIPPED_REFINED_SOUL_METAL_BARS, ModBlockNames.CHIPPED_REFINED_SOUL_METAL_BARS));
+        registry.register(make(DAMAGED_REFINED_SOUL_METAL_BARS, ModBlockNames.DAMAGED_REFINED_SOUL_METAL_BARS));
+        registry.register(make(BROKEN_REFINED_SOUL_METAL_BARS, ModBlockNames.BROKEN_REFINED_SOUL_METAL_BARS));
+
+        registry.register(make(DEPTH_SEGEN, ModBlockNames.DEPTH_SEGEN));
+        registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
+        registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
+        registry.register(make(HEAT_SEGEN_II, ModBlockNames.HEAT_SEGEN_II));
+        registry.register(make(NETHER_SEGEN, ModBlockNames.NETHER_SEGEN));
+        registry.register(make(NETHER_SEGEN_II, ModBlockNames.NETHER_SEGEN_II));
+        registry.register(make(SEGEN, ModBlockNames.SEGEN));
+        registry.register(make(SEGEN_II, ModBlockNames.SEGEN_II));
+        registry.register(make(SKY_SEGEN, ModBlockNames.SKY_SEGEN));
+        registry.register(make(SKY_SEGEN_II, ModBlockNames.SKY_SEGEN_II));
         registry.register(make(SOLAR_SEGEN, ModBlockNames.SOLAR_SEGEN));
         registry.register(make(SOLAR_SEGEN_II, ModBlockNames.SOLAR_SEGEN_II));
         registry.register(make(SOUL_ENERGY_STORAGE, ModBlockNames.SOUL_ENERGY_STORAGE));
         registry.register(make(SOUL_ENERGY_STORAGE_II, ModBlockNames.SOUL_ENERGY_STORAGE_II));
-        registry.register(make(SOUL_METAL_BARS, ModBlockNames.SOUL_METAL_BARS));
-        registry.register(make(SOUL_METAL_BLOCK, ModBlockNames.SOUL_METAL_BLOCK));
-        registry.register(make(SOUL_OBSIDIAN, ModBlockNames.SOUL_OBSIDIAN));
+
+        registry.register(make(MAGNETIC_FIELD_GENERATOR, ModBlockNames.MAGNETIC_FIELD_GENERATOR));
         registry.register(make(SOUL_REINFORCEMENT_TABLE, ModBlockNames.SOUL_REINFORCEMENT_TABLE));
-        registry.register(make(SOUL_STONE, ModBlockNames.SOUL_STONE));
-        registry.register(make(SOUL_STONE_BRICK_SLAB, ModBlockNames.SOUL_STONE_BRICK_SLAB));
-        registry.register(make(SOUL_STONE_BRICK_STAIRS, ModBlockNames.SOUL_STONE_BRICK_STAIRS));
-        registry.register(make(SOUL_STONE_BRICK_WALL, ModBlockNames.SOUL_STONE_BRICK_WALL));
-        registry.register(make(SOUL_STONE_BRICKS, ModBlockNames.SOUL_STONE_BRICKS));
-        registry.register(make(SOUL_STONE_SLAB, ModBlockNames.SOUL_STONE_SLAB));
-        registry.register(make(SOUL_STONE_STAIRS, ModBlockNames.SOUL_STONE_STAIRS));
-        registry.register(make(SOUL_STONE_WALL, ModBlockNames.SOUL_STONE_WALL));
-        registry.register(make(SOUL_WART, ModBlockNames.SOUL_WART));
-        registry.register(make(SOULIFIED_BEDROCK, ModBlockNames.SOULIFIED_BEDROCK));
-        registry.register(make(SOULIFIED_BUSH, ModBlockNames.SOULIFIED_BUSH));
+
+        registry.register(make(REFINED_SOUL_SAND, ModBlockNames.REFINED_SOUL_SAND));
+        registry.register(make(REFINED_SOUL_SOIL, ModBlockNames.REFINED_SOUL_SOIL));
+        registry.register(make(CRIMSON_HYPHAL_SOIL, ModBlockNames.CRIMSON_HYPHAL_SOIL));
+        registry.register(make(PARCHED_SOIL, ModBlockNames.PARCHED_SOIL));
         registry.register(make(WARPED_HYPHAL_SOIL, ModBlockNames.WARPED_HYPHAL_SOIL));
+
+        registry.register(make(SOUL_WART, ModBlockNames.SOUL_WART));
+        registry.register(make(SOULIFIED_BUSH, ModBlockNames.SOULIFIED_BUSH));
     }
 
     private static void registerSpawnEggs(IForgeRegistry<Item> registry) {
@@ -327,6 +351,7 @@ public final class ModItems {
     }
 
     public static Rarity next(Rarity rarity, int count) {
+        Preconditions.checkArgument(count >= 0, "Count must not be negative!");
         for (int i = 0; i < count; i++) {
             rarity = next(rarity);
         }

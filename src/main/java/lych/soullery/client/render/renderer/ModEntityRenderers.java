@@ -37,7 +37,7 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(FANGS_SUMMONER, TippedArrowRenderer::new);
         registerEntityRenderingHandler(FORTIFIED_SOUL_CRYSTAL, FortifiedSoulCrystalRenderer::new);
         registerEntityRenderingHandler(GIANT_X, GiantXRenderer::new);
-        registerEntityRenderingHandler(GRAVITATIONAL_DRAGON_FIREBALL, SimpleTexturedRenderer.single(DRAGON_FIREBALL_LOCATION));
+        registerEntityRenderingHandler(GRAVITATIONAL_DRAGON_FIREBALL, SimpleTexturedRenderer.single(DRAGON_FIREBALL_LOCATION).alwaysBright());
         registerEntityRenderingHandler(HORCRUX, HorcruxRenderer::new);
         registerEntityRenderingHandler(ILLUSORY_HORSE, IllusoryHorseRenderer::new);
         registerEntityRenderingHandler(META8, Meta08Renderer::new);
@@ -49,7 +49,7 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(ROBOT, RobotRenderer::new);
         registerEntityRenderingHandler(SKELETON_FOLLOWER, SkeletonRenderer::new);
         registerEntityRenderingHandler(SKELETON_KING, SkeletonKingRenderer::new);
-        registerEntityRenderingHandler(SOULBALL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULBALL_PURE_LOCATION, SOULBALL_LOCATION), RenderType::entityCutoutNoCull));
+        registerEntityRenderingHandler(SOULBALL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULBALL_PURE_LOCATION, SOULBALL_LOCATION), RenderType::entityCutoutNoCull).alwaysBright());
         registerEntityRenderingHandler(SOUL_ARROW, SoulArrowRenderer::new);
         registerEntityRenderingHandler(SOUL_BOLT, SoulBoltRenderer::new);
         registerEntityRenderingHandler(SOUL_CONTROLLER, SoulControllerRenderer::new);
@@ -58,7 +58,7 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(SOUL_RABBIT, SoulRabbitRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON, SoulSkeletonRenderer::new);
         registerEntityRenderingHandler(SOUL_SKELETON_KING, SoulSkeletonKingRenderer::new);
-        registerEntityRenderingHandler(SOULIFIED_ENDER_PEARL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULIFIED_ENDER_PEARL_LOCATION, SOULIFIED_ENDER_PEARL_PURE_LOCATION), RenderType::entityCutoutNoCull));
+        registerEntityRenderingHandler(SOULIFIED_ENDER_PEARL, SimpleTexturedRenderer.fixedRenderType(IPurifiable.select(SOULIFIED_ENDER_PEARL_PURE_LOCATION, SOULIFIED_ENDER_PEARL_LOCATION), RenderType::entityCutoutNoCull));
         registerEntityRenderingHandler(SUB_ZOMBIE, ZombieRenderer::new);
         registerEntityRenderingHandler(VOID_ALCHEMIST, VoidAlchemistRenderer::new);
         registerEntityRenderingHandler(VOID_ARCHER, VoidArcherRenderer::new);

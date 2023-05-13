@@ -35,7 +35,10 @@ public class EnderLauncherItem extends AbstractWandItem<EnderLauncherItem> imple
         pearl.setPurified(getTier() > 1);
         pearl.shootFromRotation(player, player.xRot, player.yRot, 0, 1.5f, 1);
         ItemStack stack = player.getItemInHand(hand);
-        pearl.setCustomName(stack.getHoverName());
+        if (stack.hasCustomHoverName()) {
+            pearl.setCustomName(stack.getHoverName());
+            pearl.setCustomNameVisible(true);
+        }
         pearl.setGravity(getGravity(stack));
         level.addFreshEntity(pearl);
         player.awardStat(Stats.ITEM_USED.get(this));
@@ -45,8 +48,10 @@ public class EnderLauncherItem extends AbstractWandItem<EnderLauncherItem> imple
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tips, ITooltipFlag flag) {
         super.appendHoverText(stack, world, tips, flag);
-        ITextComponent gravity = Gravity.GRAVITY.copy().append(getGravity(stack).makeText());
-        tips.add(gravity);
+        if (getTier() > 1) {
+            ITextComponent gravity = Gravity.GRAVITY.copy().append(getGravity(stack).makeText());
+            tips.add(gravity);
+        }
     }
 
     @Nullable

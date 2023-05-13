@@ -63,7 +63,9 @@ public final class ClientEventListener {
         @SubscribeEvent
         public static void renderLasers(RenderWorldLastEvent event) {
             //locateTileEntities(Minecraft.getInstance().player, event.getMatrixStack());
+            event.getMatrixStack().pushPose();
             LaserRenderingManager.getInstance().render(event.getMatrixStack());
+            event.getMatrixStack().popPose();
         }
 
         private static void locateTileEntities(ClientPlayerEntity player, MatrixStack matrixStack) {

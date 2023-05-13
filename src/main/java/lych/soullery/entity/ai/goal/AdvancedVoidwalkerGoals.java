@@ -39,6 +39,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
@@ -674,7 +675,10 @@ public final class AdvancedVoidwalkerGoals {
                 resetComputerEngineer();
             }
             if (target != null) {
-                target.sendMessage(cs.formatSRGNameOperation(getName(), target, isAggressive()), Util.NIL_UUID);
+                ITextComponent text = cs.formatSRGNameOperation(getName(), target, isAggressive());
+                if (text != null) {
+                    target.sendMessage(text, Util.NIL_UUID);
+                }
             }
         }
 
@@ -894,7 +898,10 @@ public final class AdvancedVoidwalkerGoals {
                 continuable = false;
             }
             if (target != null) {
-                target.sendMessage(cs.formatSRGNameOperation(getName(), target, false), Util.NIL_UUID);
+                ITextComponent text = cs.formatSRGNameOperation(getName(), target, false);
+                if (text != null) {
+                    target.sendMessage(text, Util.NIL_UUID);
+                }
             }
         }
 

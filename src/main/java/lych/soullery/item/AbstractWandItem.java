@@ -47,12 +47,8 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
         if (!(item instanceof AbstractWandItem)) {
             return false;
         }
-        try {
-            T t = (T) item;
-            return true;
-        } catch (ClassCastException e) {
-            return false;
-        }
+        Class<T> cls = (Class<T>) getClass();
+        return cls.isInstance(item);
     }
 
     @SuppressWarnings("unchecked")
