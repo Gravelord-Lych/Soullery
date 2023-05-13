@@ -41,7 +41,6 @@ public final class SoulSkeletonKingGoals {
             for (int i = 0; i < 6 + mob.getRandom().nextInt(2); i++) {
                 SoulArrowEntity arrow = new SoulArrowEntity(mob.level, mob);
                 arrow.setBaseDamage(4);
-                arrow.setDoAreaOfEffectDamage(true);
                 LivingEntity target = mob.getTarget();
                 double tx = target.getX() - mob.getX();
                 double ty = target.getY(0.3333333333333333) - arrow.getY();
