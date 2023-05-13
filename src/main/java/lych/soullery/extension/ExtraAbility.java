@@ -39,7 +39,7 @@ ExtraAbility implements IExtraAbility {
     public static final IExtraAbility CHEMIST = create(prefix(ExaNames.CHEMIST));
     public static final IExtraAbility CLIMBER = create(prefix(ExaNames.CLIMBER), 6);
     public static final IExtraAbility DESTROYER = create(prefix(ExaNames.DESTROYER));
-    public static final IExtraAbility DRAGON_WIZARD = createSpecial(prefix(ExaNames.DRAGON_WIZARD));
+    public static final IExtraAbility DRAGON_WIZARD = createSpecial(prefix(ExaNames.DRAGON_WIZARD), 6);
     public static final IExtraAbility ENHANCED_AUTO_JUMP = create(prefix(ExaNames.ENHANCED_AUTO_JUMP));
     public static final IExtraAbility ESCAPER = create(prefix(ExaNames.ESCAPER));
     public static final IExtraAbility EXPLOSION_MASTER = create(prefix(ExaNames.EXPLOSION_MASTER));
@@ -71,11 +71,13 @@ ExtraAbility implements IExtraAbility {
     public static final IExtraAbility TRANSFORMATION = create(prefix(ExaNames.TRANSFORMATION));
     public static final IExtraAbility ULTRAREACH = create(prefix(ExaNames.ULTRAREACH));
     public static final IExtraAbility WATER_BREATHING = create(prefix(ExaNames.WATER_BREATHING), 6);
-    public static final IExtraAbility WITHER_REACH = createSpecial(prefix(ExaNames.WITHER_REACH));
+    public static final IExtraAbility WITHER_REACH = createSpecial(prefix(ExaNames.WITHER_REACH), 6);
 
     private static final Map<ResourceLocation, IExtraAbility> ABILITIES = new HashMap<>(64);
     private static final Map<EntityType<?>, IExtraAbility> ENTITY_TO_EXA_MAP = new HashMap<>(64);
     private static final int DEFAULT_COST = 4;
+    private static final int COST_UNIT = 250;
+    private static final int SPECIAL_MULTIPLIER = 5;
     @NotNull
     private final ResourceLocation registryName;
     private final int cost;
@@ -157,7 +159,11 @@ ExtraAbility implements IExtraAbility {
     }
 
     public static IExtraAbility createSpecial(ResourceLocation registryName) {
-        return create(registryName, DEFAULT_COST, true);
+        return createSpecial(registryName, DEFAULT_COST);
+    }
+
+    public static IExtraAbility createSpecial(ResourceLocation registryName, int cost) {
+        return create(registryName, cost, true);
     }
 
     public static IExtraAbility create(ResourceLocation registryName, int cost) {
@@ -244,7 +250,7 @@ ExtraAbility implements IExtraAbility {
 
     @Override
     public int getSECost() {
-        return getSoulContainerCost() * getSoulContainerCost() * 100 * (isSpecial() ? 10 : 1);
+        return getSoulContainerCost() * getSoulContainerCost() * COST_UNIT * (isSpecial() ? SPECIAL_MULTIPLIER : 1);
     }
 
     @Override
