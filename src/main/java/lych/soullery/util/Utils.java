@@ -30,6 +30,9 @@ public final class Utils {
     }
 
     public static boolean allowedCommands(ServerWorld world) {
+        if (allowsCommands(world)) {
+            return true;
+        }
         return CommandData.get(world.getServer()).isAllowedCommands();
     }
 

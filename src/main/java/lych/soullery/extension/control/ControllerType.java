@@ -57,7 +57,7 @@ public class ControllerType<T extends MobEntity> {
     private final int id;
 
     public ControllerType(ResourceLocation registryName,  ControllerFactory<T> factory, ControllerDeserializer<T> deserializer) {
-        this(registryName, SoulControlHighlighter.DEFAULT_COLOR, factory, deserializer);
+        this(registryName, SoulControlHighlighter.DEFAULT_COLOR.get(), factory, deserializer);
     }
 
     public ControllerType(ResourceLocation registryName, float[] colorHSB, ControllerFactory<T> factory, ControllerDeserializer<T> deserializer) {

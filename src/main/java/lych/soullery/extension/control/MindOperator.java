@@ -114,7 +114,7 @@ public abstract class MindOperator<T extends MobEntity> extends Controller<T> {
             }
             if (operatingMob != null) {
                 playerM.setOperatingMob(null);
-                getSoulManager().remove(operatingMob, MindOperator.class);
+                SoulManager.remove(operatingMob, MindOperator.class);
             }
             EntityUtils.setTarget(mob, null);
             playerM.setOperatingMob(mob);
@@ -418,7 +418,7 @@ public abstract class MindOperator<T extends MobEntity> extends Controller<T> {
     }
 
     private int getTimeRemaining(MobEntity mob, ServerPlayerEntity player) {
-        return SoulManager.get(player.getLevel()).getTimes().timeRemaining(mob, getType());
+        return SoulManager.timeRemaining(mob, getType());
     }
 
     public int getTier() {

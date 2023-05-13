@@ -6,20 +6,18 @@ import lych.soullery.util.mixin.IGoalSelectorMixin;
 import lych.soullery.util.mixin.INearestAttackableTargetGoalMixin;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class Controller<T extends MobEntity> {
+public abstract class Controller<T extends MobEntity> implements Comparable<Controller<?>> {
     protected static final int REMOVE_DISTANCE = 40;
     protected static final int WARN_DISTANCE = 30;
     private final ControllerType<T> type;
@@ -41,18 +39,6 @@ public abstract class Controller<T extends MobEntity> {
         this.player = compoundNBT.getUUID("Player");
         this.preparing = compoundNBT.getBoolean("Preparing");
         this.level = level;
-    }
-
-    protected static void handleBrainedMonster(MobEntity mob, GoalSelector goalSelector, boolean brainValid) {
-        if (brainValid && mob instanceof MonsterEntity) {
-            if (mob instanceof ICrossbowUser && mob.getMainHandItem().getItem() instanceof CrossbowItem) {
-                goalSelector.addGoal(2, new RangedCrossbowAttackGoal<>((MonsterEntity & ICrossbowUser) mob, 1, 8));
-            } else if (mob instanceof IRangedAttackMob && !(mob instanceof ICrossbowUser) && !(mob.getMainHandItem().getItem() instanceof SwordItem)) {
-                goalSelector.addGoal(2, new RangedAttackGoal((IRangedAttackMob) mob, 1, 40, 10));
-            } else {
-                goalSelector.addGoal(2, new MeleeAttackGoal((CreatureEntity) mob, 1, true));
-            }
-        }
     }
 
     @Nullable
@@ -85,12 +71,8 @@ public abstract class Controller<T extends MobEntity> {
     }
 
     @Nullable
-    protected PlayerEntity getPlayer() {
+    public PlayerEntity getPlayer() {
         return level.getPlayerByUUID(player);
-    }
-
-    protected SoulManager getSoulManager() {
-        return SoulManager.get(level);
     }
 
     public boolean tick() {
@@ -217,5 +199,10 @@ public abstract class Controller<T extends MobEntity> {
 
     public boolean shouldDisableTargetTasksAdditionally() {
         return false;
+    }
+
+    @Override
+    public int compareTo(@NotNull Controller<?> o) {
+        return Integer.compare(getPriority(), o.getPriority());
     }
 }

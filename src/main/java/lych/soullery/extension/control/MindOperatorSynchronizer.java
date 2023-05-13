@@ -74,17 +74,17 @@ public final class MindOperatorSynchronizer {
     }
 
     public static void handleMelee(ServerPlayerEntity player, MobEntity operatingMob) {
-        MindOperator<?> operator = (MindOperator<?>) SoulManager.get(player.getLevel()).getControllers(operatingMob).peek();
+        MindOperator<?> operator = (MindOperator<?>) SoulManager.getControllers(operatingMob).peek();
         operator.handleMeleeRaw(operatingMob, player);
     }
 
     public static void handleRightClick(ServerPlayerEntity player, MobEntity operatingMob) {
-        MindOperator<?> operator = (MindOperator<?>) SoulManager.get(player.getLevel()).getControllers(operatingMob).peek();
+        MindOperator<?> operator = (MindOperator<?>) SoulManager.getControllers(operatingMob).peek();
         operator.handleRightClickRaw(operatingMob, player);
     }
 
     @Nullable
     public static Controller<?> getActiveController(ServerWorld world, MobEntity mob) {
-        return SoulManager.get(world).getControllers(mob).peek();
+        return SoulManager.getControllers(mob).peek();
     }
 }

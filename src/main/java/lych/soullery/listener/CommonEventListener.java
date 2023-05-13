@@ -1,6 +1,7 @@
 package lych.soullery.listener;
 
 import lych.soullery.Soullery;
+import lych.soullery.api.capability.IControlledMobData;
 import lych.soullery.api.event.PostLivingHurtEvent;
 import lych.soullery.api.exa.IExtraAbility;
 import lych.soullery.api.exa.PlayerBuff;
@@ -12,6 +13,7 @@ import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.block.SoulMetalBarsBlock;
 import lych.soullery.block.plant.SoulifiedBushBlock;
+import lych.soullery.capability.ControlledMobDataProvider;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.effect.ModEffects;
 import lych.soullery.effect.SoulPollutionHandler;
@@ -82,6 +84,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -121,7 +124,7 @@ public final class CommonEventListener {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         MobEntity operatingMob = MindOperatorSynchronizer.getOperatingMob(player);
         if (operatingMob != null) {
-            MindOperator<?> operator = SoulManager.get(player.getLevel()).remove(operatingMob, MindOperator.class);
+            MindOperator<?> operator = SoulManager.remove(operatingMob, MindOperator.class);
             operator.sendGameModeChangeMessage(player);
         }
     }
@@ -383,10 +386,17 @@ public final class CommonEventListener {
     public static void onMobDespawn(LivingSpawnEvent.AllowDespawn event) {
         if (!event.getWorld().isClientSide() && event.getEntityLiving() instanceof MobEntity) {
             MobEntity mob = (MobEntity) event.getEntityLiving();
-            ServerWorld level = (ServerWorld) event.getWorld();
-            if (SoulManager.get(level).hasControllers(mob)) {
+            if (SoulManager.hasControllers(mob)) {
                 event.setResult(Event.Result.DENY);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAttachCapabilityEvent(AttachCapabilitiesEvent<Entity> event) {
+        Entity entity = event.getObject();
+        if (entity instanceof MobEntity && !entity.level.isClientSide()) {
+            event.addCapability(Soullery.prefix("controlled_mob"), new ControlledMobDataProvider<>((MobEntity) entity, (ServerWorld) entity.level));
         }
     }
 
@@ -557,6 +567,10 @@ public final class CommonEventListener {
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (!event.getEntityLiving().level.isClientSide) {
             ((IEntityMixin) event.getEntityLiving()).setReversed(event.getEntityLiving().hasEffect(ModEffects.REVERSION));
+            if (event.getEntityLiving() instanceof MobEntity) {
+                MobEntity mob = (MobEntity) event.getEntityLiving();
+                SoulManager.getData(mob).ifPresent(IControlledMobData::tick);
+            }
         }
         if (event.getEntityLiving() instanceof IShieldUser && ((IShieldUser) event.getEntityLiving()).getSharedShield() != null) {
 //          Multi-tick is not allowed for shields
@@ -698,6 +712,5 @@ public final class CommonEventListener {
         SuperLinkManager.get(world).tick(world.getServer());
         WorldTickerManager.get(world).tick();
         SoulDragonFightManager.get(world).tick();
-        SoulManager.get(world).tick();
     }
 }

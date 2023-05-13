@@ -38,11 +38,10 @@ public interface ControlDictionary {
         if (type == null) {
             return null;
         }
-        SoulManager manager = SoulManager.get(world);
-        Controller<? super T> controller = manager.add(mob, player, type);
+        Controller<? super T> controller = SoulManager.add(mob, player, type);
 //      Null-check to prevent setting time for a controller that previously existed.
         if (controller != null && time < Integer.MAX_VALUE) {
-            manager.getTimes().setTime(mob, type, time);
+            SoulManager.setTime(mob, type, time);
         }
         return controller;
     }

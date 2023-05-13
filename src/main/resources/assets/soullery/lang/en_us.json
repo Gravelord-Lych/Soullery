@@ -168,8 +168,6 @@
   "entity.soullery.voidwalker": "Soul-Walker",
   "entity.soullery.wanderer": "Wanderer",
 
-  "event.soullery.ulraid": "Ultimate Raid",
-
   "exa.soullery.armor_piercer": "Armor Piercer",
   "exa.soullery.bow_expert": "Bow Expert",
   "exa.soullery.chemist": "Chemist",
@@ -226,6 +224,7 @@
   "gui.soullery.soul_reinforcement_table": "Soul Reinforcement Table",
 
   "horcrux.soullery.following_player": "Set following player: ",
+  "horcrux.soullery.highlights": "Highlights: ",
   "horcrux.soullery.warn_player": " (This operation will change the location where you'll be teleported back)",
   "horcrux.soullery.invalid_dimension": "%1$s can only be used in Overworld or Soul Land",
   "horcrux.soullery.teleport_back_position_changed": "The previous teleport target is currently unsafe and not teleportable.",

@@ -10,7 +10,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,7 +54,7 @@ public abstract class MobEntityMixin extends LivingEntity implements IMobEntityM
         if (level.isClientSide()) {
             throw new IllegalStateException();
         }
-        return SoulManager.get((ServerWorld) level).getControllers((MobEntity) (Object) this).stream().anyMatch(c -> c instanceof MindOperator);
+        return SoulManager.getControllers((MobEntity) (Object) this).stream().anyMatch(c -> c instanceof MindOperator);
     }
 
     @Override

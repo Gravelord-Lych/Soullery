@@ -1,6 +1,7 @@
 package lych.soullery.listener;
 
 import lych.soullery.Soullery;
+import lych.soullery.api.capability.IControlledMobData;
 import lych.soullery.api.capability.ISoulEnergyStorage;
 import lych.soullery.dispenser.ModDispenserBehaviors;
 import lych.soullery.entity.ModEntities;
@@ -33,6 +34,7 @@ public class ModEventListener {
     private static void registerCapabilities(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CapabilityManager.INSTANCE.register(ISoulEnergyStorage.class, new DummyCapabilityStorage<>(), () -> null);
+            CapabilityManager.INSTANCE.register(IControlledMobData.class, new DummyCapabilityStorage<>(), () -> null);
         });
     }
 

@@ -129,7 +129,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
         if (operatingMob == null) {
             return false;
         }
-        SoulManager.get(player.getLevel()).remove(operatingMob, MindOperator.class);
+        SoulManager.remove(operatingMob, MindOperator.class);
         Vector3d playerPos = player.position();
         player.teleportTo(operatingMob.getX(), operatingMob.getY(), operatingMob.getZ());
         operatingMob.teleportTo(playerPos.x, playerPos.y, playerPos.z);

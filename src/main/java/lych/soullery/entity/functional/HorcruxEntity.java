@@ -42,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
+    private static final String HIGHLIGHTS = Soullery.prefixMsg("horcrux", "highlights");
     private static final String FOLLOWING_PLAYER = Soullery.prefixMsg("horcrux", "following_player");
     private static final String WARN_PLAYER = Soullery.prefixMsg("horcrux", "warn_player");
     private static final String POSITION_CHANGED = Soullery.prefixMsg("horcrux", "teleport_back_position_changed");
@@ -54,6 +55,7 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
     private boolean followingPlayer;
     private boolean warningShown;
     private int hurtTicks;
+    private boolean highlights;
 
     public HorcruxEntity(EntityType<? extends CreatureEntity> type, World world) {
         super(type, world);
@@ -102,11 +104,6 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
 
     @Override
     protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        if (getOwner() == null) {
-            setOwner(player);
-            return ActionResultType.sidedSuccess(level.isClientSide());
-        }
-
         if (isOwnedBy(player)) {
             if (level.isClientSide()) {
                 return ActionResultType.SUCCESS;
@@ -153,16 +150,21 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() instanceof PlayerEntity && isOwnedBy((PlayerEntity) source.getEntity())) {
-            if (hurtTicks > 0) {
-                remove();
-                ItemStack stack = new ItemStack(ModItems.HORCRUX_CARRIER);
-                if (getOwner() != null) {
-                    HorcruxCarrierItem.setOwner(stack, getOwner().getUUID());
+            if (source.getEntity().isShiftKeyDown()) {
+                highlights = !highlights;
+                source.getEntity().sendMessage(new TranslationTextComponent(HIGHLIGHTS).append(new StringTextComponent(Boolean.toString(highlights)).withStyle(highlights ? TextFormatting.GREEN : TextFormatting.RED)), Util.NIL_UUID);
+            } else {
+                if (hurtTicks > 0) {
+                    remove();
+                    ItemStack stack = new ItemStack(ModItems.HORCRUX_CARRIER);
+                    if (getOwner() != null) {
+                        HorcruxCarrierItem.setOwner(stack, getOwner().getUUID());
+                    }
+                    EntityUtils.spawnItem(level, blockPosition(), stack);
+                    return true;
                 }
-                EntityUtils.spawnItem(level, blockPosition(), stack);
-                return true;
+                hurtTicks = ConfigHelper.getMaxHorcruxHurtTicks();
             }
-            hurtTicks = ConfigHelper.getMaxHorcruxHurtTicks();
         }
         markHurt();
         return false;
@@ -229,6 +231,7 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
         }
         saveOwner(compoundNBT);
         compoundNBT.putBoolean("FollowingPlayer", followingPlayer);
+        compoundNBT.putBoolean("Highlights", highlights);
     }
 
     @Override
@@ -240,6 +243,9 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
         }
         loadOwner(compoundNBT);
         followingPlayer = compoundNBT.getBoolean("FollowingPlayer");
+        if (compoundNBT.contains("Highlights")) {
+            highlights = compoundNBT.getBoolean("Highlights");
+        }
     }
 
     @Override
