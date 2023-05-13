@@ -133,7 +133,7 @@ public final class ModMaterials {
     }
 
     public static class Armor implements IArmorMaterial {
-        public static final Armor REFINED_SOUL_METAL = new Builder().name("refined_soul_metal").maxDamageFactor(24).defenseForSlots(4, 7, 10, 4).enchantmentValue(5).equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND).toughness(3).knockbackResistance(0.05f).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
+        public static final Armor REFINED_SOUL_METAL = new Builder().name("refined_soul_metal").maxDamageFactor(30).defenseForSlots(4, 7, 10, 4).enchantmentValue(5).equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND).toughness(3).knockbackResistance(0.05f).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
 
         private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
         private final String name;
