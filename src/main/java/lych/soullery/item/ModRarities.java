@@ -5,7 +5,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public final class ModRarities {
     public static final Rarity LEGENDARY = Rarity.create("LEGENDARY", TextFormatting.RED);
-    public static final Rarity MAX = Rarity.create("LEGENDARY", TextFormatting.DARK_BLUE);
+    public static final Rarity MAX = Rarity.create("MAX", TextFormatting.DARK_BLUE);
 
     private ModRarities() {}
 }
