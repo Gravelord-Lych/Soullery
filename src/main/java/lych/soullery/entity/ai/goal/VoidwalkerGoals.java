@@ -6,6 +6,8 @@ import lych.soullery.entity.monster.voidwalker.*;
 import lych.soullery.entity.projectile.EtherealArrowEntity;
 import lych.soullery.util.BoundingBoxUtils;
 import lych.soullery.util.EntityUtils;
+import lych.soullery.util.mixin.IEntityPredicateMixin;
+import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -44,16 +46,20 @@ public final class VoidwalkerGoals {
             super(voidwalker, targetType, randomInterval, mustSee, mustReach, predicate == null ? null : predicate::test);
         }
 
-        {
-            targetConditions = ((AbstractVoidwalkerEntity) mob).customizeTargetConditions(targetConditions);
-        }
-
         @Override
         public boolean canUse() {
             if (!canMobAttack()) {
                 return false;
             }
-            return super.canUse();
+            EntityPredicate oldTargetConditions = targetConditions;
+            targetConditions = customize();
+            boolean canUse = super.canUse();
+            targetConditions = oldTargetConditions;
+            return canUse;
+        }
+
+        private EntityPredicate customize() {
+            return ((AbstractVoidwalkerEntity) mob).customizeTargetConditions(((IEntityPredicateMixin) targetConditions).copy());
         }
 
         protected boolean canMobAttack() {
@@ -446,7 +452,7 @@ public final class VoidwalkerGoals {
 
         @Override
         public boolean canUse() {
-            List<T> voidwalkers = defender.getNearbyVoidwalkers(followType, FOLLOW_RANGE);
+            List<T> voidwalkers = defender.getNearbyVoidwalkers(followType, FOLLOW_RANGE, FollowVoidwalkerGoal::followable);
             if (voidwalkers.isEmpty() || defender.getRandom().nextInt(randomInterval) > 0) {
                 return false;
             }
@@ -459,6 +465,10 @@ public final class VoidwalkerGoals {
                 return true;
             }
             return false;
+        }
+
+        private static boolean followable(AbstractVoidwalkerEntity voidwalker) {
+            return !voidwalker.isScout();
         }
 
         private boolean hasCloseVoidwalker(List<T> voidwalkers) {

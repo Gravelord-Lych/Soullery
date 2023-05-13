@@ -9,6 +9,7 @@ public class ModDimensions {
     public static final RegistryKey<World> ESV = RegistryKey.create(Registry.DIMENSION_REGISTRY, Soullery.prefix(ModDimensionNames.ESV));
     public static final RegistryKey<World> ETHEREAL = RegistryKey.create(Registry.DIMENSION_REGISTRY, Soullery.prefix(ModDimensionNames.ETHEREAL));
     public static final RegistryKey<World> SOUL_LAND = RegistryKey.create(Registry.DIMENSION_REGISTRY, Soullery.prefix(ModDimensionNames.SOUL_LAND));
+    public static final RegistryKey<World> SOUL_WASTELAND = RegistryKey.create(Registry.DIMENSION_REGISTRY, Soullery.prefix(ModDimensionNames.SOUL_WASTELAND));
     public static final RegistryKey<World> SUBWORLD = RegistryKey.create(Registry.DIMENSION_REGISTRY, Soullery.prefix(ModDimensionNames.SUBWORLD));
 
     private ModDimensions() {}

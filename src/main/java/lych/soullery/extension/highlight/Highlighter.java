@@ -32,4 +32,12 @@ public interface Highlighter extends Comparable<Highlighter> {
     default float @Nullable [] getMixColor(ServerWorld level, Entity entity) {
         return null;
     }
+
+    default boolean ignores(Highlighter highlighter) {
+        return false;
+    }
+
+    static boolean ignore(Highlighter h1, Highlighter h2) {
+        return h1.ignores(h2) || h2.ignores(h1);
+    }
 }

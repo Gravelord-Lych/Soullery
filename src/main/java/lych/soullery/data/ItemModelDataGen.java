@@ -49,6 +49,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         halfUsedPotion(registryNameToString(HALF_USED_LINGERING_POTION), LINGERING_POTION);
         halfUsedPotion(registryNameToString(HALF_USED_POTION), POTION);
         halfUsedPotion(registryNameToString(HALF_USED_SPLASH_POTION), SPLASH_POTION);
+        simple(registryNameToString(HORCRUX_CARRIER), GENERATED, prefix(HORCRUX_CARRIER));
         simple(registryNameToString(MIND_OPERATOR), HANDHELD, prefix(MIND_OPERATOR));
         simple(registryNameToString(MIND_OPERATOR_II), HANDHELD, prefix(MIND_OPERATOR_II));
         simple(registryNameToString(MIND_OPERATOR_III), HANDHELD, prefix(MIND_OPERATOR_III));
@@ -144,9 +145,11 @@ public class ItemModelDataGen extends ItemModelProvider {
         segenBlockItem(DEPTH_SEGEN_II);
         segenBlockItem(HEAT_SEGEN);
         segenBlockItem(HEAT_SEGEN_II);
+        blockItem(MAGNETIC_FIELD_GENERATOR);
         segenBlockItem(NETHER_SEGEN);
         segenBlockItem(NETHER_SEGEN_II);
         blockItem(PARCHED_SOIL);
+        blockItem(PURIFIED_SOULIFIED_BEDROCK);
         blockItem(REFINED_SOUL_METAL_BLOCK);
         blockItem(REFINED_SOUL_SAND);
         blockItem(REFINED_SOUL_SOIL);
@@ -181,6 +184,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         blockItem(SOUL_STONE_STAIRS);
         blockItem(SOUL_STONE_WALL);
         simple(registryNameToString(SOUL_WART), GENERATED, prefix(SOUL_WART));
+        blockItem(SOULIFIED_BEDROCK);
         simple(registryNameToString(SOULIFIED_BUSH), GENERATED, BlockModelDataGen.prefix(ModBlocks.SOULIFIED_BUSH));
         blockItem(WARPED_HYPHAL_SOIL);
     }

@@ -56,6 +56,9 @@ public class FollowOwnerGoal<T extends MobEntity & IHasOwner<?>> extends Goal {
         if (owner == null) {
             return false;
         }
+        if (!mob.isOwnerInTheSameWorld()) {
+            return false;
+        }
         if (owner.isSpectator()) {
             return false;
         }

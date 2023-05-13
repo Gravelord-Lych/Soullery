@@ -1,8 +1,7 @@
 package lych.soullery.world.gen.biome.sll;
 
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import lych.soullery.Soullery;
 import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.biome.SLBiomes;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
@@ -13,28 +12,16 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import org.jetbrains.annotations.Nullable;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.*;
-import java.util.function.BiPredicate;
 import java.util.function.LongFunction;
 import java.util.stream.Stream;
 
 public final class SLLayer {
-    public static final boolean DEBUG = false;
+    private static final boolean debug = false;
     public static final int OCEAN = 0;
     public static final int LAND = 1;
     public static final int PURE = 2;
@@ -46,22 +33,22 @@ public final class SLLayer {
 
     static {
         remapColors = new HashMap<>();
-        remapColors.put(getId(ModBiomes.CRIMSON_PLAINS), 0x940000);
-        remapColors.put(getId(ModBiomes.CRIMSON_HILLS), 0xC40000);
-        remapColors.put(getId(ModBiomes.CRIMSON_PLAINS_EDGE), 0x4A2525);
-        remapColors.put(getId(ModBiomes.INNERMOST_PLATEAU), 0x061e96);
-        remapColors.put(getId(ModBiomes.INNERMOST_SOUL_LAND), 0x172466);
-        remapColors.put(getId(ModBiomes.SOUL_LAVA_OCEAN), 0x00DDDD);
-        remapColors.put(getId(ModBiomes.UNSTABLE_SOUL_LAVA_OCEAN), 0x006666);
-        remapColors.put(getId(ModBiomes.SOUL_PLAINS), 0x664A17);
-        remapColors.put(getId(ModBiomes.SOUL_MOUNTAINS), 0x886017);
-        remapColors.put(getId(ModBiomes.PARCHED_DESERT), 0x572F2F);
-        remapColors.put(getId(ModBiomes.PARCHED_DESERT_HILLS), 0x834747);
-        remapColors.put(getId(ModBiomes.SOUL_SAND_BEACH), 0xEFA420);
-        remapColors.put(getId(ModBiomes.SPIKED_SOUL_PLAINS), 0xB28E51);
-        remapColors.put(getId(ModBiomes.WARPED_PLAINS), 0x8C0094);
-        remapColors.put(getId(ModBiomes.WARPED_HILLS), 0xCA00D5);
-        remapColors.put(getId(ModBiomes.WARPED_PLAINS_EDGE), 0x831BD2);
+        remapColors.put(ModBiomes.getId(SLBiomes.CRIMSON_PLAINS), 0x940000);
+        remapColors.put(ModBiomes.getId(SLBiomes.CRIMSON_HILLS), 0xC40000);
+        remapColors.put(ModBiomes.getId(SLBiomes.CRIMSON_PLAINS_EDGE), 0x4A2525);
+        remapColors.put(ModBiomes.getId(SLBiomes.INNERMOST_PLATEAU), 0x061e96);
+        remapColors.put(ModBiomes.getId(SLBiomes.INNERMOST_SOUL_LAND), 0x172466);
+        remapColors.put(ModBiomes.getId(SLBiomes.SOUL_LAVA_OCEAN), 0x00DDDD);
+        remapColors.put(ModBiomes.getId(SLBiomes.UNSTABLE_SOUL_LAVA_OCEAN), 0x006666);
+        remapColors.put(ModBiomes.getId(SLBiomes.SOUL_PLAINS), 0x664A17);
+        remapColors.put(ModBiomes.getId(SLBiomes.SOUL_MOUNTAINS), 0x886017);
+        remapColors.put(ModBiomes.getId(SLBiomes.PARCHED_DESERT), 0x572F2F);
+        remapColors.put(ModBiomes.getId(SLBiomes.PARCHED_DESERT_HILLS), 0x834747);
+        remapColors.put(ModBiomes.getId(SLBiomes.SOUL_SAND_BEACH), 0xEFA420);
+        remapColors.put(ModBiomes.getId(SLBiomes.SPIKED_SOUL_PLAINS), 0xB28E51);
+        remapColors.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS), 0x8C0094);
+        remapColors.put(ModBiomes.getId(SLBiomes.WARPED_HILLS), 0xCA00D5);
+        remapColors.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS_EDGE), 0x831BD2);
         remapColors.put(OCEAN, 0x007FFF);
         remapColors.put(LAND, 0x00FF00);
         remapColors.put(PURE, 0x0000FF);
@@ -71,7 +58,7 @@ public final class SLLayer {
 
     @SuppressWarnings("unchecked")
     private static void initBiomes() {
-        for (Field field : ModBiomes.class.getFields()) {
+        for (Field field : SLBiomes.class.getFields()) {
             if (field.getType() == RegistryKey.class && !field.isAnnotationPresent(NonSoulLandBiome.class)) {
                 try {
                     ALL_BIOMES.add((RegistryKey<Biome>) field.get(null));
@@ -134,50 +121,13 @@ public final class SLLayer {
     }
 
     private static <T extends IArea> void debug(IAreaFactory<T> factory, String name) {
-        if (!DEBUG) return;
-        Path path = Paths.get(String.format("D:\\debug\\%s.png", name));
-        if (Files.exists(path)) {
-            Soullery.LOGGER.info(SLL, "Skipped debug for {} because file exists", name);
-            return;
-        }
-        final int size = 2048;
-        final int rad = size / 2;
-        final int ox = 0;
-        final int oz = 0;
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-        Graphics2D display = image.createGraphics();
-        IArea area = factory.make();
-        BiPredicate<Integer, Integer> line = (i, mod) -> {
-            for (int j = -5; j < 5; j++) {
-                if ((i + j) % mod == 0)
-                    return true;
-            }
-            return false;
-        };
-        Soullery.LOGGER.info(SLL, "Started drawing for {}", name);
-        for (int x = -rad; x < rad - 1; x++) {
-            for (int z = -rad; z < rad - 1; z++) {
-                int xx = x + (ox * 64);
-                int zz = z + (oz * 64);
-                int c = area.get(x, z);
-                display.setColor(line.test(xx, 512) || line.test(zz, 512) ? new java.awt.Color(0xFF0000) : new java.awt.Color(remapColors.getOrDefault(c, c)));
-                display.drawRect(x + rad, z + rad, 1, 1);
-            }
-        }
-        Soullery.LOGGER.info(SLL, "breakpoint {}", name);
-        try {
-            if (ImageIO.write(image, "png", Files.newOutputStream(path))) {
-                Soullery.LOGGER.info(SLL, "written");
-            } else {
-                Soullery.LOGGER.warn(SLL, "not written");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (debug) {
+            ModBiomes.debug(SLL, remapColors, factory, name);
         }
     }
 
     public static boolean isPure(int id) {
-        return id == PURE || id == PURE_PLATEAU || id == getId(ModBiomes.INNERMOST_SOUL_LAND) || id == getId(ModBiomes.INNERMOST_PLATEAU);
+        return id == PURE || id == PURE_PLATEAU || id == ModBiomes.getId(SLBiomes.INNERMOST_SOUL_LAND) || id == ModBiomes.getId(SLBiomes.INNERMOST_PLATEAU);
     }
 
     public static boolean isSame(int... ids) {
@@ -194,7 +144,7 @@ public final class SLLayer {
     }
 
     public static boolean isOcean(int id) {
-        return id == OCEAN || id == SLLayer.getId(ModBiomes.SOUL_LAVA_OCEAN) || id == SLLayer.getId(ModBiomes.UNSTABLE_SOUL_LAVA_OCEAN);
+        return id == OCEAN || id == ModBiomes.getId(SLBiomes.SOUL_LAVA_OCEAN) || id == ModBiomes.getId(SLBiomes.UNSTABLE_SOUL_LAVA_OCEAN);
     }
 
     public static boolean allOcean(int... ids) {
@@ -205,20 +155,7 @@ public final class SLLayer {
         return Arrays.stream(ids).anyMatch(SLLayer::isOcean);
     }
 
-    @Nullable
-    public static RegistryKey<Biome> byId(int biomeId) {
-        return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getKey(biomeId);
-    }
-
-    public static int getId(RegistryKey<Biome> biome) {
-        return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(biome.location());
-    }
-
     public static Stream<RegistryKey<Biome>> getAllBiomes() {
         return ALL_BIOMES.stream();
-    }
-
-    public static void putId(Int2IntMap map, RegistryKey<Biome> key, RegistryKey<Biome> value) {
-        map.put(getId(key), getId(value));
     }
 }

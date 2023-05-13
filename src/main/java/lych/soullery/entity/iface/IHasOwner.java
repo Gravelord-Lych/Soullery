@@ -82,4 +82,8 @@ public interface IHasOwner<T extends LivingEntity> {
     default Entity getAsEntity() {
         return (Entity) this;
     }
+
+    default boolean isOwnerInTheSameWorld() {
+        return getOwner() != null;
+    }
 }

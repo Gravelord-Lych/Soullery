@@ -9,16 +9,17 @@ public final class ModBlockNames {
     public static final String DAMAGED_SOUL_METAL_BARS = "damaged_soul_metal_bars";
     public static final String DEPTH_SEGEN = "depth_segen";
     public static final String DEPTH_SEGEN_II = "depth_segen_l2";
-    public static final String GUIDER = "guider";
     public static final String HEAT_SEGEN = "heat_segen";
     public static final String HEAT_SEGEN_II = "heat_segen_l2";
     public static final String INFERNO = "inferno";
+    public static final String MAGNETIC_FIELD_GENERATOR = "magnetic_field_generator";
     public static final String NETHER_SEGEN = "nether_segen";
     public static final String NETHER_SEGEN_II = "nether_segen_l2";
     public static final String PARCHED_SOIL = "parched_soil";
     public static final String POISONOUS_FIRE = "poisonous_fire";
     public static final String POTTED_SOULIFIED_BUSH = "potted_soulified_bush";
     public static final String PURE_SOUL_FIRE = "pure_soul_fire";
+    public static final String PURIFIED_SOULIFIED_BEDROCK = "purified_soulified_bedrock";
     public static final String REFINED_SOUL_METAL_BARS = "refined_soul_metal_bars";
     public static final String REFINED_SOUL_METAL_BLOCK = "refined_soul_metal_block";
     public static final String REFINED_SOUL_SAND = "refined_soul_sand";
@@ -38,6 +39,7 @@ public final class ModBlockNames {
     public static final String SOUL_REINFORCEMENT_TABLE = "soul_reinforcement_table";
     public static final String SOUL_STONE = "soul_stone";
     public static final String SOUL_WART = "soul_wart";
+    public static final String SOULIFIED_BEDROCK = "soulified_bedrock";
     public static final String SOULIFIED_BUSH = "soulified_bush";
     public static final String WARPED_HYPHAL_SOIL = "warped_hyphal_soil";
 

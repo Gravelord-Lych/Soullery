@@ -140,7 +140,7 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
             rarity = next(rarity);
         }
         if (isSpecial(stack)) {
-            rarity = next(next(rarity));
+            rarity = next(rarity, 2);
         }
         return rarity;
     }

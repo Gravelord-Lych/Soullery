@@ -56,4 +56,12 @@ public final class ArrayUtils {
         }
         return array[array.length - 1];
     }
+
+    public static <T> T[] reversed(T[] array) {
+        T[] newArray = array.clone();
+        for (int i = 0; i < array.length; i++) {
+            newArray[i] = array[array.length - 1 - i];
+        }
+        return newArray;
+    }
 }

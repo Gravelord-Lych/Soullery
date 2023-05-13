@@ -1,10 +1,7 @@
 package lych.soullery.entity;
 
 import lych.soullery.Soullery;
-import lych.soullery.entity.functional.FangsEntity;
-import lych.soullery.entity.functional.FortifiedSoulCrystalEntity;
-import lych.soullery.entity.functional.SoulBoltEntity;
-import lych.soullery.entity.functional.SoulCrystalEntity;
+import lych.soullery.entity.functional.*;
 import lych.soullery.entity.monster.*;
 import lych.soullery.entity.monster.boss.*;
 import lych.soullery.entity.monster.boss.esv.SoulControllerEntity;
@@ -51,6 +48,7 @@ public final class ModEntities {
     public static final EntityType<FortifiedSoulCrystalEntity> FORTIFIED_SOUL_CRYSTAL = Builder.<FortifiedSoulCrystalEntity>of(FortifiedSoulCrystalEntity::new, EntityClassification.MISC).sized(2, 2).fireImmune().clientTrackingRange(24).updateInterval(Integer.MAX_VALUE).build(ModEntityNames.FORTIFIED_SOUL_CRYSTAL);
     public static final EntityType<GiantXEntity> GIANT_X = Builder.of(GiantXEntity::new, EntityClassification.MONSTER).sized(3.6f, 12).clientTrackingRange(10).build(ModEntityNames.GIANT_X);
     public static final EntityType<GravitationalDragonFireballEntity> GRAVITATIONAL_DRAGON_FIREBALL = Builder.<GravitationalDragonFireballEntity>of(GravitationalDragonFireballEntity::new, EntityClassification.MISC).sized(0.8f, 0.8f).clientTrackingRange(4).updateInterval(10).build(ModEntityNames.GRAVITATIONAL_DRAGON_FIREBALL);
+    public static final EntityType<HorcruxEntity> HORCRUX = Builder.of(HorcruxEntity::new, EntityClassification.CREATURE).sized(0.6f, 1.95f).clientTrackingRange(12).updateInterval(8).build(ModEntityNames.HORCRUX);
     public static final EntityType<IllusoryHorseEntity> ILLUSORY_HORSE = Builder.of(IllusoryHorseEntity::new, EntityClassification.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(10).build(ModEntityNames.ILLUSORY_HORSE);
     public static final EntityType<Meta08Entity> META8 = Builder.of(Meta08Entity::new, EntityClassification.MONSTER).sized(1.2f, 3.9f).fireImmune().clientTrackingRange(12).build(ModEntityNames.META8);
     public static final EntityType<PursuerEntity> PURSUER = Builder.<PursuerEntity>of(PursuerEntity::new, EntityClassification.MISC).sized(0.3125f, 0.3125f).clientTrackingRange(24).build(ModEntityNames.PURSUER);
@@ -95,6 +93,7 @@ public final class ModEntities {
         registry.register(make(FORTIFIED_SOUL_CRYSTAL, ModEntityNames.FORTIFIED_SOUL_CRYSTAL));
         registry.register(make(GIANT_X, ModEntityNames.GIANT_X));
         registry.register(make(GRAVITATIONAL_DRAGON_FIREBALL, ModEntityNames.GRAVITATIONAL_DRAGON_FIREBALL));
+        registry.register(make(HORCRUX, ModEntityNames.HORCRUX));
         registry.register(make(ILLUSORY_HORSE, ModEntityNames.ILLUSORY_HORSE));
         registry.register(make(META8, ModEntityNames.META8));
         registry.register(make(PURSUER, ModEntityNames.PURSUER));
@@ -131,6 +130,7 @@ public final class ModEntities {
         event.put(ENGINEER, EngineerEntity.createAttributes().build());
         event.put(ETHE_ARMORER, AbstractVoidwalkerEntity.createVoidwalkerAttributes().build());
         event.put(GIANT_X, GiantXEntity.createAttributes().build());
+        event.put(HORCRUX, HorcruxEntity.createAttributes().build());
         event.put(ILLUSORY_HORSE, IllusoryHorseEntity.createAttributes().build());
         event.put(META8, Meta08Entity.createAttributes().build());
         event.put(REDSTONE_MORTAR, RedstoneMortarEntity.createAttributes().build());

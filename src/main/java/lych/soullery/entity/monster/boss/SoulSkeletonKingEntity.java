@@ -13,6 +13,7 @@ import lych.soullery.extension.soulpower.reinforce.Reinforcements;
 import lych.soullery.item.ModItems;
 import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.mixin.IEntityMixin;
+import lych.soullery.world.gen.biome.ModBiomes;
 import lych.soullery.world.gen.biome.sll.SLLayer;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -135,7 +136,7 @@ public class SoulSkeletonKingEntity extends AbstractSkeletonKingEntity implement
     @Override
     protected void onSpawn(IServerWorld world, DifficultyInstance instance, SpawnReason reason, @Nullable ILivingEntityData data, @Nullable CompoundNBT compoundNBT) {
         super.onSpawn(world, instance, reason, data, compoundNBT);
-        if (world.getBiomeName(blockPosition()).map(SLLayer::getId).map(SLLayer::isPure).orElse(false)) {
+        if (world.getBiomeName(blockPosition()).map(ModBiomes::getId).map(SLLayer::isPure).orElse(false)) {
             setPurified(true);
         }
     }

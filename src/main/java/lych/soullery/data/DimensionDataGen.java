@@ -47,6 +47,7 @@ public class DimensionDataGen implements IDataProvider {
         makeESV();
         makeEthereal();
         makeSoulLand();
+        makeSoulWasteland();
         makeSubworld();
     }
 
@@ -74,6 +75,31 @@ public class DimensionDataGen implements IDataProvider {
         registerDimension(soulLandDimension);
         registerDimensionType(soulLandDimensionType);
     }
+
+    private void makeSoulWasteland() {
+        final BiomeProviderBuilder soulWastelandBiomeProvider = BiomeProviderBuilder.soulWasteland(MOD_ID, ModDimensionNames.SOUL_WASTELAND);
+        final ChunkGeneratorBuilder soulWastelandChunkGenerator = ChunkGeneratorBuilder.noise(MOD_ID, ModDimensionNames.SOUL_WASTELAND)
+                .biomeSource(soulWastelandBiomeProvider)
+                .noSeed()
+                .settings(Soullery.prefix(ModDimensionNames.SOUL_WASTELAND));
+
+        final DimensionTypeBuilder soulWastelandDimensionType = new DimensionTypeBuilder(MOD_ID, ModDimensionNames.SOUL_WASTELAND)
+                .ambientLight(0.05f)
+                .fixedTime(18000)
+                .ultraWarm()
+                .hasRaids()
+                .logicalHeight(256)
+                .infiniburn(BlockTags.INFINIBURN_NETHER.getName())
+                .effectsLocation(Soullery.prefix(ModDimensionNames.SOUL_WASTELAND));
+
+        final DimensionBuilder soulWastelandDimension = new DimensionBuilder(MOD_ID, ModDimensionNames.SOUL_WASTELAND)
+                .type(Soullery.prefix(ModDimensionNames.SOUL_WASTELAND))
+                .generator(soulWastelandChunkGenerator);
+
+        registerDimension(soulWastelandDimension);
+        registerDimensionType(soulWastelandDimensionType);
+    }
+
 
     private void makeSubworld() {
         final BiomeProviderBuilder subworldBiomeProvider = BiomeProviderBuilder.overworld(false, MOD_ID, ModDimensionNames.SUBWORLD, 0);

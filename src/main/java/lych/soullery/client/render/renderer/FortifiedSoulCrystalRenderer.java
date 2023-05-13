@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.Color;
 
 public class FortifiedSoulCrystalRenderer extends SoulCrystalRenderer<FortifiedSoulCrystalEntity> {
-    private static final ResourceLocation FORTIFIED_SOUL_CRYSTAL = Soullery.prefixTex("entity/esv/fortified_soul_crystal.png");
+    private static final ResourceLocation FORTIFIED_SOUL_CRYSTAL = Soullery.prefixTex("entity/souldragon/fortified_soul_crystal.png");
 
     public FortifiedSoulCrystalRenderer(EntityRendererManager manager) {
         super(manager);

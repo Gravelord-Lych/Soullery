@@ -20,6 +20,10 @@ public final class ConfigHelper {
         return CommonConfig.STRICT_CHALLENGES.get();
     }
 
+    public static int getMaxHorcruxHurtTicks() {
+        return CommonConfig.HORCRUX_MAX_HURT_TICKS.get();
+    }
+
     public static boolean canSEBlocksLoot() {
         return !CommonConfig.DISABLE_SE_BLOCKS_LOOT.get();
     }

@@ -2,7 +2,7 @@ package lych.soullery.mixin.client;
 
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlocks;
-import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.biome.SLBiomes;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.FlatPresetsScreen;
 import net.minecraft.util.IItemProvider;
@@ -30,7 +30,7 @@ public abstract class FlatPresetsScreenMixin {
     private static void addMore(CallbackInfo ci) {
         preset(new TranslationTextComponent(Soullery.prefixMsg("createWorld", "customize.preset.soul_land")),
                 Blocks.SOUL_SOIL,
-                ModBiomes.SOUL_PLAINS,
+                SLBiomes.SOUL_PLAINS,
                 Collections.emptyList(),
                 false,
                 false,

@@ -14,6 +14,7 @@ public class ModEntityNames {
     public static final String FORTIFIED_SOUL_CRYSTAL = "fortified_soul_crystal";
     public static final String GIANT_X = "giant_x";
     public static final String GRAVITATIONAL_DRAGON_FIREBALL = "gravitational_dragon_fireball";
+    public static final String HORCRUX = "horcrux";
     public static final String ILLUSORY_HORSE = "illusory_horse";
     public static final String META8 = "meta8";
     public static final String PURSUER = "pursuer";

@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.*;
 
 public class EntityHighlightManager extends WorldSavedData {
+    static final int WAIT_TICKS = 40;
     private static final String NAME = "EntityHighlightManager";
     private static final int SAVE_FREQ = 40;
     public static final Marker HIGHLIGHTER = MarkerManager.getMarker(NAME);
@@ -154,9 +155,12 @@ public class EntityHighlightManager extends WorldSavedData {
                 continue;
             }
             if (entity == null) {
-                invalidUUIDs.putIfAbsent(uuid, level.getGameTime() + 40);
+                invalidUUIDs.putIfAbsent(uuid, level.getGameTime() + WAIT_TICKS);
             } else {
                 invalidUUIDs.remove(entity.getUUID());
+            }
+            if (invalidUUIDs.containsKey(uuid)) {
+                continue;
             }
             Highlighter highlighter = queue.element();
             Color color = highlighter.getColor(level, new PriorityQueue<>(queue));

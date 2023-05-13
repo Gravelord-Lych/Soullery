@@ -72,6 +72,8 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
     public static final int LONG_ETHEREAL_COOLDOWN = 20 * 10;
     private static final UUID ILLUSORY_HORSE_SPEED_MODIFIER_UUID = UUID.fromString("974EA2A6-89D2-DA8C-4608-69317DFB960D");
     private static final AttributeModifier ILLUSORY_HORSE_SPEED_MODIFIER = new AttributeModifier(ILLUSORY_HORSE_SPEED_MODIFIER_UUID, "Illusory horse speed modifier", 0.05, AttributeModifier.Operation.ADDITION);
+    private static final UUID SCOUT_FOLLOW_RANGE_BONUS_UUID = UUID.fromString("07E7D88A-5596-10CB-4B5F-8E86C999B25D");
+    private static final AttributeModifier SCOUT_FOLLOW_RANGE_BONUS = new AttributeModifier(SCOUT_FOLLOW_RANGE_BONUS_UUID, "Scout follow range bonus", 15, AttributeModifier.Operation.ADDITION);
     protected static final DataParameter<Boolean> DATA_SHIELDED = EntityDataManager.defineId(AbstractVoidwalkerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DATA_ETHEREAL = EntityDataManager.defineId(AbstractVoidwalkerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DATA_TIER = EntityDataManager.defineId(AbstractVoidwalkerEntity.class, DataSerializers.INT);
@@ -90,6 +92,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
     private VoidwalkerTier strengthenedTo;
     @Nullable
     private UUID shieldProvider;
+    private boolean scout;
 
     protected AbstractVoidwalkerEntity(EntityType<? extends AbstractVoidwalkerEntity> type, World world) {
         super(type, world);
@@ -458,6 +461,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
         if (getShieldProvider() != null && getShieldProvider() != this) {
             compoundNBT.putUUID("ShieldProvider", ((Entity) getShieldProvider()).getUUID());
         }
+        compoundNBT.putBoolean("Scout", isScout());
     }
 
     @Override
@@ -487,6 +491,7 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
         if (compoundNBT.contains("ShieldProvider") && !level.isClientSide()) {
             shieldProvider = compoundNBT.getUUID("ShieldProvider");
         }
+        setScout(compoundNBT.getBoolean("Scout"));
     }
 
     @Override
@@ -708,6 +713,20 @@ public abstract class AbstractVoidwalkerEntity extends MonsterEntity implements 
         entity.yRot = function.rotlerp(entity.yRot, yRot, 90);
         entity.xRot = function.rotlerp(entity.xRot, xRot, 90);
         entity.yBodyRot = function.rotlerp(entity.yBodyRot, yRot, 90);
+    }
+
+    public boolean isScout() {
+        return scout;
+    }
+
+    public void setScout(boolean scout) {
+        this.scout = scout;
+        if (scout) {
+            EntityUtils.addPermanentModifierIfAbsent(this, Attributes.FOLLOW_RANGE, SCOUT_FOLLOW_RANGE_BONUS);
+            setPersistenceRequired();
+        } else {
+            getAttribute(Attributes.FOLLOW_RANGE).removeModifier(SCOUT_FOLLOW_RANGE_BONUS);
+        }
     }
 
     public interface RotlerpFunction {

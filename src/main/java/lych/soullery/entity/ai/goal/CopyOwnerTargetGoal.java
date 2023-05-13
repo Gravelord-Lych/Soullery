@@ -28,7 +28,7 @@ public class CopyOwnerTargetGoal<T extends MobEntity & IHasOwner<? extends MobEn
 
     @Override
     public boolean canUse() {
-        return mob.getOwner() != null && mob.getOwner().getTarget() != null && canAttack(mob.getOwner().getTarget(), copyOwnerTargeting);
+        return mob.getOwner() != null && mob.isOwnerInTheSameWorld() && mob.getOwner().getTarget() != null && canAttack(mob.getOwner().getTarget(), copyOwnerTargeting);
     }
 
     @SuppressWarnings("ConstantConditions")

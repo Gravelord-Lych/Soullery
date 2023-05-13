@@ -36,6 +36,7 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(FORTIFIED_SOUL_CRYSTAL, FortifiedSoulCrystalRenderer::new);
         registerEntityRenderingHandler(GIANT_X, GiantXRenderer::new);
         registerEntityRenderingHandler(GRAVITATIONAL_DRAGON_FIREBALL, SimpleTexturedRenderer.single(DRAGON_FIREBALL_LOCATION));
+        registerEntityRenderingHandler(HORCRUX, HorcruxRenderer::new);
         registerEntityRenderingHandler(ILLUSORY_HORSE, IllusoryHorseRenderer::new);
         registerEntityRenderingHandler(META8, Meta08Renderer::new);
         registerEntityRenderingHandler(PURSUER, PursuerRenderer::new);

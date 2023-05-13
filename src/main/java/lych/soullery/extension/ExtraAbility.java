@@ -31,7 +31,8 @@ import java.util.*;
 
 import static lych.soullery.Soullery.prefix;
 
-public class ExtraAbility implements IExtraAbility {
+public class
+ExtraAbility implements IExtraAbility {
     public static final Marker MARKER = MarkerManager.getMarker("ExtraAbilities");
     public static final IExtraAbility ARMOR_PIERCER = create(prefix(ExaNames.ARMOR_PIERCER));
     public static final IExtraAbility BOW_EXPERT = create(prefix(ExaNames.BOW_EXPERT));

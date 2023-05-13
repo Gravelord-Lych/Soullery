@@ -24,6 +24,7 @@ public final class ModDimensionSettings {
     public static final DimensionSettings ESV = makeESV();
     public static final DimensionSettings ETHEREAL = makeTheEthereal();
     public static final DimensionSettings SOUL_LAND = makeSoulLand();
+    public static final DimensionSettings SOUL_WASTELAND = makeSoulWasteland();
     public static final DimensionSettings SUBWORLD = makeSubworld();
 
     private ModDimensionSettings() {}
@@ -33,6 +34,7 @@ public final class ModDimensionSettings {
         register(NOISE_GENERATOR_SETTINGS, prefix(ModDimensionNames.ESV), ESV);
         register(NOISE_GENERATOR_SETTINGS, prefix(ModDimensionNames.ETHEREAL), ETHEREAL);
         register(NOISE_GENERATOR_SETTINGS, prefix(ModDimensionNames.SOUL_LAND), SOUL_LAND);
+        register(NOISE_GENERATOR_SETTINGS, prefix(ModDimensionNames.SOUL_WASTELAND), SOUL_WASTELAND);
         register(NOISE_GENERATOR_SETTINGS, prefix(ModDimensionNames.SUBWORLD), SUBWORLD);
     }
 
@@ -56,6 +58,29 @@ public final class ModDimensionSettings {
                 .bedrockFloorPosition(0)
                 .bedrockRoofPosition(NO_BEDROCKS)
                 .seaLevel(63)
+                .build();
+    }
+
+    public static DimensionSettings makeSoulWasteland() {
+        return new DimensionSettingsBuilder()
+                .structureSettings(new DimensionStructuresSettings(false))
+                .noiseSettings(new NoiseSettingsBuilder()
+                        .height(256)
+                        .noiseSamplingSettings(new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D))
+                        .topSlideSettings(new SlideSettings(-10, 3, 0))
+                        .bottomSlideSettings(new SlideSettings(-30, 0, 0))
+                        .noiseSizeHorizontal(1)
+                        .noiseSizeVertical(6)
+                        .densityFactor(1)
+                        .densityOffset(-0.46875D)
+                        .useSimplexSurfaceNoise()
+                        .randomDensityOffset()
+                        .build())
+                .defaultBlock(ModBlocks.SOUL_STONE.defaultBlockState())
+                .defaultFluid(ModBlocks.SOUL_LAVA_FLUID_BLOCK.defaultBlockState())
+                .bedrockFloorPosition(0)
+                .bedrockRoofPosition(NO_BEDROCKS)
+                .seaLevel(58)
                 .build();
     }
 

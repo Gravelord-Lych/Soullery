@@ -53,10 +53,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -81,7 +78,8 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     private static final float OUTER_RANGE = 60;
     private static final float MID_RANGE = 40;
     private static final float INNER_RANGE = 20;
-    private static final float EXPLOSION_DAMAGE_RESISTANCE = 0.1f;
+    private static final float EXPLOSION_DAMAGE_RESISTANCE = 0.05f;
+    private static final float LOW_HEALTH_ABSOLUTE_DEFENSE = 3;
     private static final EntityPredicate CRYSTAL_DESTROY_TARGETING = new EntityPredicate().range(64);
     public final double[][] positions = new double[64][3];
     private int posPointer = -1;
@@ -108,6 +106,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     private int growlTime = 100;
     private int attackStep;
     private boolean inWall;
+    private boolean firstSpawnElite = true;
     private int eliteCountRemaining = 32;
     private int eliteToSpawn;
     private int eliteSpawnCooldown;
@@ -153,6 +152,10 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
 
     @Override
     public void aiStep() {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            remove();
+            return;
+        }
         if (spawnPos == null) {
             spawnPos = blockPosition();
         }
@@ -343,13 +346,15 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         if (level.isClientSide() || isDeadOrDying()) {
             return;
         }
-        if (getHealthStatus() == HealthStatus.LOW && eliteCountRemaining > 0 && eliteToSpawn <= 0 && random.nextInt(Math.max(1, 100 + ((int) getHealth()) * 3 - eliteCountRemaining * 6)) == 0) {
+        boolean maySpawnElite = getHealthStatus() == HealthStatus.LOW && eliteCountRemaining > 0 && eliteToSpawn <= 0;
+        if (maySpawnElite && (firstSpawnElite || random.nextInt(Math.max(1, 100 + ((int) getHealth()) * 3 - eliteCountRemaining * 5)) == 0)) {
             if (eliteCountRemaining > 9) {
                 eliteToSpawn = random.nextInt(5) + 5;
             } else {
                 eliteToSpawn = eliteCountRemaining;
             }
             eliteCountRemaining -= eliteToSpawn;
+            firstSpawnElite = false;
         }
         if (eliteSpawnCooldown > 0) {
             eliteSpawnCooldown--;
@@ -374,7 +379,9 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         EntityUtils.getAttribute(elite, Attributes.FOLLOW_RANGE).setBaseValue(49);
         EntityUtils.getAttribute(elite, Attributes.MOVEMENT_SPEED).setBaseValue(0.33);
         EntityUtils.getAttribute(elite, Attributes.KNOCKBACK_RESISTANCE).setBaseValue(random.nextDouble() * 0.3 + 0.3);
+        EntityUtils.getAttribute(elite, Attributes.ATTACK_DAMAGE).setBaseValue(3);
         elite.setHealth(elite.getMaxHealth());
+        elite.setClimbable(true);
 
         List<Pair<Reinforcement, Integer>> guardianReinforcements = new ArrayList<>(ImmutableList.of(
                 Pair.of(Reinforcements.GUARDIAN, 2),
@@ -591,6 +598,9 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             if (source.getEntity() == this || source.getEntity() != null && source.getEntity().is(this)) {
                 amount = 0;
             }
+            if (getHealthStatus() == HealthStatus.LOW) {
+                amount -= LOW_HEALTH_ABSOLUTE_DEFENSE;
+            }
             if (amount < 0.01f) {
                 return false;
             } else {
@@ -753,6 +763,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
         compoundNBT.putInt("EliteCountRemaining", eliteCountRemaining);
         compoundNBT.putInt("EliteToSpawn", eliteToSpawn);
+        compoundNBT.putBoolean("FirstSpawnElite", firstSpawnElite);
         getHealthManager().saveStatus(compoundNBT);
     }
 
@@ -775,6 +786,9 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
         if (compoundNBT.contains("EliteToSpawn")) {
             eliteToSpawn = compoundNBT.getInt("EliteToSpawn");
+        }
+        if (compoundNBT.contains("FirstSpawnElite")) {
+            firstSpawnElite = compoundNBT.getBoolean("FirstSpawnElite");
         }
     }
 
@@ -1128,7 +1142,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
             if (min == from) {
                 return null;
             } else {
-                LOGGER.warn("Failed to find path from {} to {}", fromId, toId);
+                LOGGER.debug("Failed to find path from {} to {}", fromId, toId);
                 if (exp != null) {
                     exp.cameFrom = min;
                     min = exp;
@@ -1247,7 +1261,11 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         },
         LOW(Fraction.ZERO) {
             @Override
-            public void begin(SoulDragonEntity dragon) {}
+            public void begin(SoulDragonEntity dragon) {
+                if (dragon.getFight() != null) {
+                    dragon.getFight().updateDragon(dragon);
+                }
+            }
 
             @Override
             public boolean meetsBreakCondition(SoulDragonEntity dragon) {

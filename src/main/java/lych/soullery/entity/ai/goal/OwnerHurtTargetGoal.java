@@ -26,6 +26,9 @@ public class OwnerHurtTargetGoal extends TargetGoal {
         if (owner == null) {
             return false;
         } else {
+            if (!mobWithOwner.isOwnerInTheSameWorld()) {
+                return false;
+            }
             ownerLastHurt = owner.getLastHurtMob();
             int timestamp = owner.getLastHurtMobTimestamp();
             return timestamp != this.timestamp && canAttack(ownerLastHurt, EntityPredicate.DEFAULT);

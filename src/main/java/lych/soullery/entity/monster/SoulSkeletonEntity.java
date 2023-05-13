@@ -10,6 +10,7 @@ import lych.soullery.item.ModItems;
 import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.mixin.IEntityMixin;
 import lych.soullery.util.mixin.IGoalSelectorMixin;
+import lych.soullery.world.gen.biome.ModBiomes;
 import lych.soullery.world.gen.biome.sll.SLLayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -27,6 +28,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.ClimberPathNavigator;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -39,7 +41,9 @@ import java.util.UUID;
 
 public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOwner<SoulSkeletonKingEntity>, IPurifiable {
     private static final DataParameter<Boolean> DATA_PURIFIED = EntityDataManager.defineId(SoulSkeletonEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DATA_CLIMBING = EntityDataManager.defineId(SoulSkeletonEntity.class, DataSerializers.BOOLEAN);
     private UUID ownerUUID;
+    private boolean climbable;
 
     public SoulSkeletonEntity(EntityType<? extends SoulSkeletonEntity> type, World world) {
         super(type, world);
@@ -49,6 +53,7 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_PURIFIED, false);
+        entityData.define(DATA_CLIMBING, false);
     }
 
     @Override
@@ -58,6 +63,14 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
         targetSelector.addGoal(2, new CopyOwnerTargetGoal<>(this));
         ((IGoalSelectorMixin) targetSelector).getAvailableGoals().removeIf(goal -> goal.getGoal() instanceof HurtByTargetGoal);
         targetSelector.addGoal(1, new HurtByTargetGoal(this, SoulSkeletonKingEntity.class, SoulSkeletonEntity.class, SoulDragonEntity.class));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level.isClientSide() && isClimbable()) {
+            setClimbing(horizontalCollision);
+        }
     }
 
     @Override
@@ -110,7 +123,7 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
     @Nullable
     @Override
     public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance instance, SpawnReason reason, @Nullable ILivingEntityData data, @Nullable CompoundNBT compoundNBT) {
-        if (world.getBiomeName(blockPosition()).map(SLLayer::getId).map(SLLayer::isPure).orElse(false)) {
+        if (world.getBiomeName(blockPosition()).map(ModBiomes::getId).map(SLLayer::isPure).orElse(false)) {
             setPurified(true);
         }
         return super.finalizeSpawn(world, instance, reason, data, compoundNBT);
@@ -143,6 +156,7 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
         super.addAdditionalSaveData(compoundNBT);
         saveOwner(compoundNBT);
         compoundNBT.putBoolean("Purified", isPurified());
+        compoundNBT.putBoolean("Climbable", isClimbable());
     }
 
     @Override
@@ -150,6 +164,9 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
         super.readAdditionalSaveData(compoundNBT);
         loadOwner(compoundNBT);
         setPurified(compoundNBT.getBoolean("Purified"));
+        if (compoundNBT.contains("Climbable")) {
+            setClimbable(compoundNBT.getBoolean("Climbable"));
+        }
     }
 
     @Override
@@ -166,5 +183,27 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
     @Override
     public void setOwnerUUID(@Nullable UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
+    }
+
+    public boolean isClimbable() {
+        return climbable;
+    }
+
+    public void setClimbable(boolean climbable) {
+        this.climbable = climbable;
+        navigation = climbable ? new ClimberPathNavigator(this, level) : createNavigation(level);
+    }
+
+    @Override
+    public boolean onClimbable() {
+        return isClimbing();
+    }
+
+    public boolean isClimbing() {
+        return entityData.get(DATA_CLIMBING);
+    }
+
+    public void setClimbing(boolean climbing) {
+        entityData.set(DATA_CLIMBING, climbing);
     }
 }

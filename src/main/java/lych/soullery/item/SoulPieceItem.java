@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 public class SoulPieceItem extends Item {
-    public static final String TAG = Utils.snakeToCamel(ModItemNames.SOUL_PIECE) + ".";
+    public static final String PREFIX = Utils.snakeToCamel(ModItemNames.SOUL_PIECE) + ".";
 
     public SoulPieceItem(Properties properties) {
         super(properties);
@@ -54,12 +54,12 @@ public class SoulPieceItem extends Item {
 
     @Nullable
     public static EntityType<?> getType(ItemStack stack) {
-        if (!stack.hasTag() || !stack.getTag().contains(TAG + "EntityType")) {
+        if (!stack.hasTag() || !stack.getTag().contains(PREFIX + "EntityType")) {
             return null;
         }
         ResourceLocation location;
         if (stack.hasTag()) {
-            location = new ResourceLocation(stack.getTag().getString(TAG + "EntityType"));
+            location = new ResourceLocation(stack.getTag().getString(PREFIX + "EntityType"));
         } else {
             location = null;
         }
@@ -67,6 +67,6 @@ public class SoulPieceItem extends Item {
     }
 
     public static void setType(ItemStack stack, EntityType<?> type) {
-        stack.getOrCreateTag().putString(TAG + "EntityType", Utils.getRegistryName(type).toString());
+        stack.getOrCreateTag().putString(PREFIX + "EntityType", Utils.getRegistryName(type).toString());
     }
 }

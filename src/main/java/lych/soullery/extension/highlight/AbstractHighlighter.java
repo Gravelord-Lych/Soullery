@@ -10,7 +10,7 @@ import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +26,7 @@ public abstract class AbstractHighlighter implements Highlighter {
 
     public AbstractHighlighter(UUID entityUUID, CompoundNBT compoundNBT) {
         this.entityUUID = entityUUID;
-        this.highlightTicksRemaining = compoundNBT.getLong("HighlightTicksRemaining");
+        this.highlightTicksRemaining = Math.max(EntityHighlightManager.WAIT_TICKS, compoundNBT.getLong("HighlightTicksRemaining"));
     }
 
     @Nullable
@@ -44,6 +44,7 @@ public abstract class AbstractHighlighter implements Highlighter {
         }
         Color color = getColor(level, entity);
         queue.remove(this);
+        queue.removeIf(highlighter -> Highlighter.ignore(this, highlighter));
         if (!queue.isEmpty()) {
             color = mix(color, level, entity, queue);
         }
@@ -113,7 +114,7 @@ public abstract class AbstractHighlighter implements Highlighter {
 
     @Override
     public final float @Nullable [] getMixColor(ServerWorld level, Entity entity) {
-        float[] defaultColor = getDefaultColor(level, entity);
+        float[] defaultColor = doGetMixColor(level, entity);
         if (defaultColor == null) {
             return null;
         }
@@ -121,7 +122,7 @@ public abstract class AbstractHighlighter implements Highlighter {
         return defaultColor;
     }
 
-    protected float @Nullable [] getDefaultColor(ServerWorld level, Entity entity) {
+    protected float @Nullable [] doGetMixColor(ServerWorld level, Entity entity) {
         Color color = getColor(level, entity);
         if (color == null) {
             return null;

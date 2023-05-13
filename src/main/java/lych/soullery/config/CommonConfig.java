@@ -19,6 +19,7 @@ public class CommonConfig {
     static final BooleanValue FAILHARD;
     static final BooleanValue ROMAN_GENERATOR;
     static final IntValue ROMAN_LIMIT;
+    static final IntValue HORCRUX_MAX_HURT_TICKS;
 
     static {
         ForgeConfigSpec.Builder commonBuilder = new ForgeConfigSpec.Builder();
@@ -30,6 +31,9 @@ public class CommonConfig {
         SHOW_BOSS_TIER = commonBuilder
                 .comment("If true, all boss-tier will be shown.")
                 .define("showBossTier", false);
+        HORCRUX_MAX_HURT_TICKS = commonBuilder
+                .comment("The max interval to remove the horcrux by double clicking.")
+                .defineInRange("removeHorcruxMaxDoubleClickInterval", 7, 2, 20);
         commonBuilder.pop();
 
         commonBuilder.push("Challenge Settings");

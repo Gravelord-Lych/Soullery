@@ -12,6 +12,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 
@@ -31,13 +32,13 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         addDefaultSoulBiomeCarvers(genBuilder, false);
-        genBuilder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.SL_PATCH_SOUL_FIRE);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.SL_PATCH_SOUL_FIRE);
         defaultSoulBiomeVegetation(genBuilder);
 
         if (spiked) {
-            genBuilder.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SPIKED_SOUL_PLAINS_SPIKE);
+            genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SPIKED_SOUL_PLAINS_SPIKE);
         } else if (depth < 0.2f) {
-            genBuilder.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SOUL_PLAINS_SPIKE);
+            genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SOUL_PLAINS_SPIKE);
         }
 
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_LAND);
@@ -102,6 +103,45 @@ public final class ModBiomeMakers {
                 .build();
     }
 
+    public static Biome makeSoulWastelands(float depth, float scale, boolean rareCaves, boolean hasSoulLavaLakes, boolean guarded) {
+        MobSpawnInfo.Builder spawnBuilder = new MobSpawnInfo.Builder();
+        spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.VOIDWALKER, 50, 2, 2));
+        spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.VOID_DEFENDER, 10, 1, 2));
+        spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 1, 1));
+
+        BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_SOUL_FIRE_ON_SOUL_STONE);
+        genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_WASTELANDS);
+        if (hasSoulLavaLakes) {
+            genBuilder.addFeature(Decoration.LAKES, ModConfiguredFeatures.LAKE_SOUL_LAVA);
+        }
+        genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, guarded ? ModConfiguredFeatures.DENSE_STREETLIGHT : ModConfiguredFeatures.SPARSE_STREETLIGHT);
+        genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, guarded ? ModConfiguredFeatures.DENSE_SMALL_WATCHTOWER : ModConfiguredFeatures.SPARSE_SMALL_WATCHTOWER);
+        if (guarded) {
+            genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.LARGE_WATCHTOWER);
+        }
+        addDefaultSoulBiomeCarvers(genBuilder, rareCaves);
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.NONE)
+                .biomeCategory(Biome.Category.NONE)
+                .depth(depth)
+                .scale(scale)
+                .temperature(1)
+                .downfall(0)
+                .specialEffects(new BiomeAmbience.Builder()
+                        .waterColor(0x3F5EE4)
+                        .waterFogColor(DEFAULT_WATER_FOG_COLOR)
+                        .fogColor(0x45D1DA)
+                        .skyColor(calculateFantasticalBiomeSkyColor(1))
+                        .ambientParticle(new ParticleEffectAmbience(ParticleTypes.ASH, 0.003f))
+                        .ambientMoodSound(MoodSoundAmbience.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .generationSettings(genBuilder.build())
+                .build();
+    }
+
     public static Biome makeParchedDesertBiome(float depth, float scale) {
         MobSpawnInfo.Builder spawnBuilder = new MobSpawnInfo.Builder();
         spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.BLAZE, 100, 1, 1));
@@ -113,12 +153,12 @@ public final class ModBiomeMakers {
         spawnBuilder.addMobCharge(EntityType.ZOMBIFIED_PIGLIN, 0.8, 0.2);
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
-        genBuilder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_INFERNO);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_INFERNO);
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.PARCHED_DESERT);
-        genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOULIFIED_BUSH);
+        genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOULIFIED_BUSH);
         addDefaultSoulBiomeCarvers(genBuilder, false);
         if (depth < 0.2f) {
-            genBuilder.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.PARCHED_SOIL_SPIKE);
+            genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.PARCHED_SOIL_SPIKE);
         }
 
         return new Biome.Builder()
@@ -154,15 +194,15 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.CRIMSON_PLAINS);
-        genBuilder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_FIRE);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, Features.PATCH_FIRE);
         DefaultBiomeFeatures.addDefaultMushrooms(genBuilder);
-        genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.CRIMSON_FOREST_VEGETATION);
+        genBuilder.addFeature(Decoration.VEGETAL_DECORATION, Features.CRIMSON_FOREST_VEGETATION);
         addDefaultSoulBiomeCarvers(genBuilder, true);
         if (!edge) {
-            genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI)
-                    .addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WEEPING_VINE);
+            genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI)
+                    .addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WEEPING_VINE);
         } else {
-            genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI_AT_THE_EDGE);
+            genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeVegetation(genBuilder);
         }
         return new Biome.Builder()
@@ -200,16 +240,16 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.WARPED_PLAINS);
-        genBuilder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_POISONOUS_FIRE);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_POISONOUS_FIRE);
         DefaultBiomeFeatures.addDefaultMushrooms(genBuilder);
-        genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.WARPED_FOREST_VEGETATION);
+        genBuilder.addFeature(Decoration.VEGETAL_DECORATION, Features.WARPED_FOREST_VEGETATION);
         addDefaultSoulBiomeCarvers(genBuilder, true);
         if (!edge) {
-            genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI)
-                    .addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.NETHER_SPROUTS)
-                    .addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_TWISTING_VINE);
+            genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI)
+                    .addFeature(Decoration.VEGETAL_DECORATION, Features.NETHER_SPROUTS)
+                    .addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_TWISTING_VINE);
         } else {
-            genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI_AT_THE_EDGE);
+            genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeVegetation(genBuilder);
         }
         return new Biome.Builder()
@@ -241,7 +281,7 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         addDefaultSoulBiomeCarvers(genBuilder, true);
-        genBuilder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_PURE_SOUL_FIRE);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_PURE_SOUL_FIRE);
         defaultSoulBiomeVegetation(genBuilder);
 
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.INNERMOST_SOUL_LAND);
@@ -288,8 +328,8 @@ public final class ModBiomeMakers {
     }
 
     private static void defaultSoulBiomeVegetation(BiomeGenerationSettings.Builder genBuilder) {
-        genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOUL_WART);
-        genBuilder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOULIFIED_BUSH);
+        genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOUL_WART);
+        genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOULIFIED_BUSH);
     }
 
     private static void soulMobs(MobSpawnInfo.Builder builder) {

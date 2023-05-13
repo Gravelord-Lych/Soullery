@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class HighlighterType {
     public static final HighlighterType NO_HIGHLIGHT = new HighlighterType(Util.NIL_UUID, DummyHighlighter::new, DummyHighlighter::new);
+    public static final HighlighterType HORCRUX = new HighlighterType("DF0ACF17-2A34-ABED-8A5E-379870B6D6D3", HorcruxHighlighter::new, HorcruxHighlighter::new);
     public static final HighlighterType MIND_OPERATOR_HELPER = new HighlighterType("51697B6C-C99D-8ED3-688E-2AA7E9AB9A05", MindOperatorHelperHighlighter::new, MindOperatorHelperHighlighter::new);
     public static final HighlighterType MIND_OPERATOR_HELPER_ALT = new HighlighterType("CA56EF44-7E20-D0B3-85E0-E97273BA5B1D", MindOperatorHelperAltHighlighter::new, MindOperatorHelperAltHighlighter::new);
     public static final HighlighterType MONSTER_VIEW = new HighlighterType("C9A92E28-1765-40AB-853A-F3874408A039", MonsterViewHighlighter::new, MonsterViewHighlighter::new);
@@ -19,6 +20,7 @@ public class HighlighterType {
     static {
         HIGHLIGHTERS = new HashMap<>();
         registerHighlighter(NO_HIGHLIGHT);
+        registerHighlighter(HORCRUX);
         registerHighlighter(MIND_OPERATOR_HELPER);
         registerHighlighter(MIND_OPERATOR_HELPER_ALT);
         registerHighlighter(MONSTER_VIEW);

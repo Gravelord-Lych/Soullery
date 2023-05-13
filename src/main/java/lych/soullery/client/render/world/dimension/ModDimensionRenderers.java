@@ -12,6 +12,7 @@ import static lych.soullery.Soullery.prefix;
 public class ModDimensionRenderers {
     public static void registerDimensionRenderers() {
         register(prefix(ModDimensionNames.SOUL_LAND), new SoulLandRenderInfo());
+        register(prefix(ModDimensionNames.SOUL_WASTELAND), new SoulLandRenderInfo());
         register(prefix(ModDimensionNames.ESV), new ESVRenderInfo());
     }
 

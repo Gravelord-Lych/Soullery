@@ -4,6 +4,7 @@ import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.entity.SEStorageTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.data.DataGenerator;
@@ -59,6 +60,7 @@ public class BlockStateDataGen extends BlockStateProvider {
         fire(POISONOUS_FIRE);
         simpleBlock(POTTED_SOULIFIED_BUSH, modelFromBlock(POTTED_SOULIFIED_BUSH));
         fire(PURE_SOUL_FIRE);
+        simpleBlock(PURIFIED_SOULIFIED_BEDROCK);
         simpleBlock(REFINED_SOUL_METAL_BLOCK);
         simpleBlock(REFINED_SOUL_SAND);
         simpleBlock(REFINED_SOUL_SOIL);
@@ -104,8 +106,10 @@ public class BlockStateDataGen extends BlockStateProvider {
         stairsBlock(SOUL_STONE_STAIRS, prefix(SOUL_STONE));
         wallBlock(SOUL_STONE_WALL, prefix(SOUL_STONE));
         cropsBlock(SOUL_WART, BlockStateProperties.AGE_3, 0, 1, 1, 2);
+        simpleBlock(SOULIFIED_BEDROCK);
         simpleBlock(SOULIFIED_BUSH, modelFromBlock(SOULIFIED_BUSH));
         simpleBlock(WARPED_HYPHAL_SOIL, modelFromBlock(WARPED_HYPHAL_SOIL));
+        tfbBlock(MAGNETIC_FIELD_GENERATOR);
     }
 
     private void segens() {
@@ -151,6 +155,31 @@ public class BlockStateDataGen extends BlockStateProvider {
                         prefix(sideTex),
                         prefix(sideTex),
                         prefix(name(segen) + "_gs"))));
+    }
+
+    public void tfbBlock(Block block) {
+        ResourceLocation side = prefix(block, "_side");
+        ResourceLocation front = prefix(block, "_front");
+        ResourceLocation bottom = prefix(block, "_bottom");
+        ResourceLocation top = prefix(block, "_top");
+        tfbBlock(block, side, front, bottom, top);
+    }
+
+    public void tfbBlock(Block block, ResourceLocation side, ResourceLocation front, ResourceLocation bottom, ResourceLocation top) {
+        BlockModelBuilder model = models().orientableWithBottom(prefix(block).toString(), side, front, bottom, top);
+        getVariantBuilder(block)
+                .partialState()
+                .with(HorizontalBlock.FACING, Direction.EAST)
+                .addModels(ConfiguredModel.builder().modelFile(model).rotationY(90).buildLast())
+                .partialState()
+                .with(HorizontalBlock.FACING, Direction.NORTH)
+                .addModels(new ConfiguredModel(model))
+                .partialState()
+                .with(HorizontalBlock.FACING, Direction.SOUTH)
+                .addModels(ConfiguredModel.builder().modelFile(model).rotationY(180).buildLast())
+                .partialState()
+                .with(HorizontalBlock.FACING, Direction.WEST)
+                .addModels(ConfiguredModel.builder().modelFile(model).rotationY(270).buildLast());
     }
 
     public void ironBarBlock(PaneBlock block, ResourceLocation tex) {

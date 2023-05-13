@@ -56,13 +56,13 @@ public class MonsterViewHighlighter extends AbstractHighlighter {
     }
 
     @Override
-    protected float @Nullable [] getDefaultColor(ServerWorld level, Entity entity) {
-        float[] defaultColor = super.getDefaultColor(level, entity);
-        if (defaultColor != null) {
-            defaultColor[0] = Float.NaN;
-            defaultColor[2] = Math.max(0, defaultColor[2] * 2 - 1);
+    protected float @Nullable [] doGetMixColor(ServerWorld level, Entity entity) {
+        float[] mixColor = super.doGetMixColor(level, entity);
+        if (mixColor != null) {
+            mixColor[0] = Float.NaN;
+            mixColor[2] = Math.max(0, mixColor[2] * 2 - 1);
         }
-        return defaultColor;
+        return mixColor;
     }
 
     @Override

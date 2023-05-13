@@ -3,6 +3,7 @@ package lych.soullery.world.gen.biome.sll;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.biome.SLBiomes;
 import net.minecraft.util.Util;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
@@ -13,18 +14,18 @@ public enum SLEdgesLayer implements ICastleTransformer {
     INSTANCE;
 
     private static final Int2IntMap EDGES_MAP = Util.make(new Int2IntOpenHashMap(), map -> {
-        SLLayer.putId(map, ModBiomes.CRIMSON_PLAINS, ModBiomes.CRIMSON_PLAINS_EDGE);
-        SLLayer.putId(map, ModBiomes.CRIMSON_HILLS, ModBiomes.CRIMSON_PLAINS_EDGE);
-        SLLayer.putId(map, ModBiomes.WARPED_PLAINS, ModBiomes.WARPED_PLAINS_EDGE);
-        SLLayer.putId(map, ModBiomes.WARPED_HILLS, ModBiomes.WARPED_PLAINS_EDGE);
+        ModBiomes.putId(map, SLBiomes.CRIMSON_PLAINS, SLBiomes.CRIMSON_PLAINS_EDGE);
+        ModBiomes.putId(map, SLBiomes.CRIMSON_HILLS, SLBiomes.CRIMSON_PLAINS_EDGE);
+        ModBiomes.putId(map, SLBiomes.WARPED_PLAINS, SLBiomes.WARPED_PLAINS_EDGE);
+        ModBiomes.putId(map, SLBiomes.WARPED_HILLS, SLBiomes.WARPED_PLAINS_EDGE);
     });
     private static final Int2IntMap SIMILARITY_MAP = Util.make(new Int2IntOpenHashMap(), map -> {
-        map.put(SLLayer.getId(ModBiomes.CRIMSON_HILLS), Flags.CRIMSON);
-        map.put(SLLayer.getId(ModBiomes.CRIMSON_PLAINS), Flags.CRIMSON);
-        map.put(SLLayer.getId(ModBiomes.CRIMSON_PLAINS_EDGE), Flags.CRIMSON);
-        map.put(SLLayer.getId(ModBiomes.WARPED_HILLS), Flags.WARPED);
-        map.put(SLLayer.getId(ModBiomes.WARPED_PLAINS), Flags.WARPED);
-        map.put(SLLayer.getId(ModBiomes.WARPED_PLAINS_EDGE), Flags.WARPED);
+        map.put(ModBiomes.getId(SLBiomes.CRIMSON_HILLS), Flags.CRIMSON);
+        map.put(ModBiomes.getId(SLBiomes.CRIMSON_PLAINS), Flags.CRIMSON);
+        map.put(ModBiomes.getId(SLBiomes.CRIMSON_PLAINS_EDGE), Flags.CRIMSON);
+        map.put(ModBiomes.getId(SLBiomes.WARPED_HILLS), Flags.WARPED);
+        map.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS), Flags.WARPED);
+        map.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS_EDGE), Flags.WARPED);
     });
 
     @Override

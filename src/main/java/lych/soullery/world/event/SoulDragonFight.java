@@ -155,15 +155,15 @@ public class SoulDragonFight extends AbstractWorldEvent {
                     checkSuperCrystal();
                     if (superCrystal != null) {
                         if (wasNull) {
-                            LOGGER.info(MARKER, "Found new Fortified Soul Crystal");
+                            LOGGER.debug(MARKER, "Found new Fortified Soul Crystal");
                         } else {
-                            LOGGER.info(MARKER, "Found that the previous Fortified Soul Crystal is still alive");
+                            LOGGER.debug(MARKER, "Found that the previous Fortified Soul Crystal is still alive");
                         }
                     }
                 }
                 if (EntityUtils.isDead(superCrystal)) {
                     superCrystal = null;
-                    LOGGER.info(MARKER, "Fortified Soul Crystal is destroyed!");
+                    LOGGER.debug(MARKER, "Fortified Soul Crystal is destroyed!");
                     setDirty();
                 }
             }
@@ -214,16 +214,16 @@ public class SoulDragonFight extends AbstractWorldEvent {
                 IChunk chunk = level.getChunk(x + i, z + j, ChunkStatus.FULL, false);
                 if (!(chunk instanceof Chunk)) {
                     if (chunk == null) {
-                        LOGGER.info("Arena is null chunk, waiting...");
+                        LOGGER.debug("Arena is null chunk, waiting...");
                     } else {
-                        LOGGER.info("Chunk{} is not loaded, waiting...", chunk.getPos());
+                        LOGGER.debug("Chunk{} is not loaded, waiting...", chunk.getPos());
                     }
                     return false;
                 }
 
                 ChunkHolder.LocationType type = ((Chunk) chunk).getFullStatus();
                 if (!type.isOrAfter(ChunkHolder.LocationType.TICKING)) {
-                    LOGGER.info("Chunk{} is not fully loaded ({}), waiting...", chunk.getPos(), type);
+                    LOGGER.debug("Chunk{} is not fully loaded ({}), waiting...", chunk.getPos(), type);
                     return false;
                 }
             }
@@ -251,7 +251,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
     public void placeSuperCrystal() {
         ModConfiguredFeatures.CENTRAL_SOUL_CRYSTAL.place(level, level.getChunkSource().getGenerator(), level.getRandom(), getCenter().above(CentralSoulCrystalFeature.DISTANCE_TO_GROUND));
         superCrystal = CentralSoulCrystalFeature.getCurrentCrystal();
-        LOGGER.info(MARKER, "Fortified Soul Crystal is placed!");
+        LOGGER.debug(MARKER, "Fortified Soul Crystal is placed!");
         spawnedSuperCrystal = true;
         setDirty();
     }
@@ -293,7 +293,7 @@ public class SoulDragonFight extends AbstractWorldEvent {
     private void updateCrystalCount(List<SoulCrystalEntity> crystals) {
         this.ticksSinceCrystalsScanned = 0;
         this.crystalsAlive = crystals.size();
-        LOGGER.info(MARKER, "Found {} Soul Crystal(s) still alive", crystalsAlive);
+        LOGGER.debug(MARKER, "Found {} Soul Crystal(s) still alive", crystalsAlive);
     }
 
     public int getCrystalsAlive() {
@@ -303,8 +303,11 @@ public class SoulDragonFight extends AbstractWorldEvent {
     public void updateDragon(SoulDragonEntity dragon) {
         checkUUID(dragon);
         bossInfo.setPercent(dragon.getHealth() / dragon.getMaxHealth());
-//        ticksSinceDragonSeen = 0;
-        bossInfo.setColor(dragon.isPurified() ? BossInfo.Color.PURPLE : BossInfo.Color.BLUE);
+        if (dragon.getHealthStatus() == SoulDragonEntity.HealthStatus.LOW) {
+            bossInfo.setColor(BossInfo.Color.RED);
+        } else {
+            bossInfo.setColor(dragon.isPurified() ? BossInfo.Color.PURPLE : BossInfo.Color.BLUE);
+        }
         if (dragon.hasCustomName()) {
             bossInfo.setName(dragon.getDisplayName());
         }

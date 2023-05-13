@@ -3,6 +3,7 @@ package lych.soullery.world.gen.biome.sll;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.biome.SLBiomes;
 import net.minecraft.util.Util;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
@@ -11,12 +12,12 @@ public enum SLHillsLayer implements ICastleTransformer {
     INSTANCE;
 
     private static final Int2IntMap HILLS_MAP = Util.make(new Int2IntOpenHashMap(), map -> {
-        SLLayer.putId(map, ModBiomes.CRIMSON_PLAINS, ModBiomes.CRIMSON_HILLS);
-        SLLayer.putId(map, ModBiomes.PARCHED_DESERT, ModBiomes.PARCHED_DESERT_HILLS);
-        SLLayer.putId(map, ModBiomes.SOUL_PLAINS, ModBiomes.SOUL_MOUNTAINS);
+        ModBiomes.putId(map, SLBiomes.CRIMSON_PLAINS, SLBiomes.CRIMSON_HILLS);
+        ModBiomes.putId(map, SLBiomes.PARCHED_DESERT, SLBiomes.PARCHED_DESERT_HILLS);
+        ModBiomes.putId(map, SLBiomes.SOUL_PLAINS, SLBiomes.SOUL_MOUNTAINS);
 //      Spiked soul plains cannot be hills.
-        SLLayer.putId(map, ModBiomes.SPIKED_SOUL_PLAINS, ModBiomes.SPIKED_SOUL_PLAINS);
-        SLLayer.putId(map, ModBiomes.WARPED_PLAINS, ModBiomes.WARPED_HILLS);
+        ModBiomes.putId(map, SLBiomes.SPIKED_SOUL_PLAINS, SLBiomes.SPIKED_SOUL_PLAINS);
+        ModBiomes.putId(map, SLBiomes.WARPED_PLAINS, SLBiomes.WARPED_HILLS);
     });
     private static final int HILLIFY_PROB_INV = 5;
 

@@ -2,12 +2,14 @@ package lych.soullery.world.gen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.functional.SoulCrystalEntity;
 import lych.soullery.tag.ModBlockTags;
 import lych.soullery.util.PositionCalculators;
 import lych.soullery.world.gen.config.PlateauSpikeConfig;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -82,7 +84,7 @@ public class PlateauSpikeFeature extends Feature<PlateauSpikeConfig> {
                 }
                 for (int y = 0; y <= BAR_HEIGHT; ++y) {
                     BlockPos pos = mutable.set(spike.getCenterX() + x, startY + spike.getHeight() + y, spike.getCenterZ() + z).immutable();
-                    BlockState bar = ModBlocks.SOUL_METAL_BARS.getState(reader.getLevel(), pos);
+                    BlockState bar = ModBlocks.SOUL_METAL_BARS.getState(reader.getLevel(), pos).setValue(ModBlockStateProperties.DAMAGE_LINKABLE, true);
                     setBlock(reader, pos, bar);
                 }
             }
@@ -92,7 +94,9 @@ public class PlateauSpikeFeature extends Feature<PlateauSpikeConfig> {
         crystal.setHealable(true);
         crystal.moveTo(spike.getCenterX() + 0.5, startY + spike.getHeight() + 1, spike.getCenterZ() + 0.5, random.nextFloat() * 360, 0);
         reader.addFreshEntity(crystal);
-        setBlock(reader, new BlockPos(spike.getCenterX(), startY + spike.getHeight(), spike.getCenterZ()), Blocks.BEDROCK.defaultBlockState());
+        setBlock(reader, new BlockPos(spike.getCenterX(), startY + spike.getHeight(), spike.getCenterZ()), ModBlocks.SOULIFIED_BEDROCK.defaultBlockState());
+        BlockPos firePos = new BlockPos(spike.getCenterX(), startY + spike.getHeight() + 1, spike.getCenterZ());
+        setBlock(reader, firePos, AbstractFireBlock.getState(reader, firePos));
     }
 
     public static class Spike {

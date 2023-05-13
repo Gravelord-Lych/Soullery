@@ -17,6 +17,8 @@
     "soullery:damaged_refined_soul_metal_bars",
     "soullery:broken_refined_soul_metal_bars",
     "soullery:soul_stone",
-    "minecraft:bedrock"
+    "minecraft:bedrock",
+    "soullery:soulified_bedrock",
+    "soullery:purified_soulified_bedrock"
   ]
 }

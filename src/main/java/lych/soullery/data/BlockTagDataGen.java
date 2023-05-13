@@ -17,8 +17,7 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
 
     @Override
     public void addTags() {
-        tag(BlockTags.BEACON_BASE_BLOCKS).add(REFINED_SOUL_METAL_BLOCK,
-                SOUL_METAL_BLOCK);
+        tag(BlockTags.BEACON_BASE_BLOCKS).add(REFINED_SOUL_METAL_BLOCK, SOUL_METAL_BLOCK);
         tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(
                 CHIPPED_SOUL_METAL_BARS,
                 CRACKED_SOUL_STONE_BRICKS,
@@ -31,7 +30,8 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
                 SOUL_OBSIDIAN,
                 SOUL_REINFORCEMENT_TABLE,
                 SOUL_STONE,
-                SOUL_STONE_BRICKS);
+                SOUL_STONE_BRICKS,
+                SOULIFIED_BEDROCK);
         tag(BlockTags.WALLS).add(CRACKED_DECAYED_STONE_BRICK_WALL,
                 CRACKED_SOUL_STONE_BRICK_WALL,
                 DECAYED_STONE_BRICK_WALL,
@@ -47,6 +47,7 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
         tag(ModBlockTags.PURE_SOUL_FIRE_BASED_BLOCKS).add(BROKEN_REFINED_SOUL_METAL_BARS,
                 CHIPPED_REFINED_SOUL_METAL_BARS,
                 DAMAGED_REFINED_SOUL_METAL_BARS,
+                PURIFIED_SOULIFIED_BEDROCK,
                 REFINED_SOUL_SAND,
                 REFINED_SOUL_SOIL,
                 REFINED_SOUL_METAL_BARS,
@@ -81,7 +82,11 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
                 DAMAGED_REFINED_SOUL_METAL_BARS,
                 BROKEN_REFINED_SOUL_METAL_BARS,
                 SOUL_STONE,
-                BEDROCK);
+                BEDROCK,
+                SOULIFIED_BEDROCK,
+                PURIFIED_SOULIFIED_BEDROCK);
+        tag(BlockTags.DRAGON_IMMUNE).add(SOUL_OBSIDIAN, SOULIFIED_BEDROCK, PURIFIED_SOULIFIED_BEDROCK);
+        tag(BlockTags.WITHER_IMMUNE).add(SOULIFIED_BEDROCK, PURIFIED_SOULIFIED_BEDROCK);
         tag(BlockTags.ENDERMAN_HOLDABLE).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);
         tag(BlockTags.FIRE).add(INFERNO, PURE_SOUL_FIRE);
         tag(BlockTags.MUSHROOM_GROW_BLOCK).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);

@@ -38,6 +38,7 @@
     "ThrowablePotionItemMixin",
     "TridentEntityMixin",
     "VillagerEntityMixin",
+    "ZoglinEntityMixin",
     "ZombieEntityMixin"
   ],
   "client": [

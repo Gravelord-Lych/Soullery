@@ -27,7 +27,7 @@ public class PhaseManager {
             if (!dragon.level.isClientSide()) {
                 dragon.setPhaseId(type.getId());
             }
-            LOGGER.info(MARKER, "SoulDragon is now in phase {} on the {}", type, dragon.level.isClientSide() ? "client" : "server");
+            LOGGER.debug(MARKER, "SoulDragon is now in phase {} on the {}", type, dragon.level.isClientSide() ? "client" : "server");
             currentPhase.begin();
         }
     }

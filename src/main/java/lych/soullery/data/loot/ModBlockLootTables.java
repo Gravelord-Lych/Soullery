@@ -34,7 +34,7 @@ public class ModBlockLootTables extends BlockLootTables {
         dropSelf(CRACKED_SOUL_STONE_BRICK_STAIRS);
         dropSelf(CRACKED_SOUL_STONE_BRICK_WALL);
         dropSelf(CRACKED_SOUL_STONE_BRICKS);
-        dropSelfIfSilkTouch(CRIMSON_HYPHAL_SOIL, SOUL_SOIL);
+        otherWhenSilkTouch(CRIMSON_HYPHAL_SOIL, SOUL_SOIL);
         dropSelf(DECAYED_STONE);
         dropSelf(DECAYED_STONE_BRICK_SLAB);
         dropSelf(DECAYED_STONE_BRICK_STAIRS);
@@ -53,7 +53,13 @@ public class ModBlockLootTables extends BlockLootTables {
         dropSelf(SMOOTH_SOUL_STONE_STAIRS);
         dropSelf(SMOOTH_SOUL_STONE_WALL);
         dropSelf(SOUL_METAL_BLOCK);
+        dropWhenSilkTouch(MAGNETIC_FIELD_GENERATOR);
+        dropSelf(REFINED_SOUL_METAL_BARS);
+        dropOther(CHIPPED_REFINED_SOUL_METAL_BARS, REFINED_SOUL_METAL_BARS);
+        dropOther(DAMAGED_REFINED_SOUL_METAL_BARS, REFINED_SOUL_METAL_BARS);
         dropOther(BROKEN_REFINED_SOUL_METAL_BARS, REFINED_SOUL_METAL_BARS);
+        dropSelf(SOUL_METAL_BARS);
+        dropOther(CHIPPED_SOUL_METAL_BARS, SOUL_METAL_BARS);
         dropOther(DAMAGED_SOUL_METAL_BARS, SOUL_METAL_BARS);
         dropSelf(SOUL_OBSIDIAN);
         dropSelf(SOUL_REINFORCEMENT_TABLE);
@@ -78,15 +84,12 @@ public class ModBlockLootTables extends BlockLootTables {
                                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                                         .hasProperty(NetherWartBlock.AGE, 3))))))));
         add(SOULIFIED_BUSH, block -> createShearsDispatchTable(block, applyExplosionDecay(block, ItemLootEntry.lootTableItem(Items.STICK).apply(SetCount.setCount(RandomValueRange.between(0, 2))))));
-        dropSelfIfSilkTouch(WARPED_HYPHAL_SOIL, SOUL_SOIL);
+        otherWhenSilkTouch(WARPED_HYPHAL_SOIL, SOUL_SOIL);
+        otherWhenSilkTouch(CRIMSON_HYPHAL_SOIL, SOUL_SOIL);
     }
 
     @Override
     public Set<Block> getKnownBlocks() {
         return knownBlocks;
-    }
-
-    protected void dropSelfIfSilkTouch(Block self, Block droppedBlockIfNoSilkTouch) {
-        add(self, selfIn -> createSingleItemTableWithSilkTouch(selfIn, droppedBlockIfNoSilkTouch));
     }
 }

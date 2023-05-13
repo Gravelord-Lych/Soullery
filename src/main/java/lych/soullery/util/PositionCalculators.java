@@ -30,7 +30,7 @@ public final class PositionCalculators {
 
     private static int up(int x, int y, int z, boolean allowLiquid, World world) {
         BlockPos.Mutable pos = new BlockPos.Mutable(x, y, z);
-        while (net.minecraft.world.World.isInWorldBounds(pos) && (hasCollider(world, pos) || allowLiquid && world.getBlockState(pos).getMaterial().isLiquid())) {
+        while (World.isInWorldBounds(pos) && (hasCollider(world, pos) || allowLiquid && world.getBlockState(pos).getMaterial().isLiquid())) {
             pos.move(Direction.UP);
         }
         return pos.getY();
@@ -54,7 +54,7 @@ public final class PositionCalculators {
 
     private static int down(int x, int y, int z, boolean allowLiquid, World world) {
         BlockPos.Mutable pos = new BlockPos.Mutable(x, y, z);
-        while (net.minecraft.world.World.isInWorldBounds(pos) && !(hasCollider(world, pos) || allowLiquid && world.getBlockState(pos).getMaterial().isLiquid())) {
+        while (World.isInWorldBounds(pos) && !(hasCollider(world, pos) || allowLiquid && world.getBlockState(pos).getMaterial().isLiquid())) {
             pos.move(Direction.DOWN);
         }
         return pos.getY() + 1;

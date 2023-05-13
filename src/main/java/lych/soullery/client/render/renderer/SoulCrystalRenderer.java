@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SoulCrystalRenderer<T extends SoulCrystalEntity> extends EntityRenderer<T> {
     private static final float BASE_SCALE = 2;
     private static final float OFFSET_SCALE = 0.875f;
-    private static final ResourceLocation SOUL_CRYSTAL = Soullery.prefixTex("entity/esv/soul_crystal.png");
+    private static final ResourceLocation SOUL_CRYSTAL = Soullery.prefixTex("entity/souldragon/soul_crystal.png");
     private final LazyValue<RenderType> renderType = new LazyValue<>(this::getRenderType);
     private static final float SIN_45 = (float) Math.sin(Math.PI / 4);
     private final ModelRenderer cube;

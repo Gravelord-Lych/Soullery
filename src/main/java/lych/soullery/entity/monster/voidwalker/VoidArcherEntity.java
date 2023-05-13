@@ -37,7 +37,7 @@ public class VoidArcherEntity extends SpellCastingVoidwalkerEntity implements IS
 
     @Override
     public EntityPredicate customizeTargetConditions(EntityPredicate targetConditions) {
-        return targetConditions;
+        return isScout() ? targetConditions.allowUnseeable() : targetConditions;
     }
 
     @Override

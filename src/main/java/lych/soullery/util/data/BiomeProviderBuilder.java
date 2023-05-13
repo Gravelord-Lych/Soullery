@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lych.soullery.world.gen.biome.provider.SoulLandBiomeProvider;
+import lych.soullery.world.gen.biome.provider.SoulWastelandBiomeProvider;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,6 +76,14 @@ public abstract class BiomeProviderBuilder implements IDataBuilder {
 
     public static SoulLand soulLand(String modid, String name, long seed) {
         return new SoulLand(modid, name, seed);
+    }
+
+    public static SoulWasteland soulWasteland(String modid, String name) {
+        return new SoulWasteland(modid, name, null);
+    }
+
+    public static SoulWasteland soulWasteland(String modid, String name, long seed) {
+        return new SoulWasteland(modid, name, seed);
     }
 
     public static class Fixed extends BiomeProviderBuilder {
@@ -200,6 +209,17 @@ public abstract class BiomeProviderBuilder implements IDataBuilder {
         @Override
         public ResourceLocation getType() {
             return SoulLandBiomeProvider.SOUL_LAND;
+        }
+    }
+
+    public static class SoulWasteland extends SoulLand {
+        private SoulWasteland(String modid, String name, @Nullable Long seed) {
+            super(modid, name, seed);
+        }
+
+        @Override
+        public ResourceLocation getType() {
+            return SoulWastelandBiomeProvider.SOUL_WASTELAND;
         }
     }
 }

@@ -1,9 +1,11 @@
 package lych.soullery.world.gen.feature;
 
 import com.mojang.serialization.Codec;
+import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.functional.FortifiedSoulCrystalEntity;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -64,19 +66,21 @@ public class CentralSoulCrystalFeature extends Feature<NoFeatureConfig> {
                 for (int z = -r; z <= r; z++) {
                     BlockPos offset = pos.offset(x, y, z);
                     if (abs(x) == r || abs(z) == r) {
-                        setBlock(reader, offset, ModBlocks.REFINED_SOUL_METAL_BARS.getState(reader, offset));
+                        setBlock(reader, offset, ModBlocks.REFINED_SOUL_METAL_BARS.getState(reader, offset).setValue(ModBlockStateProperties.DAMAGE_LINKABLE, true));
                     } else if (abs(x) <= ir && abs(z) <= ir) {
                         if (iy <= ih || iy >= HEIGHT + 1 - ih) {
                             setBlock(reader, offset, ModBlocks.SOUL_OBSIDIAN.defaultBlockState());
                         } else if (abs(x) == ir || abs(z) == ir) {
-                            setBlock(reader, offset, ModBlocks.REFINED_SOUL_METAL_BARS.getState(reader, offset));
+                            setBlock(reader, offset, ModBlocks.REFINED_SOUL_METAL_BARS.getState(reader, offset).setValue(ModBlockStateProperties.DAMAGE_LINKABLE, true));
                         } else if (x == 0 && z == 0 && iy == ih + 1) {
-                            setBlock(reader, offset, Blocks.BEDROCK.defaultBlockState());
+                            setBlock(reader, offset, ModBlocks.PURIFIED_SOULIFIED_BEDROCK.defaultBlockState());
                             FortifiedSoulCrystalEntity crystal = ModEntities.FORTIFIED_SOUL_CRYSTAL.create(reader.getLevel());
                             crystal.setHealable(true);
                             crystal.moveTo(offset.getX() + 0.5, offset.getY() + 1, offset.getZ() + 0.5, random.nextFloat() * 360, 0);
                             reader.addFreshEntity(crystal);
                             currentCrystal = crystal;
+                        } else if (x == 0 && z == 0 && iy == ih + 2) {
+                            setBlock(reader, offset, AbstractFireBlock.getState(reader, offset));
                         } else {
                             setBlock(reader, offset, Blocks.AIR.defaultBlockState());
                         }

@@ -43,6 +43,7 @@ public final class ModItems {
     public static final Item HALF_USED_LINGERING_POTION = new HalfUsedLingeringPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
+    public static final Item HORCRUX_CARRIER = new HorcruxCarrierItem(common().stacksTo(1));
     public static final Item MIND_OPERATOR = new MindOperatorItem(common().stacksTo(1), 1);
     public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 2);
     public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().stacksTo(1).fireResistant().rarity(Rarity.EPIC), 3);
@@ -101,9 +102,11 @@ public final class ModItems {
     public static final SEGeneratorBlockItem DEPTH_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.DEPTH_SEGEN_II, getCapacity(2), se());
     public static final SEGeneratorBlockItem HEAT_SEGEN = new SEGeneratorBlockItem(ModBlocks.HEAT_SEGEN, getCapacity(1), se());
     public static final SEGeneratorBlockItem HEAT_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.HEAT_SEGEN_II, getCapacity(2), se());
+    public static final BlockItem MAGNETIC_FIELD_GENERATOR = new BlockItem(ModBlocks.MAGNETIC_FIELD_GENERATOR, common().rarity(Rarity.EPIC));
     public static final SEGeneratorBlockItem NETHER_SEGEN = new SEGeneratorBlockItem(ModBlocks.NETHER_SEGEN, getCapacity(1), se());
     public static final SEGeneratorBlockItem NETHER_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.NETHER_SEGEN_II, getCapacity(2), se());
     public static final BlockItem PARCHED_SOIL = new BlockItem(ModBlocks.PARCHED_SOIL, common());
+    public static final BlockItem PURIFIED_SOULIFIED_BEDROCK = new BlockItem(ModBlocks.PURIFIED_SOULIFIED_BEDROCK, common());
     public static final BlockItem REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem REFINED_SOUL_METAL_BLOCK = new BlockItem(ModBlocks.REFINED_SOUL_METAL_BLOCK, common().fireResistant());
     public static final BlockItem REFINED_SOUL_SAND = new BlockItem(ModBlocks.REFINED_SOUL_SAND, common());
@@ -133,6 +136,7 @@ public final class ModItems {
     public static final BlockItem SOUL_STONE_STAIRS = new BlockItem(ModBlocks.SOUL_STONE_STAIRS, common());
     public static final BlockItem SOUL_STONE_WALL = new BlockItem(ModBlocks.SOUL_STONE_WALL, common());
     public static final BlockNamedItem SOUL_WART = new BlockNamedItem(ModBlocks.SOUL_WART, common());
+    public static final BlockItem SOULIFIED_BEDROCK = new BlockItem(ModBlocks.SOULIFIED_BEDROCK, common());
     public static final BlockItem SOULIFIED_BUSH = new BlockItem(ModBlocks.SOULIFIED_BUSH, common());
     public static final BlockItem WARPED_HYPHAL_SOIL = new BlockItem(ModBlocks.WARPED_HYPHAL_SOIL, common());
 
@@ -193,6 +197,7 @@ public final class ModItems {
         registry.register(make(HALF_USED_LINGERING_POTION, ModItemNames.HALF_USED_LINGERING_POTION));
         registry.register(make(HALF_USED_POTION, ModItemNames.HALF_USED_POTION));
         registry.register(make(HALF_USED_SPLASH_POTION, ModItemNames.HALF_USED_SPLASH_POTION));
+        registry.register(make(HORCRUX_CARRIER, ModItemNames.HORCRUX_CARRIER));
         registry.register(make(MIND_OPERATOR, ModItemNames.MIND_OPERATOR));
         registry.register(make(MIND_OPERATOR_II, ModItemNames.MIND_OPERATOR_II));
         registry.register(make(MIND_OPERATOR_III, ModItemNames.MIND_OPERATOR_III));
@@ -255,9 +260,11 @@ public final class ModItems {
         registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
         registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
         registry.register(make(HEAT_SEGEN_II, ModBlockNames.HEAT_SEGEN_II));
+        registry.register(make(MAGNETIC_FIELD_GENERATOR, ModBlockNames.MAGNETIC_FIELD_GENERATOR));
         registry.register(make(NETHER_SEGEN, ModBlockNames.NETHER_SEGEN));
         registry.register(make(NETHER_SEGEN_II, ModBlockNames.NETHER_SEGEN_II));
         registry.register(make(PARCHED_SOIL, ModBlockNames.PARCHED_SOIL));
+        registry.register(make(PURIFIED_SOULIFIED_BEDROCK, ModBlockNames.PURIFIED_SOULIFIED_BEDROCK));
         registry.register(make(REFINED_SOUL_METAL_BARS, ModBlockNames.REFINED_SOUL_METAL_BARS));
         registry.register(make(REFINED_SOUL_METAL_BLOCK, ModBlockNames.REFINED_SOUL_METAL_BLOCK));
         registry.register(make(REFINED_SOUL_SAND, ModBlockNames.REFINED_SOUL_SAND));
@@ -287,6 +294,7 @@ public final class ModItems {
         registry.register(make(SOUL_STONE_STAIRS, ModBlockNames.SOUL_STONE_STAIRS));
         registry.register(make(SOUL_STONE_WALL, ModBlockNames.SOUL_STONE_WALL));
         registry.register(make(SOUL_WART, ModBlockNames.SOUL_WART));
+        registry.register(make(SOULIFIED_BEDROCK, ModBlockNames.SOULIFIED_BEDROCK));
         registry.register(make(SOULIFIED_BUSH, ModBlockNames.SOULIFIED_BUSH));
         registry.register(make(WARPED_HYPHAL_SOIL, ModBlockNames.WARPED_HYPHAL_SOIL));
     }
@@ -310,6 +318,13 @@ public final class ModItems {
 
     private static void registerSpawnEgg(IForgeRegistry<Item> registry, Item spawnEgg, String entityName) {
         registry.register(make(spawnEgg, entityName + SPAWN_EGG_SUFFIX));
+    }
+
+    public static Rarity next(Rarity rarity, int count) {
+        for (int i = 0; i < count; i++) {
+            rarity = next(rarity);
+        }
+        return rarity;
     }
 
     public static Rarity next(Rarity rarity) {

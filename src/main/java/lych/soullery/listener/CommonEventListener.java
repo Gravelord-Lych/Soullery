@@ -8,6 +8,7 @@ import lych.soullery.api.shield.ISharedShield;
 import lych.soullery.api.shield.ISharedShieldUser;
 import lych.soullery.api.shield.IShieldUser;
 import lych.soullery.block.IArmoredBlock;
+import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.block.SoulMetalBarsBlock;
 import lych.soullery.block.plant.SoulifiedBushBlock;
@@ -45,7 +46,7 @@ import lych.soullery.world.CommandData;
 import lych.soullery.world.event.manager.EventManager;
 import lych.soullery.world.event.manager.SoulDragonFightManager;
 import lych.soullery.world.event.manager.WorldTickerManager;
-import lych.soullery.world.gen.biome.ModBiomes;
+import lych.soullery.world.gen.biome.SLBiomes;
 import lych.soullery.world.gen.dimension.ModDimensions;
 import lych.soullery.world.gen.feature.ModConfiguredFeatures;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature;
@@ -330,8 +331,9 @@ public final class CommonEventListener {
                 return;
             }
             BlockPos pos = new BlockPos(event.getRayTraceResult().getLocation());
-            if (level.getBlockState(pos).getBlock() instanceof SoulMetalBarsBlock) {
-                SoulMetalBarsBlock block = (SoulMetalBarsBlock) level.getBlockState(pos).getBlock();
+            BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof SoulMetalBarsBlock && state.getValue(ModBlockStateProperties.DAMAGE_LINKABLE)) {
+                SoulMetalBarsBlock block = (SoulMetalBarsBlock) state.getBlock();
                 SoulMetalBarsBlock.handleBlockDestroy(level, pos, block, block.getMaxLinkedDamageProjectile(), false);
                 SoulMetalBarsBlock.destroyHitProjectile(event.getEntity());
                 SoulMetalBarsBlock.addParticles((ServerWorld) level, event.getRayTraceResult().getLocation(), level.getRandom());
@@ -342,9 +344,9 @@ public final class CommonEventListener {
     @SubscribeEvent
     public static void onPlayerDestroySoulMetalBars(BlockEvent.BreakEvent event) {
         BlockState state = event.getState();
-        if (state.getBlock() instanceof SoulMetalBarsBlock) {
+        if (state.getBlock() instanceof SoulMetalBarsBlock && state.getValue(ModBlockStateProperties.DAMAGE_LINKABLE)) {
             SoulMetalBarsBlock block = (SoulMetalBarsBlock) state.getBlock();
-            SoulMetalBarsBlock.handleBlockDestroy(event.getWorld(),
+            boolean destroyed = SoulMetalBarsBlock.handleBlockDestroy(event.getWorld(),
                     event.getPos(),
                     block,
                     block.getMaxLinkedDamageDig(),
@@ -352,7 +354,7 @@ public final class CommonEventListener {
             if (event.getWorld() instanceof ServerWorld) {
                 SoulMetalBarsBlock.addParticles((ServerWorld) event.getWorld(), Vector3d.atCenterOf(event.getPos()), event.getWorld().getRandom());
             }
-            event.setCanceled(true);
+            event.setCanceled(!destroyed);
         }
     }
 
@@ -441,7 +443,7 @@ public final class CommonEventListener {
         }
         ServerWorld level = (ServerWorld) event.getWorld();
         if (event.getWorld().getBlockState(event.getPos()).is(Blocks.DRAGON_EGG)) {
-            if (event.getWorld().dimension() == ModDimensions.SOUL_LAND && event.getWorld().getBiomeName(event.getPos()).filter(r -> r == ModBiomes.INNERMOST_PLATEAU).isPresent() && checkBase(event, level) && SoulDragonFightManager.get(level).getNearbyEvent(event.getPos(), 100) == null) {
+            if (event.getWorld().dimension() == ModDimensions.SOUL_LAND && event.getWorld().getBiomeName(event.getPos()).filter(r -> r == SLBiomes.INNERMOST_PLATEAU).isPresent() && checkBase(event, level) && SoulDragonFightManager.get(level).getNearbyEvent(event.getPos(), 100) == null) {
                 List<BlockPos> posList = checkSoulDragonFrom(event.getPos().below(), level);
                 if (!posList.isEmpty()) {
                     SoulDragonFightManager.tryAddFight(event.getPos(), level, posList);
@@ -475,7 +477,7 @@ public final class CommonEventListener {
 
     private static List<BlockPos> checkSoulDragonFrom(BlockPos pos, ServerWorld level) {
         List<BlockPos> posList = PlateauSpikeFeature.findSpikeLocations(level, pos, level.getRandom());
-        return posList.stream().allMatch(posIn -> level.getBiomeName(posIn).filter(r -> r == ModBiomes.INNERMOST_PLATEAU).isPresent()) ? posList : Collections.emptyList();
+        return posList.stream().allMatch(posIn -> level.getBiomeName(posIn).filter(r -> r == SLBiomes.INNERMOST_PLATEAU).isPresent()) ? posList : Collections.emptyList();
     }
 
     @SuppressWarnings("deprecation")

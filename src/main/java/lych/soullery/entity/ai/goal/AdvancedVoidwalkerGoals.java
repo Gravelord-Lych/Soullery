@@ -1070,7 +1070,7 @@ public final class AdvancedVoidwalkerGoals {
         @Nullable
         protected LivingEntity findAnotherTarget(LivingEntity target, double range, Predicate<LivingEntity> predicate) {
             return level.getNearestLoadedEntity(LivingEntity.class,
-                    cs.customizeTargetConditions(EntityPredicate.DEFAULT)
+                    cs.customizeTargetConditions(new EntityPredicate())
                             .range(range)
                             .selector(predicate.and(l -> ESVMob.nonESVMob(l) && !visited.contains(l) && EntityPredicates.ATTACK_ALLOWED.test(l))),
                     target,
