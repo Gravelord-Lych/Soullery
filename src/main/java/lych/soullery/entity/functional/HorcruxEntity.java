@@ -107,7 +107,7 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
     @Override
     protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
         if (isOwnedBy(player)) {
-            if (level.isClientSide()) {
+            if (level.isClientSide() || hand != Hand.MAIN_HAND) {
                 return ActionResultType.SUCCESS;
             }
             if (player.isShiftKeyDown()) {
@@ -125,9 +125,7 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
             }
             RegistryKey<World> src = level.dimension();
             if (src != World.OVERWORLD && src != ModDimensions.SOUL_LAND) {
-                if (hand == Hand.MAIN_HAND) {
-                    player.sendMessage(new TranslationTextComponent(INVALID_DIMENSION, getDisplayName()).withStyle(TextFormatting.RED), Util.NIL_UUID);
-                }
+                player.sendMessage(new TranslationTextComponent(INVALID_DIMENSION, getDisplayName()).withStyle(TextFormatting.RED), Util.NIL_UUID);
                 return ActionResultType.CONSUME;
             }
             RegistryKey<World> dest = src == World.OVERWORLD ? ModDimensions.SOUL_LAND : World.OVERWORLD;
