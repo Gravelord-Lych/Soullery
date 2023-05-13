@@ -200,7 +200,13 @@ public class ComputerScientistEntity extends AbstractVoidLasererEntity<ComputerS
         setAttackIntervalTicks(compoundNBT.getInt("AttackIntervalTicks"));
     }
 
+    @Nullable
     public ITextComponent formatSRGNameOperation(String srgName, Entity target, boolean attack) {
+//      Disable this behavior for some time
+        if (true) {
+            return null;
+        }
+
         if (level.isClientSide()) {
             throw new UnsupportedOperationException();
         }
