@@ -81,6 +81,8 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         shaped(MIND_OPERATOR).pattern(" IS").pattern(" II").pattern("I  ").define('I', GOLD_INGOT).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
         shaped(CHAOS_WAND).pattern(" ES").pattern(" IE").pattern("I  ").define('I', SOUL_BLAZE_ROD).define('E', ENDER_PEARL).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
         shaped(SOUL_PURIFIER).pattern("  S").pattern(" I ").pattern("I  ").define('I', SOUL_BLAZE_ROD).define('S', SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer);
+        shaped(HORCRUX_CARRIER).pattern("#X#").pattern("XOX").pattern("#X#").define('#', REFINED_SOUL_METAL_INGOT).define('X', SOUL_METAL_INGOT).define('O', SOUL_CONTAINER).unlockedBy(stHasTwo(ModItemNames.REFINED_SOUL_METAL_INGOT, ModItemNames.SOUL_CONTAINER), hasAll(REFINED_SOUL_METAL_INGOT, SOUL_CONTAINER)).save(consumer);
+        shaped(HORCRUX_CARRIER).pattern("X#X").pattern("#O#").pattern("X#X").define('#', REFINED_SOUL_METAL_INGOT).define('X', SOUL_METAL_INGOT).define('O', SOUL_CONTAINER).unlockedBy(stHasTwo(ModItemNames.REFINED_SOUL_METAL_INGOT, ModItemNames.SOUL_CONTAINER), hasAll(REFINED_SOUL_METAL_INGOT, SOUL_CONTAINER)).save(consumer, prefix(ModItemNames.HORCRUX_CARRIER + "_alt"));
     }
 
     protected void specialSave(SpecialRecipeSerializer<?> serializer, ResourceLocation location, Consumer<IFinishedRecipe> consumer) {

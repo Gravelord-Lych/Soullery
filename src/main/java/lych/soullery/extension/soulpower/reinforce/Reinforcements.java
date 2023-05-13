@@ -130,6 +130,7 @@ public final class Reinforcements {
         setCustomSoulPieceDropProbability(EntityType.ZOMBIFIED_PIGLIN, DEFAULT_SOUL_PIECE_DROP_PROBABILITY);
         setCustomSoulPieceDropProbability(EntityType.ENDERMAN, DEFAULT_SOUL_PIECE_DROP_PROBABILITY);
         setCustomSoulPieceDropProbability(EntityType.ENDERMITE, NO_DROP);
+        setCustomSoulPieceDropProbability(ModEntities.HORCRUX, NO_DROP);
         setCustomSoulPieceDropProbability(EntityType.WITHER, BOSS_SOUL_PIECE_DROP_PROBABILITY);
         setCustomSoulPieceDropProbability(EntityType.ENDER_DRAGON, BOSS_SOUL_PIECE_DROP_PROBABILITY);
         setCustomSoulPieceDropProbability(EntityType.VILLAGER, NO_DROP);

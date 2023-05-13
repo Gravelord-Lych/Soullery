@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import lych.soullery.Soullery;
 import lych.soullery.data.loot.ModBlockLootTables;
 import lych.soullery.data.loot.ModChestLootTables;
+import lych.soullery.data.loot.ModEntityLootTables;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.loot.LootParameterSet;
 import net.minecraft.loot.LootParameterSets;
@@ -20,7 +21,8 @@ import java.util.function.Supplier;
 public class LootDataGen extends ForgeLootTableProvider {
     private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> tables = ImmutableList.of(
             Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK),
-            Pair.of(ModChestLootTables::new, LootParameterSets.CHEST)
+            Pair.of(ModChestLootTables::new, LootParameterSets.CHEST),
+            Pair.of(ModEntityLootTables::new, LootParameterSets.ENTITY)
     );
 
     public LootDataGen(DataGenerator gen) {
