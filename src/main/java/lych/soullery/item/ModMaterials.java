@@ -26,7 +26,7 @@ public final class ModMaterials {
     private ModMaterials() {}
 
     public static class Tool implements IItemTier {
-        public static final Tool REFINED_SOUL_METAL = new Builder().harvestLevel(3).maxUses(1145).speed(10).damageBonus(4).enchantmentValue(5).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
+        public static final Tool REFINED_SOUL_METAL = new Builder().harvestLevel(3).maxUses(1451).speed(10).damageBonus(4).enchantmentValue(5).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
 
         private final int harvestLevel;
         private final int maxUses;

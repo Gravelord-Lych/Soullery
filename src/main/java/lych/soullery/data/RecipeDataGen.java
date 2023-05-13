@@ -68,6 +68,7 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         buildSmeltingRecipes(consumer);
         shapeless(SOUL_POWDER, 3).requires(SOUL_PIECE).unlockedBy(stHas(ModItemNames.SOUL_PIECE), has(SOUL_PIECE)).save(consumer);
         shapeless(SOUL_POWDER, 27).requires(SOUL_CONTAINER).unlockedBy(stHas(ModItemNames.SOUL_CONTAINER), has(SOUL_CONTAINER)).save(consumer, prefix(ModItemNames.SOUL_POWDER + "_from_soul_container"));
+        shapeless(SOUL_POWDER, 2).requires(SOUL_WART).unlockedBy(stHas(ModBlockNames.SOUL_WART), has(SOUL_WART)).save(consumer, prefix(ModItemNames.SOUL_POWDER + "_from_soul_warts"));
         shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(STONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModBlockNames.SOUL_STONE + "_from_stone"));
         shapeless(SOUL_STONE).requires(SOUL_POWDER).requires(COBBLESTONE).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModBlockNames.SOUL_STONE + "_from_cobblestone"));
         shapeless(SOUL_METAL_INGOT).requires(SOUL_POWDER).requires(IRON_INGOT).unlockedBy(stHas(ModItemNames.SOUL_POWDER), has(SOUL_POWDER)).save(consumer, prefix(ModItemNames.SOUL_METAL_INGOT + "_from_powder"));
