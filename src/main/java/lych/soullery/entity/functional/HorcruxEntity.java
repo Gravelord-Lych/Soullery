@@ -55,7 +55,7 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
     private boolean followingPlayer;
     private boolean warningShown;
     private int hurtTicks;
-    private boolean highlights;
+    private boolean highlights = true;
 
     public HorcruxEntity(EntityType<? extends CreatureEntity> type, World world) {
         super(type, world);
@@ -93,7 +93,9 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
             hurtTicks--;
         }
         if (!level.isClientSide()) {
-            EntityHighlightManager.get((ServerWorld) level).highlight(HighlighterType.HORCRUX, this);
+            if (highlights) {
+                EntityHighlightManager.get((ServerWorld) level).highlight(HighlighterType.HORCRUX, this);
+            }
             if (tickCount % 10 == 0) {
                 if (level.dimension() == ModDimensions.SOUL_LAND && getOwner() != null && !followingPlayer && distanceToSqr(getOwner()) <= 4 * 4) {
                     getOwner().addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 40, 2, false, false, true));
@@ -123,7 +125,9 @@ public class HorcruxEntity extends CreatureEntity implements IHasPlayerOwner {
             }
             RegistryKey<World> src = level.dimension();
             if (src != World.OVERWORLD && src != ModDimensions.SOUL_LAND) {
-                player.sendMessage(new TranslationTextComponent(INVALID_DIMENSION, getDisplayName()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                if (hand == Hand.MAIN_HAND) {
+                    player.sendMessage(new TranslationTextComponent(INVALID_DIMENSION, getDisplayName()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                }
                 return ActionResultType.CONSUME;
             }
             RegistryKey<World> dest = src == World.OVERWORLD ? ModDimensions.SOUL_LAND : World.OVERWORLD;
