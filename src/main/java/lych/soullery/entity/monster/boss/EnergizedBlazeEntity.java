@@ -53,7 +53,7 @@ public class EnergizedBlazeEntity extends BlazeEntity {
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return BlazeEntity.createAttributes()
                 .add(Attributes.MAX_HEALTH, 240)
-                .add(Attributes.ATTACK_DAMAGE, 8);
+                .add(Attributes.ATTACK_DAMAGE, 11);
     }
 
     @Override
