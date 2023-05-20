@@ -45,6 +45,7 @@ public class EnergizedBlazeEntity extends BlazeEntity {
     public EnergizedBlazeEntity(EntityType<? extends EnergizedBlazeEntity> type, World world) {
         super(type, world);
         manager = new SkippablePhaseManager<>(this::getRandom, Phase::values);
+        xpReward = 200;
         if (!level.isClientSide()) {
             registerPhasedGoals();
         }
