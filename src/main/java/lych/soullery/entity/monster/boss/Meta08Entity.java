@@ -1170,7 +1170,7 @@ public class Meta08Entity extends MonsterEntity implements ILaserAttacker, IShar
                 meta8.setColor(BossInfo.Color.RED);
             }
         },
-        DEFENSIVE(caseInsensitive("Constance").or(caseInsensitive("Teddy")), false, true, false, false) {
+        DEFENSIVE(caseInsensitive("Constance"), false, true, false, false) {
             private final AttributeModifier healthBonus = new AttributeModifier(UUID.fromString("621C6C42-4EC0-10F2-93AD-E9CDF04766C7"), "Defensive Meta8 health bonus", 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
             @Override
@@ -1190,7 +1190,7 @@ public class Meta08Entity extends MonsterEntity implements ILaserAttacker, IShar
                 robot.setHealth(robot.getMaxHealth());
             }
         },
-        SPEEDY(caseInsensitive("AJAYA").or(caseInsensitive("Vortex")), false, false, true, false) {
+        SPEEDY(caseInsensitive("AJAYA"), false, false, true, false) {
             private final AttributeModifier speedBonus = new AttributeModifier(UUID.fromString("D1776DE7-6453-891C-9903-8B6C358CEF6F"), "Speedy Meta8 movement speed bonus", 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
             private final AttributeModifier followRangeBonus = new AttributeModifier(UUID.fromString("7A6FC8E6-6C48-A12A-A093-F48B628B1993"), "Speedy Meta8 follow range bonus", 15, AttributeModifier.Operation.ADDITION);
 
@@ -1207,7 +1207,7 @@ public class Meta08Entity extends MonsterEntity implements ILaserAttacker, IShar
                 EntityUtils.getAttribute(robot, Attributes.MOVEMENT_SPEED).addPermanentModifier(new AttributeModifier("Speedy robot movement speed bonus", 0.75, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
         },
-        CREATIVE(caseInsensitive("Tim").or(new RegexRedirectable(PREDECESSORS, s -> "Meta0" + s.charAt(s.length() - 1))), false, false, false, true),
+        CREATIVE(new RegexRedirectable(PREDECESSORS, s -> "Meta0" + s.charAt(s.length() - 1)), false, false, false, true),
         ALL_ROUND(caseInsensitive("Lych").or(caseInsensitive("Lych233")).or(new RegexRedirectable(GRAVELORD_LYCH, s -> "Gravelord Lych")), true, true, true, true) {
             @Override
             public void applyTo(Meta08Entity meta8) {
