@@ -3,11 +3,7 @@ package lych.soullery.util;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Iterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-public class BresenhamPositionIterator implements Iterator<BlockPos>, Iterable<BlockPos> {
+public class BresenhamPositionIterator implements IterableIterator<BlockPos> {
     private final int xInc;
     private final int yInc;
     private final int zInc;
@@ -153,14 +149,5 @@ public class BresenhamPositionIterator implements Iterator<BlockPos>, Iterable<B
                 e2 += doubleAbsDx;
                 voxel.move(0, 0, zInc);
         }
-    }
-
-    @Override
-    public Iterator<BlockPos> iterator() {
-        return this;
-    }
-
-    public Stream<BlockPos> stream() {
-        return StreamSupport.stream(spliterator(), false);
     }
 }
