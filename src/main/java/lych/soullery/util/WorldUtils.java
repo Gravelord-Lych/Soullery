@@ -6,23 +6,29 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.util.selection.Selection;
 import lych.soullery.util.selection.Selections;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallBlock;
-import net.minecraft.block.WallHeight;
+import net.minecraft.block.*;
 import net.minecraft.state.EnumProperty;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntBinaryOperator;
+import java.util.function.IntUnaryOperator;
 
+import static java.lang.Math.abs;
 import static lych.soullery.util.WeightedRandom.makeItem;
 
 public final class WorldUtils {
@@ -124,6 +130,160 @@ public final class WorldUtils {
     public static void placeUp(IWorldWriter writer, Random random, int x, int z, int startY, int toY, Function<? super Random, ? extends BlockState> state, TriConsumer<? super IWorldWriter, ? super BlockPos, ? super BlockState> placer) {
         for (int y = startY; y <= toY; y++) {
             placer.accept(writer, new BlockPos(x, y, z), state.apply(random));
+        }
+    }
+
+    public static StructurePiece.BlockSelector selectorFrom(Selection<BlockState> selection) {
+        return selectorFrom(selection, selection);
+    }
+
+    public static StructurePiece.BlockSelector hollowSelectorFrom(Selection<BlockState> selection) {
+        return selectorFrom(selection, Blocks.AIR.defaultBlockState());
+    }
+
+    public static StructurePiece.BlockSelector caveSelectorFrom(Selection<BlockState> selection) {
+        return selectorFrom(selection, Blocks.CAVE_AIR.defaultBlockState());
+    }
+
+    public static StructurePiece.BlockSelector selectorFrom(Selection<BlockState> selection, BlockState air) {
+        return selectorFrom(selection, Selections.selection(WeightedRandom.makeItem(air, 1)));
+    }
+
+    public static StructurePiece.BlockSelector selectorFrom(Selection<BlockState> blockSelection, Selection<BlockState> airSelection) {
+        return new StructurePiece.BlockSelector() {
+            @Override
+            public void next(Random random, int x, int y, int z, boolean edge) {
+                next = edge ? blockSelection.getRandom(random) : airSelection.getRandom(random);
+            }
+        };
+    }
+
+    public static StructureAccessors group(StructureBlockPlacer placer, IntBinaryOperator worldXGetter, IntUnaryOperator worldYGetter, IntBinaryOperator worldZGetter) {
+        return new StructureAccessors(placer, worldXGetter, worldYGetter, worldZGetter);
+    }
+
+    public static <T extends TileEntity> boolean placeBlockEntity(StructureAccessors accessors, ISeedReader reader, BlockState state, Class<T> type, int x, int y, int z, MutableBoundingBox boundingBox, Consumer<? super T> op) {
+        return placeBlockEntity(accessors.getPlacer(), accessors.getWorldXGetter(), accessors.getWorldYGetter(), accessors.getWorldZGetter(), reader, state, type, x, y, z, boundingBox, op);
+    }
+
+    public static <T extends TileEntity> boolean placeBlockEntity(StructureBlockPlacer placer, IntBinaryOperator worldXGetter, IntUnaryOperator worldYGetter, IntBinaryOperator worldZGetter, ISeedReader reader, BlockState state, Class<T> type, int x, int y, int z, MutableBoundingBox boundingBox, Consumer<? super T> op) {
+        placer.placeBlock(reader, state, x, y, z, boundingBox);
+        TileEntity blockEntity = reader.getBlockEntity(new BlockPos(worldXGetter.applyAsInt(x, z), worldYGetter.applyAsInt(y), worldZGetter.applyAsInt(x, z)));
+        if (type.isInstance(blockEntity)) {
+            op.accept(type.cast(blockEntity));
+            return true;
+        }
+        return false;
+    }
+
+    public static BlockState discussCornerPosition(BlockState edge, int x, int z, int r) {
+        if (edge.getBlock() instanceof WallBlock) {
+            return discussWallCornerPosition(edge, x, z, r);
+        }
+        if (edge.getBlock() instanceof FourWayBlock) {
+            return discussPaneCornerPosition(edge, x, z, r);
+        }
+        throw new IllegalArgumentException("Invalid corner: " + edge.getBlock().getRegistryName());
+    }
+
+    private static BlockState discussWallCornerPosition(BlockState wallColumn, int x, int z, int r) {
+        Preconditions.checkArgument(r > 0, "Radius must be positive");
+        if (x == r && z == r) {
+            return wallColumn.setValue(WallBlock.NORTH_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
+        }
+        if (x == r && z == -r) {
+            return wallColumn.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
+        }
+        if (x == -r && z == r) {
+            return wallColumn.setValue(WallBlock.NORTH_WALL, WallHeight.LOW).setValue(WallBlock.EAST_WALL, WallHeight.LOW);
+        }
+        if (x == -r && z == -r) {
+            return wallColumn.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.EAST_WALL, WallHeight.LOW);
+        }
+        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
+    }
+
+    private static BlockState discussPaneCornerPosition(BlockState paneColumn, int x, int z, int r) {
+        Preconditions.checkArgument(r > 0, "Radius must be positive");
+        if (x == r && z == r) {
+            return paneColumn.setValue(FourWayBlock.NORTH, true).setValue(FourWayBlock.WEST, true);
+        }
+        if (x == r && z == -r) {
+            return paneColumn.setValue(FourWayBlock.SOUTH, true).setValue(FourWayBlock.WEST, true);
+        }
+        if (x == -r && z == r) {
+            return paneColumn.setValue(FourWayBlock.NORTH, true).setValue(FourWayBlock.EAST, true);
+        }
+        if (x == -r && z == -r) {
+            return paneColumn.setValue(FourWayBlock.SOUTH, true).setValue(FourWayBlock.EAST, true);
+        }
+        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
+    }
+
+    public static BlockState discussEdgePosition(BlockState edge, int x, int z, int r) {
+        if (edge.getBlock() instanceof WallBlock) {
+            return discussWallEdgePosition(edge, x, z, r);
+        }
+        if (edge.getBlock() instanceof FourWayBlock) {
+            return discussPaneEdgePosition(edge, x, z, r);
+        }
+        throw new IllegalArgumentException("Invalid edge: " + edge.getBlock().getRegistryName());
+    }
+
+    private static BlockState discussWallEdgePosition(BlockState wallEdge, int x, int z, int r) {
+        Preconditions.checkArgument(r > 0, "Radius must be positive");
+        if (abs(x) == r) {
+            return wallEdge.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.NORTH_WALL, WallHeight.LOW);
+        }
+        if (abs(z) == r) {
+            return wallEdge.setValue(WallBlock.EAST_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
+        }
+        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
+    }
+
+    private static BlockState discussPaneEdgePosition(BlockState paneEdge, int x, int z, int r) {
+        Preconditions.checkArgument(r > 0, "Radius must be positive");
+        if (abs(x) == r) {
+            return paneEdge.setValue(FourWayBlock.SOUTH, true).setValue(FourWayBlock.NORTH, true);
+        }
+        if (abs(z) == r) {
+            return paneEdge.setValue(FourWayBlock.EAST, true).setValue(FourWayBlock.WEST, true);
+        }
+        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
+    }
+
+    @FunctionalInterface
+    public interface StructureBlockPlacer {
+        void placeBlock(ISeedReader reader, BlockState state, int x, int y, int z, MutableBoundingBox boundingBox);
+    }
+
+    public static final class StructureAccessors {
+        private final StructureBlockPlacer placer;
+        private final IntBinaryOperator worldXGetter;
+        private final IntUnaryOperator worldYGetter;
+        private final IntBinaryOperator worldZGetter;
+
+        StructureAccessors(StructureBlockPlacer placer, IntBinaryOperator worldXGetter, IntUnaryOperator worldYGetter, IntBinaryOperator worldZGetter) {
+            this.placer = placer;
+            this.worldXGetter = worldXGetter;
+            this.worldYGetter = worldYGetter;
+            this.worldZGetter = worldZGetter;
+        }
+
+        public StructureBlockPlacer getPlacer() {
+            return placer;
+        }
+
+        public IntBinaryOperator getWorldXGetter() {
+            return worldXGetter;
+        }
+
+        public IntUnaryOperator getWorldYGetter() {
+            return worldYGetter;
+        }
+
+        public IntBinaryOperator getWorldZGetter() {
+            return worldZGetter;
         }
     }
 }

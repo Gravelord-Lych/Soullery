@@ -16,6 +16,7 @@ public class HighlighterType {
     public static final HighlighterType MONSTER_VIEW = new HighlighterType("C9A92E28-1765-40AB-853A-F3874408A039", MonsterViewHighlighter::new, MonsterViewHighlighter::new);
     public static final HighlighterType SOUL_CONTROL = new HighlighterType("9855C4A0-2B69-C250-92D2-A9230193F2BC", SoulControlHighlighter::new, SoulControlHighlighter::new);
     public static final HighlighterType SOUL_CONTROLLER = new HighlighterType("AEC70D6B-080C-021F-8A88-555BE39B9971", SoulControllerHighlighter::new, SoulControllerHighlighter::new);
+    public static final HighlighterType SOULIFIED_ENDER_PEARL = new HighlighterType("AFE929DC-4B76-C2D0-C5EE-3A52CC0F7C99", SoulifiedEnderPearlHighlighter::new, SoulifiedEnderPearlHighlighter::new);
 
     static {
         HIGHLIGHTERS = new HashMap<>();

@@ -79,4 +79,10 @@ public interface IPlayerEntityMixin {
     void setStatic(boolean isStatic);
 
     ExtraAbilityInventory getExtraAbilityCarrierInventory();
+
+    int getEnderLauncherRemainingTicks();
+
+    void setUsingEnderLauncher(ItemStack enderLauncher);
+
+    ItemStack getEnderLauncher();
 }

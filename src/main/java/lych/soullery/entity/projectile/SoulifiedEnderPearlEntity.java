@@ -5,6 +5,8 @@ import lych.soullery.api.event.SoulifiedEnderPearlTeleportEvent;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.ModEntityNames;
 import lych.soullery.entity.monster.IPurifiable;
+import lych.soullery.extension.highlight.EntityHighlightManager;
+import lych.soullery.extension.highlight.HighlighterType;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.EnumConstantNotFoundException;
 import lych.soullery.util.IIdentifiableEnum;
@@ -38,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class SoulifiedEnderPearlEntity extends ThrowableEntity implements IPurifiable {
-    private static final double REMOVE_DISTANCE_IF_UNSTABLE = 200;
+    private static final double REMOVE_DISTANCE_IF_UNSTABLE = 150;
     private static final DataParameter<Boolean> DATA_PURE = EntityDataManager.defineId(SoulifiedEnderPearlEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> DATA_GRAVITY = EntityDataManager.defineId(SoulifiedEnderPearlEntity.class, DataSerializers.INT);
 
@@ -57,13 +59,13 @@ public class SoulifiedEnderPearlEntity extends ThrowableEntity implements IPurif
     }
 
     @Override
-    public boolean shouldRenderAtSqrDistance(double distance) {
+    public boolean shouldRenderAtSqrDistance(double distanceSqr) {
         double size = getBoundingBox().getSize() * 4;
         if (Double.isNaN(size)) {
             size = 4;
         }
         size = size * 256;
-        return distance < size * size;
+        return distanceSqr < size * size;
     }
 
     @Override
@@ -78,7 +80,18 @@ public class SoulifiedEnderPearlEntity extends ThrowableEntity implements IPurif
             remove();
         } else {
             super.tick();
+            if (!level.isClientSide() && isPurified()) {
+                EntityHighlightManager.get((ServerWorld) level).highlight(HighlighterType.SOULIFIED_ENDER_PEARL, this);
+            }
+            if (getGravity() == 0) {
+                balance();
+            }
         }
+    }
+
+    protected void balance() {
+//      Prevent weightless pearl from not moving
+        setDeltaMovement(getDeltaMovement().scale(isInWater() ? 1.25 : 1.01010101010101));
     }
 
     private boolean farAway() {
@@ -179,7 +192,7 @@ public class SoulifiedEnderPearlEntity extends ThrowableEntity implements IPurif
         HIGH("high", 0x2EE699, 0.065f, false),
         LOW("low", 0x40FFFF, 0.015f, false),
         NO("zero", 0x59D6FF, 0, true),
-        NEGATIVE("negative", 0x80BFFF, -0.03f, true);
+        NEGATIVE("negative", 0x80BFFF, -0.02f, true);
 
         public static final ITextComponent GRAVITY = new TranslationTextComponent(Soullery.prefixMsg("entity", ModEntityNames.SOULIFIED_ENDER_PEARL + ".gravity"));
         private static final ITextComponent SET_GRAVITY = new TranslationTextComponent(Soullery.prefixMsg("entity", ModEntityNames.SOULIFIED_ENDER_PEARL + ".gravity.set"));

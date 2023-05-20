@@ -1,10 +1,10 @@
 package lych.soullery.world.gen.feature;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.monster.voidwalker.AbstractVoidwalkerEntity;
+import lych.soullery.util.WorldUtils;
 import lych.soullery.util.selection.Selection;
 import lych.soullery.world.gen.config.WatchtowerConfig;
 import net.minecraft.block.*;
@@ -96,13 +96,13 @@ public class SmallWatchtowerFeature extends Feature<WatchtowerConfig> {
                     BlockState bar;
                     if (abs(x) == radius && abs(z) == radius) {
                         bar = columnBlocks.getRandom(random).setValue(WallBlock.UP, true);
-                        bar = discussWallCornerPosition(bar, x, z, radius);
+                        bar = WorldUtils.discussCornerPosition(bar, x, z, radius);
                     } else {
                         bar = barBlocks.getRandom(random);
                         if (bar.getBlock() instanceof WallBlock) {
                             bar = bar.setValue(WallBlock.UP, false);
                         }
-                        bar = discussEdgePosition(bar, x, z, radius);
+                        bar = WorldUtils.discussEdgePosition(bar, x, z, radius);
                     }
                     setBlock(reader, pos.offset(x, 1, z), bar);
                 }
@@ -191,55 +191,6 @@ public class SmallWatchtowerFeature extends Feature<WatchtowerConfig> {
             }
         }
         return true;
-    }
-
-    protected static BlockState discussWallCornerPosition(BlockState wallColumn, int x, int z, int r) {
-        Preconditions.checkArgument(r > 0, "Radius must be positive");
-        if (x == r && z == r) {
-            return wallColumn.setValue(WallBlock.NORTH_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
-        }
-        if (x == r && z == -r) {
-            return wallColumn.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
-        }
-        if (x == -r && z == r) {
-            return wallColumn.setValue(WallBlock.NORTH_WALL, WallHeight.LOW).setValue(WallBlock.EAST_WALL, WallHeight.LOW);
-        }
-        if (x == -r && z == -r) {
-            return wallColumn.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.EAST_WALL, WallHeight.LOW);
-        }
-        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
-    }
-
-    protected static BlockState discussEdgePosition(BlockState edge, int x, int z, int r) {
-        if (edge.getBlock() instanceof WallBlock) {
-            return discussWallEdgePosition(edge, x, z, r);
-        }
-        if (edge.getBlock() instanceof FourWayBlock) {
-            return discussPaneEdgePosition(edge, x, z, r);
-        }
-        throw new IllegalArgumentException("Invalid edge: " + edge.getBlock().getRegistryName());
-    }
-
-    protected static BlockState discussWallEdgePosition(BlockState wallEdge, int x, int z, int r) {
-        Preconditions.checkArgument(r > 0, "Radius must be positive");
-        if (abs(x) == r) {
-            return wallEdge.setValue(WallBlock.SOUTH_WALL, WallHeight.LOW).setValue(WallBlock.NORTH_WALL, WallHeight.LOW);
-        }
-        if (abs(z) == r) {
-            return wallEdge.setValue(WallBlock.EAST_WALL, WallHeight.LOW).setValue(WallBlock.WEST_WALL, WallHeight.LOW);
-        }
-        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
-    }
-
-    protected static BlockState discussPaneEdgePosition(BlockState paneEdge, int x, int z, int r) {
-        Preconditions.checkArgument(r > 0, "Radius must be positive");
-        if (abs(x) == r) {
-            return paneEdge.setValue(FourWayBlock.SOUTH, true).setValue(FourWayBlock.NORTH, true);
-        }
-        if (abs(z) == r) {
-            return paneEdge.setValue(FourWayBlock.EAST, true).setValue(FourWayBlock.WEST, true);
-        }
-        throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
     }
 
     protected void placeTop(ISeedReader reader, Random random, BlockPos pos, Selection<BlockState> topBlocks) {}

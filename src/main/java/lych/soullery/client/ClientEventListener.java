@@ -16,6 +16,7 @@ import lych.soullery.effect.ModEffects;
 import lych.soullery.effect.SoulPollutionHandler;
 import lych.soullery.extension.control.MindOperatorSynchronizer;
 import lych.soullery.gui.container.ModContainers;
+import lych.soullery.item.EnderLauncherItem;
 import lych.soullery.item.ModItems;
 import lych.soullery.item.SoulBowItem;
 import lych.soullery.network.StaticStatusHandler;
@@ -31,6 +32,8 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.MovementInput;
@@ -44,6 +47,8 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientEventListener {
@@ -224,6 +229,14 @@ public final class ClientEventListener {
             ItemModelsProperties.register(ModItems.SOUL_BOW, SoulBowItem.PULLING, (stack, world, entity) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0);
             ItemModelsProperties.register(ModItems.SOUL_ENERGY_GEM, SoulEnergies.SOUL_ENERGY_LEVEL, (stack, world, entity) -> SoulEnergies.getSELevel(stack));
             ItemModelsProperties.register(ModItems.SOUL_ENERGY_GEM_II, SoulEnergies.SOUL_ENERGY_LEVEL, (stack, world, entity) -> SoulEnergies.getSELevel(stack));
+            IItemPropertyGetter enderLauncher = (stack, world, entity) -> {
+                if (entity instanceof PlayerEntity && Objects.equals(EnderLauncherItem.getUUID(((IPlayerEntityMixin) entity).getEnderLauncher()), EnderLauncherItem.getUUID(stack))) {
+                    return 1 - ((IPlayerEntityMixin) entity).getEnderLauncherRemainingTicks() / (float) EnderLauncherItem.ROTATE_TICKS;
+                }
+                return 0;
+            };
+            ItemModelsProperties.register(ModItems.ENDER_LAUNCHER, EnderLauncherItem.ROTATION, enderLauncher);
+            ItemModelsProperties.register(ModItems.ENDER_LAUNCHER_II, EnderLauncherItem.ROTATION, enderLauncher);
         }
 
         private static void registerRenderLayers() {
@@ -233,6 +246,7 @@ public final class ClientEventListener {
             RenderTypeLookup.setRenderLayer(ModBlocks.DAMAGED_REFINED_SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.DAMAGED_SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.INFERNO, RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.INSTANT_SPAWNER, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.POISONOUS_FIRE, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.POTTED_SOULIFIED_BUSH, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.PURE_SOUL_FIRE, RenderType.cutout());

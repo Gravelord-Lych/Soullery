@@ -12,6 +12,7 @@ public final class ModBlockNames {
     public static final String HEAT_SEGEN = "heat_segen";
     public static final String HEAT_SEGEN_II = "heat_segen_l2";
     public static final String INFERNO = "inferno";
+    public static final String INSTANT_SPAWNER = "instant_spawner";
     public static final String MAGNETIC_FIELD_GENERATOR = "magnetic_field_generator";
     public static final String NETHER_SEGEN = "nether_segen";
     public static final String NETHER_SEGEN_II = "nether_segen_l2";

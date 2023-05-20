@@ -2,6 +2,7 @@ package lych.soullery.data;
 
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlocks;
+import lych.soullery.item.EnderLauncherItem;
 import lych.soullery.item.SEGemItem;
 import lych.soullery.item.SoulBowItem;
 import lych.soullery.util.SoulEnergies;
@@ -13,6 +14,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -88,6 +90,8 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(SOUL_POWDER), GENERATED, prefix(SOUL_POWDER));
         simple(registryNameToString(SOUL_PURIFIER), HANDHELD, prefix(SOUL_PURIFIER));
         simple(registryNameToString(SOUL_PURIFIER_II), HANDHELD, prefix(SOUL_PURIFIER_II));
+        enderLauncher(ENDER_LAUNCHER);
+        enderLauncher(ENDER_LAUNCHER_II);
         registerBlockItemModels();
         registerSpawnEggModels();
     }
@@ -98,6 +102,19 @@ public class ItemModelDataGen extends ItemModelProvider {
 
     private void halfUsedPotion(String name, ResourceLocation texture) {
         getBuilder(name).parent(GENERATED).texture(LAYER0, HALF_USED_POTION_OVERLAY).texture(LAYER1, texture);
+    }
+
+    private void enderLauncher(EnderLauncherItem item) {
+        ItemModelBuilder.OverrideBuilder builder = getBuilder(registryNameToString(item)).parent(GENERATED).texture(LAYER0, prefix(item)).override();
+        for (int i = 0; i < EnderLauncherItem.COUNT; i++) {
+            ItemModelBuilder b = builder.predicate(EnderLauncherItem.ROTATION, i / (float) EnderLauncherItem.COUNT).model(new UncheckedModelFile(prefix(item, i == 0 ? "" : "_" + i))).end();
+            if (i < EnderLauncherItem.COUNT - 1) {
+                builder = b.override();
+            }
+        }
+        for (int i = 1; i < EnderLauncherItem.COUNT; i++) {
+            simple(registryNameToString(item) + "_" + i, GENERATED, prefix(item, "_" + i));
+        }
     }
 
     private void SEGem(SEGemItem item) {

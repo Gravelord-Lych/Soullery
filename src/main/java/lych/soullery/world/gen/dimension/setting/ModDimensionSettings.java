@@ -5,6 +5,8 @@ import lych.soullery.block.ModBlocks;
 import lych.soullery.util.data.DimensionSettingsBuilder;
 import lych.soullery.util.data.NoiseSettingsBuilder;
 import lych.soullery.world.gen.dimension.ModDimensionNames;
+import lych.soullery.world.gen.dimension.ModDimensions;
+import lych.soullery.world.gen.structure.ModStructureFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
@@ -13,6 +15,8 @@ import net.minecraft.world.gen.settings.SlideSettings;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+
+import java.util.Optional;
 
 import static lych.soullery.Soullery.prefix;
 import static net.minecraft.util.registry.Registry.register;
@@ -40,7 +44,7 @@ public final class ModDimensionSettings {
 
     public static DimensionSettings makeSoulLand() {
         return new DimensionSettingsBuilder()
-                .structureSettings(new DimensionStructuresSettings(false))
+                .structureSettings(new DimensionStructuresSettings(Optional.empty(), ModStructureFeatures.getStructureMap(ModDimensions.SOUL_LAND)))
                 .noiseSettings(new NoiseSettingsBuilder()
                         .height(256)
                         .noiseSamplingSettings(new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D))
@@ -63,7 +67,7 @@ public final class ModDimensionSettings {
 
     public static DimensionSettings makeSoulWasteland() {
         return new DimensionSettingsBuilder()
-                .structureSettings(new DimensionStructuresSettings(false))
+                .structureSettings(new DimensionStructuresSettings(Optional.empty(), ModStructureFeatures.getStructureMap(ModDimensions.SOUL_WASTELAND)))
                 .noiseSettings(new NoiseSettingsBuilder()
                         .height(256)
                         .noiseSamplingSettings(new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D))
@@ -86,7 +90,7 @@ public final class ModDimensionSettings {
 
     public static DimensionSettings makeSubworld() {
         return new DimensionSettingsBuilder()
-                .structureSettings(new DimensionStructuresSettings(false))
+                .structureSettings(new DimensionStructuresSettings(Optional.empty(), ModStructureFeatures.getStructureMap(ModDimensions.SUBWORLD)))
                 .noiseSettings(new NoiseSettingsBuilder()
                         .height(256)
                         .noiseSamplingSettings(new ScalingSettings(1, 1, 85, 170))
@@ -108,7 +112,7 @@ public final class ModDimensionSettings {
 
     public static DimensionSettings makeESV() {
         return new DimensionSettingsBuilder()
-                .structureSettings(new DimensionStructuresSettings(false))
+                .structureSettings(new DimensionStructuresSettings(Optional.empty(), ModStructureFeatures.getStructureMap(ModDimensions.ESV)))
                 .noiseSettings(new NoiseSettingsBuilder()
                         .height(256)
                         .noiseSamplingSettings(new ScalingSettings(3, 2, 160, 240))
@@ -131,7 +135,7 @@ public final class ModDimensionSettings {
 
     public static DimensionSettings makeTheEthereal() {
         return new DimensionSettingsBuilder()
-                .structureSettings(new DimensionStructuresSettings(false))
+                .structureSettings(new DimensionStructuresSettings(Optional.empty(), ModStructureFeatures.getStructureMap(ModDimensions.ETHEREAL)))
                 .noiseSettings(new NoiseSettingsBuilder()
                         .height(256)
                         .noiseSamplingSettings(new ScalingSettings(1, 1, 85, 170))

@@ -3,6 +3,7 @@ package lych.soullery.world.gen.biome;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.world.gen.carver.ModConfiguredCarvers;
 import lych.soullery.world.gen.feature.ModConfiguredFeatures;
+import lych.soullery.world.gen.structure.ModStructureFeatures;
 import lych.soullery.world.gen.surface.ModConfiguredSurfaceBuilders;
 import net.minecraft.client.audio.BackgroundMusicTracks;
 import net.minecraft.entity.EntityClassification;
@@ -154,6 +155,7 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_INFERNO);
+        genBuilder.addStructureStart(ModStructureFeatures.FIRE_TEMPLE);
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.PARCHED_DESERT);
         genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.PATCH_SOULIFIED_BUSH);
         addDefaultSoulBiomeCarvers(genBuilder, false);

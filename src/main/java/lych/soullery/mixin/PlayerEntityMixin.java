@@ -7,6 +7,7 @@ import lych.soullery.config.ConfigHelper;
 import lych.soullery.extension.ExtraAbility;
 import lych.soullery.extension.control.MindOperator;
 import lych.soullery.gui.container.inventory.ExtraAbilityInventory;
+import lych.soullery.item.EnderLauncherItem;
 import lych.soullery.util.AdditionalCooldownTracker;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.InventoryUtils;
@@ -58,6 +59,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
 
     private static final DataParameter<Integer> DATA_OPERATING_ID = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.INT);
     private static final DataParameter<Set<IExtraAbility>> DATA_EXTRA_ABILITIES = EntityDataManager.defineId(PlayerEntity.class, ModDataSerializers.EXA);
+    private static final DataParameter<ItemStack> DATA_USING_ENDER_LAUNCHER = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Integer> DATA_ENDER_LAUNCHER_TIME = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.INT);
     private boolean isStatic = true;
     private final ExtraAbilityInventory extraAbilityCarrierInventory = new ExtraAbilityInventory(6);
     @Unique
@@ -78,6 +81,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     private void defineMoreData(CallbackInfo ci) {
         entityData.define(DATA_OPERATING_ID, -1);
         entityData.define(DATA_EXTRA_ABILITIES, new LinkedHashSet<>());
+        entityData.define(DATA_USING_ENDER_LAUNCHER, ItemStack.EMPTY);
+        entityData.define(DATA_ENDER_LAUNCHER_TIME, 0);
     }
 
     @Nullable
@@ -112,6 +117,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
             } else {
                 MindOperator.resetAndAddCooldown((PlayerEntity) (Object) this, 40);
             }
+        }
+        if (getEnderLauncherRemainingTicks() <= 0) {
+            entityData.set(DATA_USING_ENDER_LAUNCHER, ItemStack.EMPTY);
+        } else {
+            entityData.set(DATA_ENDER_LAUNCHER_TIME, getEnderLauncherRemainingTicks() - 1);
         }
     }
 
@@ -306,5 +316,24 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     @Override
     public DataParameter<Integer> getOperatingMobData() {
         return DATA_OPERATING_ID;
+    }
+
+    @Override
+    public int getEnderLauncherRemainingTicks() {
+        if (entityData.get(DATA_USING_ENDER_LAUNCHER).isEmpty()) {
+            return 0;
+        }
+        return entityData.get(DATA_ENDER_LAUNCHER_TIME);
+    }
+
+    @Override
+    public ItemStack getEnderLauncher() {
+        return entityData.get(DATA_USING_ENDER_LAUNCHER);
+    }
+
+    @Override
+    public void setUsingEnderLauncher(ItemStack usingEnderLauncher) {
+        entityData.set(DATA_USING_ENDER_LAUNCHER, usingEnderLauncher);
+        entityData.set(DATA_ENDER_LAUNCHER_TIME, EnderLauncherItem.ROTATE_TICKS);
     }
 }
