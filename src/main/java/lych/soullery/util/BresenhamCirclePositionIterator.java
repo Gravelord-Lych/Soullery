@@ -52,13 +52,51 @@ public class BresenhamCirclePositionIterator extends AbstractIterator<BlockPos> 
         }
         remain--;
         if (initial) {
-            return move(cx + radius * INITIAL_STEPS[remain][0], cy + radius * INITIAL_STEPS[remain][1]);
+            return move(cx + radius * INITIAL_STEPS[remain][0], cy + radius * INITIAL_STEPS[remain][1], indexOfInitially(remain));
         } else {
             if (remain >= 4) {
-                return move(cx + x * STEPS[remain - 4][0], cy + y * STEPS[remain - 4][1]);
+                return move(cx + x * STEPS[remain - 4][0], cy + y * STEPS[remain - 4][1], indexOf(remain));
             } else {
-                return move(cx + y * STEPS[remain][0], cy + x * STEPS[remain][1]);
+                return move(cx + y * STEPS[remain][0], cy + x * STEPS[remain][1], indexOf(remain));
             }
+        }
+    }
+
+    private static int indexOfInitially(int remaining) {
+        switch (remaining) {
+            case 3:
+                return 1;
+            case 2:
+                return 5;
+            case 1:
+                return 3;
+            case 0:
+                return 7;
+            default:
+                throw new IllegalArgumentException("Invalid blocks remaining: " + remaining);
+        }
+    }
+
+    private static int indexOf(int remaining) {
+        switch (remaining) {
+            case 7:
+                return 1;
+            case 6:
+                return 4;
+            case 5:
+                return 8;
+            case 4:
+                return 5;
+            case 3:
+                return 2;
+            case 2:
+                return 3;
+            case 1:
+                return 7;
+            case 0:
+                return 6;
+            default:
+                throw new IllegalArgumentException("Invalid blocks remaining: " + remaining);
         }
     }
 
@@ -77,7 +115,7 @@ public class BresenhamCirclePositionIterator extends AbstractIterator<BlockPos> 
         }
     }
 
-    private BlockPos move(int x, int y) {
+    protected BlockPos move(int x, int y, int area) {
         switch (normal) {
             case X:
                 return new BlockPos(cz, x, y);
@@ -88,35 +126,5 @@ public class BresenhamCirclePositionIterator extends AbstractIterator<BlockPos> 
             default:
                 throw new AssertionError();
         }
-    }
-
-    private void bresenham(){
-        int r = radius;
-
-        draw(cx, cy + r);
-
-        draw(cx, cy - r);
-        draw(cx + r, cy);
-        draw(cx - r, cy);
-
-        for (x = 1; x <= y ; x++){
-            findNext();
-
-            draw(cx + x, cy + y);
-
-            draw(cx + x, cy - y);
-            draw(cx - x, cy + y);
-            draw(cx - x, cy - y);
-            if (x != y) {
-                draw(cy + y, cx + x);
-                draw(cy + y, cx - x);
-                draw(cy - y, cx + x);
-                draw(cy - y, cx - x);
-            }
-        }
-    }
-
-    private static void draw(int x, int y) {
-        System.out.printf("(%d, %d)\n", x, y);
     }
 }

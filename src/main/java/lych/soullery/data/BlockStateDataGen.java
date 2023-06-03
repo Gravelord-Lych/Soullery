@@ -3,6 +3,7 @@ package lych.soullery.data;
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockStateProperties;
 import lych.soullery.block.entity.SEStorageTileEntity;
+import lych.soullery.util.blg.BlockGroup;
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.IntegerProperty;
@@ -108,6 +109,10 @@ public class BlockStateDataGen extends BlockStateProvider {
         simpleBlock(WARPED_HYPHAL_SOIL, modelFromBlock(WARPED_HYPHAL_SOIL));
         tfbBlock(MAGNETIC_FIELD_GENERATOR);
         simpleBlock(INSTANT_SPAWNER, modelFromBlock(Blocks.SPAWNER));
+
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.fillBlockStates(this);
+        }
     }
 
     private void segens() {

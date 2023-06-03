@@ -1,16 +1,16 @@
 package lych.soullery.data;
 
 import lych.soullery.Soullery;
+import lych.soullery.fluid.ModFluids;
 import lych.soullery.tag.ModFluidTags;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.FluidTagsProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeFluidTagsProvider;
-import lych.soullery.fluid.ModFluids;
 
-public class FluidTagDataGen extends ForgeFluidTagsProvider {
+public class FluidTagDataGen extends FluidTagsProvider {
     public FluidTagDataGen(DataGenerator gen, ExistingFileHelper existingFileHelper) {
-        super(gen, existingFileHelper);
+        super(gen, Soullery.MOD_ID, existingFileHelper);
     }
 
     @Override

@@ -1,12 +1,16 @@
 package lych.soullery.util;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lych.soullery.block.ModBlocks;
 import lych.soullery.util.selection.Selection;
 import lych.soullery.util.selection.Selections;
 import net.minecraft.block.*;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -23,10 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.IntBinaryOperator;
-import java.util.function.IntUnaryOperator;
+import java.util.function.*;
 
 import static java.lang.Math.abs;
 import static lych.soullery.util.WeightedRandom.makeItem;
@@ -158,6 +159,27 @@ public final class WorldUtils {
         };
     }
 
+    public static ListNBT save(Selection<BlockState> selection) {
+        ListNBT listNBT = new ListNBT();
+        for (WeightedRandom.ItemImpl<BlockState> item : selection.getAllItems()) {
+            CompoundNBT compoundNBT = NBTUtil.writeBlockState(item.get());
+            compoundNBT.putInt("BlockWeight", item.getWeight());
+            listNBT.add(compoundNBT);
+        }
+        return listNBT;
+    }
+
+    public static Selection<BlockState> load(ListNBT nbt) {
+        ImmutableList.Builder<WeightedRandom.ItemImpl<BlockState>> builder = new ImmutableList.Builder<>();
+        for (int i = 0; i < nbt.size(); i++) {
+            CompoundNBT compoundNBT = nbt.getCompound(i);
+            BlockState state = NBTUtil.readBlockState(compoundNBT);
+            int weight = compoundNBT.getInt("BlockWeight");
+            builder.add(WeightedRandom.makeItem(state, weight));
+        }
+        return Selections.selection(builder.build());
+    }
+
     public static StructureAccessors group(StructureBlockPlacer placer, IntBinaryOperator worldXGetter, IntUnaryOperator worldYGetter, IntBinaryOperator worldZGetter) {
         return new StructureAccessors(placer, worldXGetter, worldYGetter, worldZGetter);
     }
@@ -174,6 +196,52 @@ public final class WorldUtils {
             return true;
         }
         return false;
+    }
+
+    public static void fillCircle(StructureAccessors accessors, ISeedReader reader, Selection<BlockState> selection, Random random, int cx, int y, int cz, int r,  MutableBoundingBox boundingBox) {
+        fillCircle(accessors, reader, selection, random, cx, y, cz, r, true, boundingBox);
+    }
+
+    public static void fillCircle(StructureAccessors accessors, ISeedReader reader, Selection<BlockState> selection, Random random, int cx, int y, int cz, int r, boolean smooth, MutableBoundingBox boundingBox) {
+        fillCircle(accessors.getPlacer(), reader, selection, random, cx, y, cz, r, smooth, boundingBox);
+    }
+
+    public static void fillCircle(StructureBlockPlacer placer, ISeedReader reader, Selection<BlockState> selection, Random random, int cx, int y, int cz, int r, boolean smooth, MutableBoundingBox boundingBox) {
+        fillCircle(placer, reader, () -> selection.getRandom(random), cx, y, cz, r, smooth, boundingBox);
+    }
+
+    public static void fillCircle(StructureAccessors accessors, ISeedReader reader, Supplier<BlockState> stateSup, int cx, int y, int cz, int r,  MutableBoundingBox boundingBox) {
+        fillCircle(accessors, reader, stateSup, cx, y, cz, r, true, boundingBox);
+    }
+
+    public static void fillCircle(StructureAccessors accessors, ISeedReader reader, Supplier<BlockState> stateSup, int cx, int y, int cz, int r, boolean smooth, MutableBoundingBox boundingBox) {
+        fillCircle(accessors.getPlacer(), reader, stateSup, cx, y, cz, r, smooth, boundingBox);
+    }
+
+    public static void fillCircle(StructureBlockPlacer placer, ISeedReader reader, Supplier<BlockState> stateSup, int cx, int y, int cz, int r, boolean smooth, MutableBoundingBox boundingBox) {
+        for (int x = -r; x <= r; x++) {
+            for (int z = -r; z <= r; z++) {
+                if (x * x + z * z <= r * r) {
+//                  Avoid placing "spikes"
+                    if (smooth && (x == 0 && Math.abs(z) == r || z == 0 && Math.abs(x) == r)) {
+                        continue;
+                    }
+                    BlockState state = stateSup.get();
+                    if (state == null) {
+                        throw new NullPointerException("BlockState is null!");
+                    }
+                    placer.placeBlock(reader, state, cx + x, y, cz + z, boundingBox);
+                }
+            }
+        }
+    }
+
+    public static List<BlockPos> getCircleEdges(BlockPos pos, int radius, Direction.Axis normal) {
+        return new SortedBresenhamCirclePositionIterator(pos, radius, normal).get();
+    }
+
+    public static List<BlockPos> getCircleEdges(int cx, int cy, int cz, int radius, Direction.Axis normal) {
+        return new SortedBresenhamCirclePositionIterator(cx, cy, cz, radius, normal).get();
     }
 
     public static BlockState discussCornerPosition(BlockState edge, int x, int z, int r) {

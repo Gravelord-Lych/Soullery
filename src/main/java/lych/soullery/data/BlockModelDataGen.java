@@ -1,6 +1,7 @@
 package lych.soullery.data;
 
 import lych.soullery.Soullery;
+import lych.soullery.util.blg.BlockGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.DataGenerator;
@@ -63,10 +64,18 @@ public class BlockModelDataGen extends BlockModelProvider {
         cubeAll(SOULIFIED_BEDROCK);
         getBuilder(registryNameToString(SOULIFIED_BUSH)).parent(CROSS).texture(CROSS_NAME, prefix(SOULIFIED_BUSH));
         cubeBottomTop(registryNameToString(WARPED_HYPHAL_SOIL), side(WARPED_HYPHAL_SOIL), vanillaBottom(SOUL_SOIL), top(WARPED_HYPHAL_SOIL));
+
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.fillBlockModels(this);
+        }
     }
 
     private void cubeAll(Block block) {
-        getBuilder(registryNameToString(block)).parent(CUBE_ALL).texture(ALL_NAME, prefix(block));
+        cubeAll(this, block, ModDataGens::registryNameToString);
+    }
+
+    public static void cubeAll(BlockModelProvider provider, Block block, Function<? super Block, ? extends String> registryNameExtractor) {
+        provider.getBuilder(registryNameExtractor.apply(block)).parent(CUBE_ALL).texture(ALL_NAME, prefix(block));
     }
 
     private void pottedBlock(Block pottedBlock, Block plantBlock) {
@@ -74,27 +83,31 @@ public class BlockModelDataGen extends BlockModelProvider {
     }
 
     private static String wallInventoryToString(WallBlock block) {
-        return registryNameToString(block) + "_inventory";
+        return wallInventoryToString(block, ModDataGens::registryNameToString);
     }
 
-    static ResourceLocation prefix(Block block) {
+    public static String wallInventoryToString(WallBlock block, Function<? super Block, ? extends String> registryNameExtractor) {
+        return registryNameExtractor.apply(block) + "_inventory";
+    }
+
+    public static ResourceLocation prefix(Block block) {
         return prefix(block, "");
     }
 
-    static ResourceLocation prefix(Block block, String addition) {
+    public static ResourceLocation prefix(Block block, String addition) {
         return prefix(block, addition, Soullery::prefix);
     }
 
-    static ResourceLocation prefix(Block block, String addition, Function<? super String, ? extends ResourceLocation> prefixFunction) {
+    public static ResourceLocation prefix(Block block, String addition, Function<? super String, ? extends ResourceLocation> prefixFunction) {
         Objects.requireNonNull(block.getRegistryName(), "Registry name should be non-null");
         return prefix(block.getRegistryName().getPath() + addition, prefixFunction);
     }
 
-    static ResourceLocation prefix(String name) {
+    public static ResourceLocation prefix(String name) {
         return prefix(name, Soullery::prefix);
     }
 
-    static ResourceLocation prefix(String name, Function<? super String, ? extends ResourceLocation> prefixFunction) {
+    public static ResourceLocation prefix(String name, Function<? super String, ? extends ResourceLocation> prefixFunction) {
         return prefixFunction.apply("block/" + name);
     }
 

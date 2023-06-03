@@ -11,6 +11,7 @@ public final class ModConstants {
     public static final int PURE_SOUL_FIRE_DAMAGE = 2;
     public static final int PURE_SOUL_FIRE_LIGHT_LEVEL = 8;
     public static final int MAX_SHOWABLE_EFFECT_AMPLIFIER = Integer.MAX_VALUE - 1;
+    public static final int SOUL_LAND_MAX_SPAWNABLE_HEIGHT = 128;
 
     private ModConstants() {}
 }

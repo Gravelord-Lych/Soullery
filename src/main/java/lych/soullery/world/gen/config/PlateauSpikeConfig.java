@@ -1,5 +1,6 @@
 package lych.soullery.world.gen.config;
 
+import com.mojang.datafixers.kinds.App;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature.Spike;
@@ -9,10 +10,7 @@ import net.minecraft.world.gen.feature.IFeatureConfig;
 import java.util.List;
 
 public class PlateauSpikeConfig implements IFeatureConfig {
-    public static final Codec<PlateauSpikeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BlockPos.CODEC.fieldOf("center").forGetter(PlateauSpikeConfig::getCenter),
-            Spike.CODEC.listOf().fieldOf("spikes").forGetter(PlateauSpikeConfig::getSpikes)).apply(instance, PlateauSpikeConfig::new)
-    );
+    public static final Codec<PlateauSpikeConfig> CODEC = RecordCodecBuilder.create(PlateauSpikeConfig::makeCodec);
     private final BlockPos center;
     private final List<Spike> spikes;
 
@@ -27,5 +25,11 @@ public class PlateauSpikeConfig implements IFeatureConfig {
 
     public List<Spike> getSpikes() {
         return spikes;
+    }
+
+    private static App<RecordCodecBuilder.Mu<PlateauSpikeConfig>, PlateauSpikeConfig> makeCodec(RecordCodecBuilder.Instance<PlateauSpikeConfig> instance) {
+        return instance.group(
+                BlockPos.CODEC.fieldOf("center").forGetter(PlateauSpikeConfig::getCenter),
+                Spike.CODEC.listOf().fieldOf("spikes").forGetter(PlateauSpikeConfig::getSpikes)).apply(instance, PlateauSpikeConfig::new);
     }
 }

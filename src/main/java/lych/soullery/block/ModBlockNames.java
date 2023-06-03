@@ -44,7 +44,6 @@ public final class ModBlockNames {
     public static final String SOULIFIED_BUSH = "soulified_bush";
     public static final String WARPED_HYPHAL_SOIL = "warped_hyphal_soil";
 
-//  ----------------------------------------EXTENSIONS----------------------------------------
     public static final String CHISELED_SOUL_STONE_BRICKS = "chiseled_soul_stone_bricks";
     public static final String CRACKED_DECAYED_STONE_BRICK_SLAB = "cracked_decayed_stone_brick_slab";
     public static final String CRACKED_DECAYED_STONE_BRICK_STAIRS = "cracked_decayed_stone_brick_stairs";
@@ -62,6 +61,10 @@ public final class ModBlockNames {
     public static final String DECAYED_STONE_SLAB = "decayed_stone_slab";
     public static final String DECAYED_STONE_STAIRS = "decayed_stone_stairs";
     public static final String DECAYED_STONE_WALL = "decayed_stone_wall";
+    public static final String GLOWSTONE_BRICKS = "glowstone_bricks";
+    public static final String GLOWSTONE_BRICK_SLAB = "glowstone_brick_slab";
+    public static final String GLOWSTONE_BRICK_STAIRS = "glowstone_brick_stairs";
+    public static final String GLOWSTONE_BRICK_WALL = "glowstone_brick_wall";
     public static final String SMOOTH_SOUL_STONE = "smooth_soul_stone";
     public static final String SMOOTH_SOUL_STONE_SLAB = "smooth_soul_stone_slab";
     public static final String SMOOTH_SOUL_STONE_STAIRS = "smooth_soul_stone_stairs";
@@ -73,7 +76,6 @@ public final class ModBlockNames {
     public static final String SOUL_STONE_SLAB = "soul_stone_slab";
     public static final String SOUL_STONE_STAIRS = "soul_stone_stairs";
     public static final String SOUL_STONE_WALL = "soul_stone_wall";
-//  ------------------------------------------------------------------------------------------
 
     private ModBlockNames() {}
 }

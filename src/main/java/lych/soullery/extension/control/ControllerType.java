@@ -16,10 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ControllerType<T extends MobEntity> {
     private static ControllerType<?>[] CONTROLLER_ARRAY = new ControllerType<?>[0];
@@ -150,6 +147,24 @@ public class ControllerType<T extends MobEntity> {
 
     public float[] getColor() {
         return colorHSB;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ControllerType [%s(#%d)]", getRegistryName(), getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ControllerType<?> that = (ControllerType<?>) o;
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
     }
 
     @FunctionalInterface

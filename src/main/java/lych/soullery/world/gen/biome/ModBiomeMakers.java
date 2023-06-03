@@ -23,11 +23,11 @@ public final class ModBiomeMakers {
 
     private ModBiomeMakers() {}
 
-    public static Biome makeSoulBiome(float depth, float scale) {
-        return makeSoulBiome(depth, scale, false);
+    public static Biome makeSoulBiome(float depth, float scale, boolean towers) {
+        return makeSoulBiome(depth, scale, false, towers);
     }
 
-    public static Biome makeSoulBiome(float depth, float scale, boolean spiked) {
+    public static Biome makeSoulBiome(float depth, float scale, boolean spiked, boolean towers) {
         MobSpawnInfo.Builder spawnBuilder = new MobSpawnInfo.Builder();
         soulMobs(spawnBuilder);
 
@@ -40,6 +40,9 @@ public final class ModBiomeMakers {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SPIKED_SOUL_PLAINS_SPIKE);
         } else if (depth < 0.2f) {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SOUL_PLAINS_SPIKE);
+        }
+        if (towers) {
+            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_DEFAULT);
         }
 
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_LAND);
@@ -161,6 +164,7 @@ public final class ModBiomeMakers {
         addDefaultSoulBiomeCarvers(genBuilder, false);
         if (depth < 0.2f) {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.PARCHED_SOIL_SPIKE);
+            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_PARCHED_DESERT);
         }
 
         return new Biome.Builder()
@@ -206,6 +210,9 @@ public final class ModBiomeMakers {
         } else {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeVegetation(genBuilder);
+        }
+        if (!edge && depth < 0.2f) {
+            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_CRIMSON_PLAINS);
         }
         return new Biome.Builder()
                 .precipitation(Biome.RainType.NONE)
@@ -253,6 +260,9 @@ public final class ModBiomeMakers {
         } else {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeVegetation(genBuilder);
+        }
+        if (!edge && depth < 0.2f) {
+            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_WARPED_PLAINS);
         }
         return new Biome.Builder()
                 .precipitation(Biome.RainType.NONE)

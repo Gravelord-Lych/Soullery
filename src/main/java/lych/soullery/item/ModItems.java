@@ -16,6 +16,7 @@ import lych.soullery.item.potion.HalfUsedPotionItem;
 import lych.soullery.item.potion.HalfUsedSplashPotionItem;
 import lych.soullery.util.ModConstants;
 import lych.soullery.util.SoulEnergies;
+import lych.soullery.util.blg.BlockGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -178,7 +179,7 @@ public final class ModItems {
         return new ForgeSpawnEggItem(typeSupplier, backgroundColor, highlightColor, spawnEgg());
     }
 
-    private static Item.Properties common() {
+    public static Item.Properties common() {
         return new Item.Properties().tab(ModItemGroups.DEFAULT);
     }
 
@@ -285,6 +286,8 @@ public final class ModItems {
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_STAIRS));
         registry.register(make(CRACKED_DECAYED_STONE_BRICK_WALL, ModBlockNames.CRACKED_DECAYED_STONE_BRICK_WALL));
 
+        registerGroupedBlockItems(registry);
+
         registry.register(make(SOUL_OBSIDIAN, ModBlockNames.SOUL_OBSIDIAN));
         registry.register(make(SOULIFIED_BEDROCK, ModBlockNames.SOULIFIED_BEDROCK));
         registry.register(make(PURIFIED_SOULIFIED_BEDROCK, ModBlockNames.PURIFIED_SOULIFIED_BEDROCK));
@@ -327,6 +330,12 @@ public final class ModItems {
 
         registry.register(make(SOUL_WART, ModBlockNames.SOUL_WART));
         registry.register(make(SOULIFIED_BUSH, ModBlockNames.SOULIFIED_BUSH));
+    }
+
+    private static void registerGroupedBlockItems(IForgeRegistry<Item> registry) {
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.setRegistry(registry).registerAllBlockItems();
+        }
     }
 
     private static void registerSpawnEggs(IForgeRegistry<Item> registry) {

@@ -21,11 +21,13 @@ public final class ModDataGens {
         gen.addProvider(new AdvancementDataGen(gen, helper));
         gen.addProvider(new BlockModelDataGen(gen, helper));
         gen.addProvider(new BlockStateDataGen(gen, helper));
-        gen.addProvider(new BlockTagDataGen(gen, helper));
+        BlockTagDataGen btg = new BlockTagDataGen(gen, helper);
+        gen.addProvider(btg);
         gen.addProvider(new DimensionDataGen(gen));
         gen.addProvider(new EntityTagDataGen(gen, helper));
         gen.addProvider(new FluidTagDataGen(gen, helper));
         gen.addProvider(new ItemModelDataGen(gen, helper));
+        gen.addProvider(new ItemTagDataGen(gen, btg, helper));
         gen.addProvider(new LootDataGen(gen));
         gen.addProvider(new ParticleDataGen(gen));
         gen.addProvider(new RecipeDataGen(gen));

@@ -2,17 +2,19 @@ package lych.soullery.data;
 
 import lych.soullery.Soullery;
 import lych.soullery.tag.ModBlockTags;
+import lych.soullery.util.blg.BlockGroup;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 
 import static lych.soullery.block.ModBlocks.*;
 import static net.minecraft.block.Blocks.*;
 
-public class BlockTagDataGen extends ForgeBlockTagsProvider {
+public class BlockTagDataGen extends BlockTagsProvider {
     public BlockTagDataGen(DataGenerator gen, ExistingFileHelper existingFileHelper) {
-        super(gen, existingFileHelper);
+        super(gen, Soullery.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -93,6 +95,16 @@ public class BlockTagDataGen extends ForgeBlockTagsProvider {
         tag(BlockTags.NYLIUM).add(CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);
         tag(BlockTags.FLOWER_POTS).add(POTTED_DEAD_BUSH);
         tag(BlockTags.SOUL_SPEED_BLOCKS).add(REFINED_SOUL_SAND, REFINED_SOUL_SOIL, CRIMSON_HYPHAL_SOIL, WARPED_HYPHAL_SOIL);
+        addForgeBlockTags();
+
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.fillBlockTags(this::tag);
+        }
+    }
+
+    private void addForgeBlockTags() {
+        tag(Tags.Blocks.OBSIDIAN).add(SOUL_OBSIDIAN);
+        tag(Tags.Blocks.STONE).add(SOUL_STONE, DECAYED_STONE);
     }
 
     @Override

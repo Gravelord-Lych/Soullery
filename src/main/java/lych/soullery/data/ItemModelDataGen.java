@@ -7,6 +7,7 @@ import lych.soullery.item.SEGemItem;
 import lych.soullery.item.SoulBowItem;
 import lych.soullery.util.SoulEnergies;
 import lych.soullery.util.Utils;
+import lych.soullery.util.blg.BlockGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.DataGenerator;
@@ -206,6 +207,10 @@ public class ItemModelDataGen extends ItemModelProvider {
         blockItem(SOULIFIED_BEDROCK);
         simple(registryNameToString(SOULIFIED_BUSH), GENERATED, BlockModelDataGen.prefix(ModBlocks.SOULIFIED_BUSH));
         blockItem(WARPED_HYPHAL_SOIL);
+
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.blockItems().fillModels(this);
+        }
     }
 
     private void registerSpawnEggModels() {
@@ -234,11 +239,19 @@ public class ItemModelDataGen extends ItemModelProvider {
     }
 
     private void blockItem(BlockItem item) {
-        blockItem(registryNameToString(item), item.getBlock() instanceof WallBlock ? byWall((WallBlock) item.getBlock()) : byBlock(item.getBlock()));
+        blockItem(this, item);
+    }
+
+    public static void blockItem(ItemModelProvider provider, BlockItem item) {
+        blockItem(provider, registryNameToString(item), item.getBlock() instanceof WallBlock ? byWall((WallBlock) item.getBlock()) : byBlock(item.getBlock()));
     }
 
     private void blockItem(String itemPath, ModelFile blockModel) {
-        getBuilder(itemPath).parent(blockModel);
+        blockItem(this, itemPath, blockModel);
+    }
+
+    public static void blockItem(ItemModelProvider provider, String itemPath, ModelFile blockModel) {
+        provider.getBuilder(itemPath).parent(blockModel);
     }
 
     static ResourceLocation prefix(Item item) {
@@ -267,11 +280,11 @@ public class ItemModelDataGen extends ItemModelProvider {
         return new UncheckedModelFile(prefixSEGem(item, level));
     }
 
-    private ModelFile byBlock(Block block) {
+    private static ModelFile byBlock(Block block) {
         return new UncheckedModelFile(BlockModelDataGen.prefix(block));
     }
 
-    private ModelFile byWall(WallBlock block) {
+    private static ModelFile byWall(WallBlock block) {
         return new UncheckedModelFile(BlockModelDataGen.prefix(block) + "_inventory");
     }
 }

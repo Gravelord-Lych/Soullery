@@ -8,8 +8,10 @@ import lych.soullery.fluid.ModFluids;
 import lych.soullery.item.ModMaterials;
 import lych.soullery.tag.ModBlockTags;
 import lych.soullery.util.ModConstants;
-import net.minecraft.block.*;
+import lych.soullery.util.blg.BlockGroup;
+import lych.soullery.util.blg.DefaultStoneBlockGroup;
 import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityType;
@@ -29,6 +31,7 @@ import static net.minecraft.block.AbstractBlock.Properties.copy;
 import static net.minecraft.block.AbstractBlock.Properties.of;
 
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@SuppressWarnings("unused")
 public final class ModBlocks {
     public static final RefinedSoulMetalBarsBlock BROKEN_REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(8, 9).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 2), 1);
     public static final RefinedSoulMetalBarsBlock CHIPPED_REFINED_SOUL_METAL_BARS = new RefinedSoulMetalBarsBlock(of(Material.METAL, MaterialColor.COLOR_BLUE).harvestTool(ToolType.PICKAXE).harvestLevel(3).requiresCorrectToolForDrops().strength(8, 15).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 6), 3);
@@ -104,6 +107,8 @@ public final class ModBlocks {
     public static final WallBlock SOUL_STONE_BRICK_WALL = new WallBlock(copy(SOUL_STONE));
 //  ------------------------------------------------------------------------------------------
 
+    public static final DefaultStoneBlockGroup GLOWSTONE_BRICKS = DefaultStoneBlockGroup.createAndRegister(of(Material.GLASS, MaterialColor.SAND).strength(0.3f).sound(SoundType.GLASS).lightLevel(state -> 15).isValidSpawn(ModBlocks::never), ModBlockNames.GLOWSTONE_BRICKS, ModBlockNames.GLOWSTONE_BRICK_SLAB, ModBlockNames.GLOWSTONE_BRICK_STAIRS, ModBlockNames.GLOWSTONE_BRICK_WALL);
+
     private ModBlocks() {}
 
     private static StatedSEGeneratorBlock createSegenBlock(MaterialColor color, int harvestLevel, float strength, int lightLevel, Supplier<? extends AbstractSEGeneratorTileEntity> supplier) {
@@ -158,6 +163,7 @@ public final class ModBlocks {
         registry.register(make(DECAYED_STONE_SLAB, ModBlockNames.DECAYED_STONE_SLAB));
         registry.register(make(DECAYED_STONE_STAIRS, ModBlockNames.DECAYED_STONE_STAIRS));
         registry.register(make(DECAYED_STONE_WALL, ModBlockNames.DECAYED_STONE_WALL));
+        registerGroupedBlocks(registry);
         registry.register(make(DEPTH_SEGEN, ModBlockNames.DEPTH_SEGEN));
         registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
         registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
@@ -205,5 +211,11 @@ public final class ModBlocks {
         registry.register(make(SOULIFIED_BEDROCK, ModBlockNames.SOULIFIED_BEDROCK));
         registry.register(make(SOULIFIED_BUSH, ModBlockNames.SOULIFIED_BUSH));
         registry.register(make(WARPED_HYPHAL_SOIL, ModBlockNames.WARPED_HYPHAL_SOIL));
+    }
+
+    private static void registerGroupedBlocks(IForgeRegistry<Block> registry) {
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.setRegistry(registry).registerAllBlocks();
+        }
     }
 }

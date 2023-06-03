@@ -354,6 +354,15 @@ public final class CommonEventListener {
     }
 
     @SubscribeEvent
+    public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
+        if (event.getEntityLiving().level.dimension() == ModDimensions.SOUL_LAND && event.getSpawnReason() == SpawnReason.NATURAL) {
+            if (event.getEntityLiving().getY() > ModConstants.SOUL_LAND_MAX_SPAWNABLE_HEIGHT) {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerDestroySoulMetalBars(BlockEvent.BreakEvent event) {
         BlockState state = event.getState();
         if (state.getBlock() instanceof SoulMetalBarsBlock && state.getValue(ModBlockStateProperties.DAMAGE_LINKABLE)) {

@@ -56,8 +56,8 @@ public class ModBiomes {
         registry.register(make(makeInnermostSoulLand(1, 0.02f), ModBiomeNames.INNERMOST_PLATEAU));
         registry.register(make(makeParchedDesertBiome(0.16f, 0.06f), ModBiomeNames.PARCHED_DESERT));
         registry.register(make(makeParchedDesertBiome(0.45f, 0.3f), ModBiomeNames.PARCHED_DESERT_HILLS));
-        registry.register(make(makeSoulBiome(1, 0.3f), ModBiomeNames.SOUL_MOUNTAINS));
-        registry.register(make(makeSoulBiome(0.15f, 0.05f), ModBiomeNames.SOUL_PLAINS));
+        registry.register(make(makeSoulBiome(1, 0.3f, false), ModBiomeNames.SOUL_MOUNTAINS));
+        registry.register(make(makeSoulBiome(0.15f, 0.05f, true), ModBiomeNames.SOUL_PLAINS));
         registry.register(make(makeSoulBeach(0, 0.01f), ModBiomeNames.SOUL_SAND_BEACH));
         registry.register(make(makeSoulLavaOcean(-1, 0.075f), ModBiomeNames.SOUL_LAVA_OCEAN));
         registry.register(make(makeSoulWastelands(0.15f, 0.03f, false, true, false), ModBiomeNames.SOUL_WASTELANDS));
@@ -66,7 +66,7 @@ public class ModBiomes {
         registry.register(make(makeSoulWastelands(4.3f, 0.015f, true, false, true), ModBiomeNames.SOUL_WASTELANDS_IV));
         registry.register(make(makeSoulWastelands(6.3f, 0.01f, true, false, true), ModBiomeNames.SOUL_WASTELANDS_V));
         registry.register(make(makeSoulWastelands(8.5f, 0.005f, true, false, false), ModBiomeNames.STRATEGIC_PLACE));
-        registry.register(make(makeSoulBiome(0.15f, 0.05f, true), ModBiomeNames.SPIKED_SOUL_PLAINS));
+        registry.register(make(makeSoulBiome(0.15f, 0.05f, true, false), ModBiomeNames.SPIKED_SOUL_PLAINS));
         registry.register(make(makeSoulLavaOcean(-0.6f, 0.32f), ModBiomeNames.UNSTABLE_SOUL_LAVA_OCEAN));
         registry.register(make(makeWarpedBiome(0.45f, 0.3f), ModBiomeNames.WARPED_HILLS));
         registry.register(make(makeWarpedBiome(0.15f, 0.045f), ModBiomeNames.WARPED_PLAINS));

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:blaze_rod"
+      "tag": "forge:rods/blaze"
     },
     {
       "item": "soullery:soul_powder"

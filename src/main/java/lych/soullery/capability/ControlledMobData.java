@@ -258,6 +258,7 @@ public class ControlledMobData<T extends MobEntity> implements IControlledMobDat
             for (Iterator<Map.Entry<ControllerType<?>, TimeEntry>> itr = timeLimits.entrySet().iterator(); itr.hasNext(); ) {
                 Map.Entry<ControllerType<?>, TimeEntry> entry = itr.next();
                 if (getControllers().stream().noneMatch(c -> c.getType() == entry.getKey())) {
+                    Soullery.LOGGER.debug(MARKER, "TimeEntry for controller {} is invalid because the controller was removed", entry.getKey());
                     itr.remove();
                     continue;
                 }

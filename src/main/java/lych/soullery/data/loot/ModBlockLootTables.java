@@ -1,6 +1,7 @@
 package lych.soullery.data.loot;
 
 import lych.soullery.item.ModItems;
+import lych.soullery.util.blg.BlockGroup;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.NetherWartBlock;
@@ -86,6 +87,10 @@ public class ModBlockLootTables extends BlockLootTables {
         add(SOULIFIED_BUSH, block -> createShearsDispatchTable(block, applyExplosionDecay(block, ItemLootEntry.lootTableItem(Items.STICK).apply(SetCount.setCount(RandomValueRange.between(0, 2))))));
         otherWhenSilkTouch(WARPED_HYPHAL_SOIL, SOUL_SOIL);
         otherWhenSilkTouch(CRIMSON_HYPHAL_SOIL, SOUL_SOIL);
+
+        for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
+            group.fillBlockLootTables(this);
+        }
     }
 
     @Override
