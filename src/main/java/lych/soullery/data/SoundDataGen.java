@@ -35,7 +35,7 @@ public class SoundDataGen extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        multiple(ARMOR_EQUIP_REFINED_SOUL_METAL, 0.8, paths("enchant/soulspeed/soulspeed", 5, 10));
+        multiple(ARMOR_EQUIP_REFINED_SOUL_METAL, paths("enchant/soulspeed/soulspeed", 5, 10));
         add(CHAOS, 4);
         add(DEFENSIVE_META8_SHARE_SHIELD);
         multiple(ENERGIZED_BLAZE_AMBIENT, paths("mob/blaze/breathe", 4));
