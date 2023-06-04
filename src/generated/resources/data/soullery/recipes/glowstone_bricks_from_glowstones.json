@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glowstone"
+    },
+    {
+      "item": "minecraft:glowstone"
+    },
+    {
+      "item": "soullery:soul_powder"
+    }
+  ],
+  "result": {
+    "item": "soullery:glowstone_bricks",
+    "count": 2
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "soullery:glowstone_bricks"
+    }
+  },
+  "result": {
+    "item": "soullery:glowstone_brick_stairs",
+    "count": 4
+  }
+}

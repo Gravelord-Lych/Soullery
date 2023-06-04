@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/iron_bars_post",
+  "textures": {
+    "particle": "soullery:block/broken_refined_soul_metal_bars",
+    "bars": "soullery:block/broken_refined_soul_metal_bars"
+  }
+}

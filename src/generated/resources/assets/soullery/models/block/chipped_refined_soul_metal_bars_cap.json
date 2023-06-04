@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/iron_bars_cap",
+  "textures": {
+    "particle": "soullery:block/chipped_refined_soul_metal_bars",
+    "bars": "soullery:block/chipped_refined_soul_metal_bars",
+    "edge": "soullery:block/chipped_refined_soul_metal_bars"
+  }
+}

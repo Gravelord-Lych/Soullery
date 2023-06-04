@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/iron_bars_cap_alt",
+  "textures": {
+    "particle": "soullery:block/damaged_soul_metal_bars",
+    "bars": "soullery:block/damaged_soul_metal_bars",
+    "edge": "soullery:block/damaged_soul_metal_bars"
+  }
+}

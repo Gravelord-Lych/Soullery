@@ -2,30 +2,12 @@
   "item.armor.equip.refined_soul_metal": {
     "subtitle": "subtitles.soullery:item.armor.equip.refined_soul_metal",
     "sounds": [
-      {
-        "name": "enchant/soulspeed/soulspeed5",
-        "volume": 0.8
-      },
-      {
-        "name": "enchant/soulspeed/soulspeed6",
-        "volume": 0.8
-      },
-      {
-        "name": "enchant/soulspeed/soulspeed7",
-        "volume": 0.8
-      },
-      {
-        "name": "enchant/soulspeed/soulspeed8",
-        "volume": 0.8
-      },
-      {
-        "name": "enchant/soulspeed/soulspeed9",
-        "volume": 0.8
-      },
-      {
-        "name": "enchant/soulspeed/soulspeed10",
-        "volume": 0.8
-      }
+      "enchant/soulspeed/soulspeed5",
+      "enchant/soulspeed/soulspeed6",
+      "enchant/soulspeed/soulspeed7",
+      "enchant/soulspeed/soulspeed8",
+      "enchant/soulspeed/soulspeed9",
+      "enchant/soulspeed/soulspeed10"
     ]
   },
   "item.chaos_wand.chaos": {

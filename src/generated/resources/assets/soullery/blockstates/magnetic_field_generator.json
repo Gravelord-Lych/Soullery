@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "soullery:block/magnetic_field_generator"
+    },
+    "facing=south": {
+      "model": "soullery:block/magnetic_field_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "soullery:block/magnetic_field_generator",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "soullery:block/magnetic_field_generator",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#O#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "soullery:refined_soul_metal_ingot"
+    },
+    "X": {
+      "item": "soullery:soul_metal_ingot"
+    },
+    "O": {
+      "item": "soullery:soul_container"
+    }
+  },
+  "result": {
+    "item": "soullery:horcrux_carrier"
+  }
+}

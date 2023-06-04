@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "side": "soullery:block/magnetic_field_generator_side",
+    "front": "soullery:block/magnetic_field_generator_front",
+    "bottom": "soullery:block/magnetic_field_generator_bottom",
+    "top": "soullery:block/magnetic_field_generator_top"
+  }
+}

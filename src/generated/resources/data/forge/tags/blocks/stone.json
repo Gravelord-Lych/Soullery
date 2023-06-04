@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "soullery:soul_stone",
+    "soullery:decayed_stone",
+    "soullery:glowstone_bricks"
+  ]
+}

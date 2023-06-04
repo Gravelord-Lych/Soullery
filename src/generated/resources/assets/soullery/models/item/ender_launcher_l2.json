@@ -1,0 +1,56 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soullery:item/ender_launcher_l2"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.0
+      },
+      "model": "soullery:item/ender_launcher_l2"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.125
+      },
+      "model": "soullery:item/ender_launcher_l2_1"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.25
+      },
+      "model": "soullery:item/ender_launcher_l2_2"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.375
+      },
+      "model": "soullery:item/ender_launcher_l2_3"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.5
+      },
+      "model": "soullery:item/ender_launcher_l2_4"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.625
+      },
+      "model": "soullery:item/ender_launcher_l2_5"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.75
+      },
+      "model": "soullery:item/ender_launcher_l2_6"
+    },
+    {
+      "predicate": {
+        "soullery:ender_launcher_rotation": 0.875
+      },
+      "model": "soullery:item/ender_launcher_l2_7"
+    }
+  ]
+}

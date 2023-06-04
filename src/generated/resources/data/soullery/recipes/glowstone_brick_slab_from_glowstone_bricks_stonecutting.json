@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "soullery:glowstone_bricks"
+  },
+  "result": "soullery:glowstone_brick_slab",
+  "count": 2
+}
