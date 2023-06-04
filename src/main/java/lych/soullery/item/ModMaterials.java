@@ -1,5 +1,6 @@
 package lych.soullery.item;
 
+import lych.soullery.util.ModSoundEvents;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
@@ -10,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -135,19 +135,19 @@ public final class ModMaterials {
     }
 
     public static class Armor implements IArmorMaterial {
-        public static final Armor REFINED_SOUL_METAL = new Builder().name("refined_soul_metal").maxDamageFactor(30).defenseForSlots(4, 7, 10, 4).enchantmentValue(5).equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND).toughness(3).knockbackResistance(0.05f).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
+        public static final Armor REFINED_SOUL_METAL = new Builder().name("refined_soul_metal").maxDamageFactor(30).defenseForSlots(4, 7, 10, 4).enchantmentValue(15).equipSound(ModSoundEvents.ARMOR_EQUIP_REFINED_SOUL_METAL).toughness(3).knockbackResistance(0.05f).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
 
         private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
         private final String name;
         private final int maxDamageFactor;
         private final int[] defenseArray;
         private final int enchantmentValue;
-        private final SoundEvent equipSound;
+        private final Supplier<SoundEvent> equipSound;
         private final float toughness;
         private final float knockbackResistance;
         private final LazyValue<Ingredient> repairMaterial;
 
-        private Armor(String name, int maxDamageFactor, int[] defenseArray, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterial) {
+        private Armor(String name, int maxDamageFactor, int[] defenseArray, int enchantmentValue, Supplier<SoundEvent> equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterial) {
             this.name = name;
             this.maxDamageFactor = maxDamageFactor;
             this.defenseArray = defenseArray;
@@ -175,7 +175,7 @@ public final class ModMaterials {
 
         @Override
         public SoundEvent getEquipSound() {
-            return equipSound;
+            return equipSound.get();
         }
 
         @Override
@@ -204,7 +204,7 @@ public final class ModMaterials {
             private int maxDamageFactor = -1;
             private int[] defenseArray = new int[]{-1, -1, -1, -1};
             private int enchantmentValue = -1;
-            private SoundEvent equipSound;
+            private Supplier<SoundEvent> equipSound;
             private float toughness = -1;
             private float knockbackResistance = -1;
             private Supplier<Ingredient> repairMaterial;
@@ -236,6 +236,10 @@ public final class ModMaterials {
             }
 
             protected Builder equipSound(SoundEvent equipSound) {
+                return equipSound(() -> equipSound);
+            }
+
+            protected Builder equipSound(Supplier<SoundEvent> equipSound) {
                 this.equipSound = equipSound;
                 return this;
             }
