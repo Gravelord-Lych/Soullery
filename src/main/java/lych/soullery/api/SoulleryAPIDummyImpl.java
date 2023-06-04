@@ -6,6 +6,7 @@ import lych.soullery.api.exa.PlayerBuff;
 import lych.soullery.api.shield.ISharedShield;
 import lych.soullery.api.shield.IShieldUser;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -36,7 +37,7 @@ final class SoulleryAPIDummyImpl implements SoulleryAPI {
     }
 
     @Override
-    public void registerExtraAbility(@Nullable IExtraAbility exa) {}
+    public void registerExtraAbility(@Nullable IExtraAbility exa, EntityType<?>... types) {}
 
     @Override
     public Map<ResourceLocation, IExtraAbility> getRegisteredExtraAbilities() {

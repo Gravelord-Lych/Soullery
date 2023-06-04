@@ -16,6 +16,7 @@ import lych.soullery.util.EntityUtils;
 import lych.soullery.util.SoulLandGenHelper;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -50,8 +51,8 @@ public enum SoulleryAPIImpl implements SoulleryAPI {
     }
 
     @Override
-    public void registerExtraAbility(IExtraAbility exa) {
-        ExtraAbility.register(exa);
+    public void registerExtraAbility(IExtraAbility exa, EntityType<?>... types) {
+        ExtraAbility.register(exa, types);
     }
 
     @Override

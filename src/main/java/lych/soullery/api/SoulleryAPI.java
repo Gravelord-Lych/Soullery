@@ -7,6 +7,7 @@ import lych.soullery.api.shield.ISharedShield;
 import lych.soullery.api.shield.IShieldUser;
 import lych.soullery.world.gen.carver.SoulCaveCarver;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -81,9 +82,11 @@ public interface SoulleryAPI {
 
     /**
      * Register an Extra Ability. The method can be called during common set up
+     *
      * @param exa The Extra Ability that will be registered
+     * @param types The corresponding Entity Types of the Extra Ability
      */
-    void registerExtraAbility(IExtraAbility exa);
+    void registerExtraAbility(IExtraAbility exa, EntityType<?>... types);
 
     /**
      * Gets all registered Extra Abilities.
