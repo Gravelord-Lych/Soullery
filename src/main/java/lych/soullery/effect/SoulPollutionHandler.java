@@ -1,5 +1,6 @@
 package lych.soullery.effect;
 
+import lych.soullery.extension.ExtraAbility;
 import lych.soullery.world.gen.dimension.ModDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -35,6 +36,9 @@ public final class SoulPollutionHandler {
 
     public static void mayPollute(PlayerEntity player, World world, double probability) {
         if (player.isCreative() || player.isSpectator()) {
+            return;
+        }
+        if (ExtraAbility.SOUL_INVULNERABILITY.isOn(player)) {
             return;
         }
         if (world.dimension() == ModDimensions.SOUL_LAND && player.getRandom().nextDouble() < probability) {

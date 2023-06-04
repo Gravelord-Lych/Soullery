@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-// TODO - sound
 @OnlyIn(value = Dist.CLIENT, _interface = ICustomLaserUser.class)
 public interface ILaserAttacker extends IRangedAttackMob, ICustomLaserUser {
     LaserData getLaserData(LivingEntity target);

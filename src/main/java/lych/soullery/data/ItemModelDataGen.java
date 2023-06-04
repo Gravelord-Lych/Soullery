@@ -51,6 +51,8 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(ENTITY_CARRIER_II), HANDHELD, prefix(ENTITY_CARRIER_II));
         simple(registryNameToString(EXTRA_ABILITY_CARRIER), GENERATED, prefix(EXTRA_ABILITY_CARRIER));
         simple(registryNameToString(EXTRA_ABILITY_WAND), HANDHELD, prefix(EXTRA_ABILITY_WAND));
+        simple(registryNameToString(EXTRA_ABILITY_WAND_II), HANDHELD, prefix(EXTRA_ABILITY_WAND_II));
+        simple(registryNameToString(EXTRA_ABILITY_WAND_III), HANDHELD, prefix(EXTRA_ABILITY_WAND_III));
         halfUsedPotion(registryNameToString(HALF_USED_LINGERING_POTION), LINGERING_POTION);
         halfUsedPotion(registryNameToString(HALF_USED_POTION), POTION);
         halfUsedPotion(registryNameToString(HALF_USED_SPLASH_POTION), SPLASH_POTION);
@@ -70,9 +72,12 @@ public class ItemModelDataGen extends ItemModelProvider {
         simple(registryNameToString(REFINED_SOUL_METAL_PICKAXE), HANDHELD, prefix(REFINED_SOUL_METAL_PICKAXE));
         simple(registryNameToString(REFINED_SOUL_METAL_SHOVEL), HANDHELD, prefix(REFINED_SOUL_METAL_SHOVEL));
         simple(registryNameToString(REFINED_SOUL_METAL_SWORD), HANDHELD, prefix(REFINED_SOUL_METAL_SWORD));
+        simple(registryNameToString(SOUL_EXTRACTOR), HANDHELD, prefix(SOUL_EXTRACTOR));
         simple(registryNameToString(SOUL_ARROW), GENERATED, prefix(SOUL_ARROW));
         simple(registryNameToString(SOUL_BLAZE_POWDER), GENERATED, prefix(SOUL_BLAZE_POWDER));
+        simple(registryNameToString(ENERGIZED_BLAZE_POWDER), GENERATED, prefix(ENERGIZED_BLAZE_POWDER));
         simple(registryNameToString(SOUL_BLAZE_ROD), HANDHELD, prefix(SOUL_BLAZE_ROD));
+        simple(registryNameToString(ENERGIZED_BLAZE_ROD), HANDHELD, prefix(ENERGIZED_BLAZE_ROD));
         getBuilder(registryNameToString(SOUL_BOW)).parent(new UncheckedModelFile(new ResourceLocation("item/" + Objects.requireNonNull(Items.BOW.getRegistryName()).getPath()))).texture(LAYER0, prefix(SOUL_BOW)).override()
                 .predicate(SoulBowItem.PULLING, 1).model(new UncheckedModelFile(prefix(SOUL_BOW, "_pulling_0"))).end().override()
                 .predicate(SoulBowItem.PULLING, 1).predicate(SoulBowItem.PULL, 0.65f).model(new UncheckedModelFile(prefix(SOUL_BOW, "_pulling_1"))).end().override()

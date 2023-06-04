@@ -35,8 +35,8 @@ public enum SoulleryAPIImpl implements SoulleryAPI {
     INSTANCE;
 
     @Override
-    public IExtraAbility createExtraAbility(ResourceLocation registryName, int cost, boolean special) {
-        return ExtraAbility.create(registryName, cost, special);
+    public IExtraAbility createExtraAbility(ResourceLocation registryName, int cost, int energyCost, boolean special) {
+        return ExtraAbility.create(registryName, cost, energyCost, special);
     }
 
     @Override

@@ -12,7 +12,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -102,7 +101,7 @@ public class SoulDragonNetwork {
                 }
                 ClientWorld level = Minecraft.getInstance().level;
                 Random random = level.random;
-                level.playLocalSound(message.pos, SoundEvents.ENDER_DRAGON_SHOOT, SoundCategory.HOSTILE, 10, (random.nextFloat() - random.nextFloat()) * 0.2f + 1, false);
+                level.playLocalSound(message.pos, ModSoundEvents.SOUL_DRAGON_SHOOT.get(), SoundCategory.HOSTILE, 10, (random.nextFloat() - random.nextFloat()) * 0.2f + 1, false);
             }
         },
         DRAGON_DEATH {

@@ -14,11 +14,14 @@ public final class ExaNames {
     public static final String FANGS_SUMMONER = "fangs_summoner";
     public static final String FAVORED_TRADER = "favored_trader";
     public static final String FIRE_RESISTANCE = "fire_resistance";
+    public static final String FIRE_WALKER = "fire_walker";
+    public static final String FLYER = "flyer";
     public static final String FROST_RESISTANCE = "frost_resistance";
     public static final String PERMANENT_SLOWDOWN = "permanent_slowdown";
     public static final String GOLD_PREFERENCE = "gold_preference";
     public static final String IMITATOR = "imitator";
     public static final String INITIAL_ARMOR = "initial_armor";
+    public static final String INTIMIDATOR = "intimidator";
     public static final String MONSTER_SABOTAGE = "monster_sabotage";
     public static final String MONSTER_VIEW = "monster_view";
     public static final String OVERDRIVE = "overdrive";

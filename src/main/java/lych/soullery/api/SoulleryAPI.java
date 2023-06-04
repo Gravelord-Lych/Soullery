@@ -41,12 +41,14 @@ public interface SoulleryAPI {
 
     /**
      * Create an Extra Ability (for player). It was named "Extra" because there's a class called {@link net.minecraft.entity.player.PlayerAbilities PlayerAbilities}.
-     * @param registryName The registry name of the Extra Ability
-     * @param cost The Soul Container cost to apply the Extra Ability
+     *
+     * @param registryName  The registry name of the Extra Ability
+     * @param containerCost The Soul Container cost to apply the Extra Ability
+     * @param energyCost The Soul Energy cost to apply the Extra Ability
      * @param special True if it's special
      * @return The Extra Ability created by the registry name. or a dummy if the API is a dummy
      */
-    IExtraAbility createExtraAbility(ResourceLocation registryName, int cost, boolean special);
+    IExtraAbility createExtraAbility(ResourceLocation registryName, int containerCost, int energyCost, boolean special);
 
     /**
      * Gets an Extra Ability from the registry name.

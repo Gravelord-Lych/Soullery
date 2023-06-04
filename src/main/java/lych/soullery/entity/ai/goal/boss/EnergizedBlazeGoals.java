@@ -3,6 +3,7 @@ package lych.soullery.entity.ai.goal.boss;
 import lych.soullery.entity.ai.goal.IPhaseableGoal;
 import lych.soullery.entity.monster.boss.EnergizedBlazeEntity;
 import lych.soullery.util.ArrayUtils;
+import lych.soullery.util.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
@@ -10,7 +11,6 @@ import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -99,7 +99,7 @@ public final class EnergizedBlazeGoals {
                         if (attackStep > 1) {
                             float deviation = MathHelper.sqrt(MathHelper.sqrt(distSqr)) * 0.5f * deviationMultiplier;
                             if (!blaze.isSilent()) {
-                                blaze.level.levelEvent(null, Constants.WorldEvents.BLAZE_SHOOT_SOUND, blaze.blockPosition(), 0);
+                                blaze.playSound(ModSoundEvents.ENERGIZED_BLAZE_SHOOT.get(), (small ? 1 : 1.5f) * blaze.getSoundVolume(), 1);
                             }
                             AbstractFireballEntity fireball;
                             if (small) {

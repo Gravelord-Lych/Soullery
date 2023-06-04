@@ -4,8 +4,10 @@ import lych.soullery.api.event.PostLivingHurtEvent;
 import lych.soullery.entity.ModAttributes;
 import lych.soullery.extension.ExtraAbility;
 import lych.soullery.extension.soulpower.reinforce.FishReinforcement;
+import lych.soullery.extension.soulpower.reinforce.Reinforcements;
 import lych.soullery.util.BoundingBoxUtils;
 import lych.soullery.util.ExtraAbilityConstants;
+import lych.soullery.util.ModConstants;
 import lych.soullery.util.Vectors;
 import lych.soullery.util.mixin.IClientPlayerMixin;
 import lych.soullery.util.mixin.ILivingEntityMixin;
@@ -58,6 +60,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
     @Shadow public abstract boolean hasEffect(Effect p_70644_1_);
 
     @Shadow @Nullable public abstract EffectInstance getEffect(Effect p_70660_1_);
+
+    @Shadow protected abstract boolean onSoulSpeedBlock();
+
+    @Shadow public abstract ItemStack eat(World p_213357_1_, ItemStack p_213357_2_);
 
     private long sheepReinforcementTickCount;
     @Unique
@@ -172,6 +178,39 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
             return old;
         }
         return old;
+    }
+
+    @Inject(method = "getBlockSpeedFactor", at = @At("HEAD"), cancellable = true)
+    private void handleBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
+        if (onSoulSpeedBlock() && Reinforcements.SOUL_RABBIT.getTotalLevel(getArmorSlots()) > 0) {
+            cir.setReturnValue(1f);
+        }
+    }
+
+    @ModifyVariable(method = "tryAddSoulSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onSoulSpeedBlock()Z", shift = At.Shift.BY, by = -3))
+    private int handleSoulSpeed(int i) {
+        return Math.min(i + Reinforcements.SOUL_RABBIT.getTotalLevel(getArmorSlots()), ModConstants.MAX_SOUL_SPEED);
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Redirect(method = "updateFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;canElytraFly(Lnet/minecraft/entity/LivingEntity;)Z", remap = false))
+    private boolean updateFallFlyingWithExa(ItemStack instance, LivingEntity entity) {
+        if ((Object) this instanceof PlayerEntity && ExtraAbility.FLYER.isOn((PlayerEntity) (Object) this)) {
+            return true;
+        }
+        return instance.canElytraFly(entity);
+    }
+
+    @SuppressWarnings("ConstantValue")
+    @Redirect(method = "updateFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;elytraFlightTick(Lnet/minecraft/entity/LivingEntity;I)Z", remap = false))
+    private boolean updateFlightItemWithExa(ItemStack instance, LivingEntity entity, int flightTicks) {
+        if ((Object) this instanceof PlayerEntity && ExtraAbility.FLYER.isOn((PlayerEntity) (Object) this)) {
+            if (instance.canElytraFly(entity)) {
+                instance.elytraFlightTick(entity, flightTicks);
+            }
+            return true;
+        }
+        return instance.elytraFlightTick(entity, flightTicks);
     }
 
     private boolean canAutoJumpOver(BlockPos pos) {

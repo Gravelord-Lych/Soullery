@@ -90,6 +90,8 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         shaped(HORCRUX_CARRIER).pattern("X#X").pattern("#O#").pattern("X#X").define('#', REFINED_SOUL_METAL_INGOT).define('X', SOUL_METAL_INGOT).define('O', SOUL_CONTAINER).unlockedBy(stHasTwo(ModItemNames.REFINED_SOUL_METAL_INGOT, ModItemNames.SOUL_CONTAINER), hasAll(REFINED_SOUL_METAL_INGOT, SOUL_CONTAINER)).save(consumer, prefix(ModItemNames.HORCRUX_CARRIER + "_alt"));
         shaped(GLOWSTONE_BRICKS.blockItems().core(), 2).pattern("###").pattern("#S#").pattern("###").define('#', Tags.Items.DUSTS_GLOWSTONE).define('S', SOUL_POWDER).unlockedBy(stHasTwo(GLOWSTONE_DUST.getRegistryName().getPath(), ModItemNames.SOUL_POWDER), hasAll(GLOWSTONE_DUST, SOUL_POWDER)).save(consumer);
         shapeless(GLOWSTONE_BRICKS.blockItems().core(), 2).requires(GLOWSTONE, 2).requires(SOUL_POWDER).unlockedBy(stHasTwo(GLOWSTONE.getRegistryName().getPath(), ModItemNames.SOUL_POWDER), hasAll(GLOWSTONE, SOUL_POWDER)).save(consumer, prefix(ModBlockNames.GLOWSTONE_BRICKS + "_from_glowstones"));
+        shapeless(ENERGIZED_BLAZE_POWDER, 2).requires(ENERGIZED_BLAZE_ROD).unlockedBy(stHas(ModItemNames.ENERGIZED_BLAZE_ROD), has(ENERGIZED_BLAZE_ROD)).save(consumer);
+        shapeless(BLAZE_POWDER, 2).requires(ENERGIZED_BLAZE_POWDER).unlockedBy(stHas(ModItemNames.ENERGIZED_BLAZE_POWDER), has(ENERGIZED_BLAZE_POWDER)).save(consumer, prefix("blaze_powder_from_" + ModItemNames.ENERGIZED_BLAZE_POWDER));
 
         for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
             group.fillRecipes(consumer);

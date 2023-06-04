@@ -19,6 +19,7 @@ import static net.minecraft.loot.RandomValueRange.between;
 import static net.minecraft.loot.conditions.EntityHasProperty.hasProperties;
 import static net.minecraft.loot.conditions.KilledByPlayer.killedByPlayer;
 import static net.minecraft.loot.conditions.RandomChanceWithLooting.randomChanceAndLootingBoost;
+import static net.minecraft.loot.functions.EnchantWithLevels.enchantWithLevels;
 import static net.minecraft.loot.functions.LootingEnchantBonus.lootingMultiplier;
 import static net.minecraft.loot.functions.SetCount.setCount;
 import static net.minecraft.loot.functions.Smelt.smelted;
@@ -72,19 +73,49 @@ public class ModEntityLootTables extends EntityLootTables {
                         .add(lootTableItem(RABBIT_HIDE)
                                 .apply(setCount(between(0, 1)))
                                 .apply(lootingMultiplier(between(0, 1)))))
-                .withPool(lootPool().setRolls(exactly(1))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
                         .add(lootTableItem(RABBIT)
                                 .apply(setCount(between(0, 1)))
                                 .apply(smelted()
                                         .when(hasProperties(EntityTarget.THIS, ENTITY_ON_FIRE)))
                                 .apply(lootingMultiplier(between(0, 1)))))
-                .withPool(lootPool().setRolls(exactly(1))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
                         .add(lootTableItem(SOUL_POWDER))
                         .when(randomChanceAndLootingBoost(0.2f, 0.1f)))
-                .withPool(lootPool().setRolls(exactly(1))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
                         .add(lootTableItem(RABBIT_FOOT))
                         .when(killedByPlayer())
                         .when(randomChanceAndLootingBoost(0.05f, 0.02f))));
+        add(ModEntities.SOUL_SKELETON_KING, lootTable()
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(SOUL_EXTRACTOR)
+                                .apply(setCount(exactly(1)))
+                                .apply(enchantWithLevels(exactly(30)))))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(REFINED_SOUL_METAL_INGOT)
+                                .apply(setCount(between(5, 10)))
+                                .apply(lootingMultiplier(between(1, 2)))))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(BONE)
+                                .apply(setCount(between(2, 3)))
+                                .apply(lootingMultiplier(between(0, 1)))))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(SOUL_POWDER)
+                                .apply(setCount(between(2, 3)))
+                                .apply(lootingMultiplier(between(0, 1))))));
+        add(ModEntities.ENERGIZED_BLAZE, lootTable()
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(ENERGIZED_BLAZE_ROD)
+                                .apply(setCount(exactly(8)))
+                                .apply(lootingMultiplier(between(0, 1))))));
     }
 
     @Override

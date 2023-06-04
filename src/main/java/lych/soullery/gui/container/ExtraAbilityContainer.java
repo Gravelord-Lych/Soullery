@@ -2,7 +2,6 @@ package lych.soullery.gui.container;
 
 import lych.soullery.gui.container.slot.ExtraAbilityCarrierSlot;
 import lych.soullery.item.ExtraAbilityCarrierItem;
-import lych.soullery.item.ModItems;
 import lych.soullery.util.InventoryUtils;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -21,6 +21,7 @@ public class ExtraAbilityContainer extends Container {
     public static final int SPACING_Y = 30;
     public static final int ORDER_NUMBER_SPACING = 6;
     public static final int ORDER_NUMBER_OFFSET = 12;
+    private final Item item;
     private final PlayerEntity player;
     private final IIntArray availableCount = new IntArray(1);
 
@@ -28,11 +29,12 @@ public class ExtraAbilityContainer extends Container {
         super(ModContainers.EXA, id);
         ModContainers.addInventory(inventory, 8, 84, this::addSlot);
         this.player = inventory.player;
+        this.item = inventory.player.getMainHandItem().getItem();
         this.availableCount.set(0, availableCount);
         ((IPlayerEntityMixin) inventory.player).getExtraAbilityCarrierInventory().setContainer(this);
         for (int i = 0; i < 3; i++) {
-            addSlot(new ExtraAbilityCarrierSlot(((IPlayerEntityMixin) inventory.player).getExtraAbilityCarrierInventory(), i * 2, START_X + SPACING_X * i, START_Y, availableCount));
-            addSlot(new ExtraAbilityCarrierSlot(((IPlayerEntityMixin) inventory.player).getExtraAbilityCarrierInventory(), i * 2 + 1, START_X + SPACING_X * i, START_Y + SPACING_Y, availableCount));
+            addSlot(new ExtraAbilityCarrierSlot(this, i * 2, START_X + SPACING_X * i, START_Y, ((IPlayerEntityMixin) inventory.player).getExtraAbilityCarrierInventory(), availableCount));
+            addSlot(new ExtraAbilityCarrierSlot(this, i * 2 + 1, START_X + SPACING_X * i, START_Y + SPACING_Y, ((IPlayerEntityMixin) inventory.player).getExtraAbilityCarrierInventory(), availableCount));
         }
     }
 
@@ -90,7 +92,7 @@ public class ExtraAbilityContainer extends Container {
 
     @Override
     public boolean stillValid(PlayerEntity player) {
-        boolean valid = player.getMainHandItem().getItem() == ModItems.EXTRA_ABILITY_WAND;
+        boolean valid = player.getMainHandItem().getItem() == item;
         if (!valid) {
             ((IPlayerEntityMixin) player).getExtraAbilityCarrierInventory().setContainer(null);
         }

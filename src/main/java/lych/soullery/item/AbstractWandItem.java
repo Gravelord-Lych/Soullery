@@ -18,17 +18,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends Item implements IUpgradeableItem {
     private static final Map<Class<?>, Map<Integer, ?>> GLOBAL_TIER_MAP = new HashMap<>();
-    private final int energyCost;
+    private final ToIntFunction<? super ItemStack> energyCostFunction;
     private final int tier;
     private final LazyValue<Map<Integer, T>> tierMap = new LazyValue<>(this::initTierMap);
 
     public AbstractWandItem(Properties properties, int energyCost, int tier) {
+        this(properties, stack -> energyCost, tier);
+    }
+
+    public AbstractWandItem(Properties properties, ToIntFunction<? super ItemStack> energyCostFunction, int tier) {
         super(properties);
-        this.energyCost = energyCost;
+        this.energyCostFunction = energyCostFunction;
         this.tier = tier;
     }
 
@@ -58,15 +63,16 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        if (level.isClientSide() && shouldSuccessClientSide(player, hand)) {
-            return ActionResult.success(player.getItemInHand(hand));
+        ItemStack stack = player.getItemInHand(hand);
+        if (level.isClientSide() && shouldSuccessClientSide(player, stack)) {
+            return ActionResult.success(stack);
         }
         if (!level.isClientSide()) {
             ActionResultType result = null;
-            if (hasEnoughEnergy(player) && ModItems.canDamage(player.getItemInHand(hand))) {
+            if (hasEnoughEnergy(player, stack) && ModItems.canDamage(stack)) {
                 result = performWandUse((ServerWorld) level, (ServerPlayerEntity) player, hand);
                 if (result != null && result.consumesAction()) {
-                    SoulEnergies.cost(player, energyCost);
+                    SoulEnergies.cost(player, energyCostFunction.applyAsInt(stack));
                     ModItems.damage(player, hand);
                     if (getSound() != null) {
                         WandSoundNetwork.INSTANCE.send(PacketDistributor.NEAR.with(() -> PacketDistributor.TargetPoint.p(player.getX(), player.getY(), player.getZ(), 30, player.level.dimension()).get()), getId(this));
@@ -74,18 +80,18 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
                 }
             }
             if (result != null) {
-                return new ActionResult<>(result, player.getItemInHand(hand));
+                return new ActionResult<>(result, stack);
             }
         }
         return super.use(level, player, hand);
     }
 
-    protected boolean shouldSuccessClientSide(PlayerEntity player, Hand hand) {
-        return hasEnoughEnergy(player) && ModItems.canDamage(player.getItemInHand(hand));
+    protected boolean shouldSuccessClientSide(PlayerEntity player, ItemStack stack) {
+        return hasEnoughEnergy(player, stack) && ModItems.canDamage(stack);
     }
 
-    protected final boolean hasEnoughEnergy(PlayerEntity player) {
-        return SoulEnergies.getExtractableSEOf(player) >= energyCost;
+    protected final boolean hasEnoughEnergy(PlayerEntity player, ItemStack stack) {
+        return SoulEnergies.getExtractableSEOf(player) >= energyCostFunction.applyAsInt(stack);
     }
 
     @Nullable

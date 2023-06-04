@@ -10,7 +10,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.PointOfView;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +26,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -81,5 +84,13 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IP
                 Minecraft.getInstance().options.setCameraType(PointOfView.THIRD_PERSON_BACK);
             }
         }
+    }
+
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;canElytraFly(Lnet/minecraft/entity/LivingEntity;)Z", remap = false))
+    private boolean canFlyWithExa(ItemStack instance, LivingEntity entity) {
+        if (entity instanceof PlayerEntity && ExtraAbility.FLYER.isOn((PlayerEntity) entity)) {
+            return true;
+        }
+        return instance.canElytraFly(entity);
     }
 }

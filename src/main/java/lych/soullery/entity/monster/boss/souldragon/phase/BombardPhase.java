@@ -2,9 +2,10 @@ package lych.soullery.entity.monster.boss.souldragon.phase;
 
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.entity.projectile.SoulballEntity;
+import lych.soullery.network.SoulDragonNetwork;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class BombardPhase extends AttackPhase {
     public BombardPhase(SoulDragonEntity dragon) {
@@ -21,10 +22,7 @@ public class BombardPhase extends AttackPhase {
             double tx = attackTarget.getX() - x + dragon.getRandom().nextGaussian();
             double ty = attackTarget.getY(0.5) - y + dragon.getRandom().nextGaussian();
             double tz = attackTarget.getZ() - z + dragon.getRandom().nextGaussian();
-            if (!dragon.isSilent()) {
-//              TODO - sound
-                level.levelEvent(null, Constants.WorldEvents.ENDERDRAGON_SHOOT_SOUND, dragon.blockPosition(), 0);
-            }
+            SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new SoulDragonNetwork.Message(SoulDragonNetwork.MessageType.PLAY_SHOOT_SOUND, dragon.blockPosition(), dragon.getId(), dragon.isSilent(), dragon.isPurified()));
             SoulballEntity soulball = new SoulballEntity(dragon, tx, ty, tz, level);
             soulball.moveTo(x, y, z, 0, 0);
             soulball.setUsedForBombard(true);

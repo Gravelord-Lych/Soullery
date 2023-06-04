@@ -5,10 +5,14 @@ public final class ModItemNames {
     public static final String CHAOS_WAND_II = "chaos_wand_l2";
     public static final String ENDER_LAUNCHER = "ender_launcher";
     public static final String ENDER_LAUNCHER_II = "ender_launcher_l2";
+    public static final String ENERGIZED_BLAZE_POWDER = "energized_blaze_powder";
+    public static final String ENERGIZED_BLAZE_ROD = "energized_blaze_rod";
     public static final String ENTITY_CARRIER = "entity_carrier";
     public static final String ENTITY_CARRIER_II = "entity_carrier_l2";
     public static final String EXTRA_ABILITY_CARRIER = "extra_ability_carrier";
     public static final String EXTRA_ABILITY_WAND = "extra_ability_wand";
+    public static final String EXTRA_ABILITY_WAND_II = "extra_ability_wand_l2";
+    public static final String EXTRA_ABILITY_WAND_III = "extra_ability_wand_l3";
     public static final String HALF_USED_LINGERING_POTION = "half_used_lingering_potion";
     public static final String HALF_USED_POTION = "half_used_potion";
     public static final String HALF_USED_SPLASH_POTION = "half_used_splash_potion";
@@ -35,6 +39,7 @@ public final class ModItemNames {
     public static final String SOUL_CONTAINER = "soul_container";
     public static final String SOUL_ENERGY_GEM = "soul_energy_gem";
     public static final String SOUL_ENERGY_GEM_II = "soul_energy_gem_l2";
+    public static final String SOUL_EXTRACTOR = "soul_extractor";
     public static final String SOUL_LAVA_BUCKET = "soul_lava_bucket";
     public static final String SOUL_METAL_INGOT = "soul_metal_ingot";
     public static final String SOUL_METAL_NUGGET = "soul_metal_nugget";

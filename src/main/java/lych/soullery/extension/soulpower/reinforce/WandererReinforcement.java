@@ -8,7 +8,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class WandererReinforcement extends AggressiveReinforcement {
-    public static final double PROBABILITY_MULTIPLIER = 0.4;
+    public static final double PROBABILITY_ADDITION = 0.4;
 
     public WandererReinforcement() {
         super(ModEntities.WANDERER);

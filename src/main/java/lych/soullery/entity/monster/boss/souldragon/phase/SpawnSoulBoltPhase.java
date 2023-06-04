@@ -53,11 +53,11 @@ public class SpawnSoulBoltPhase extends AttackPhase {
 
     @Override
     protected int getMaxCharge(LivingEntity target) {
-        return 6;
+        return 5;
     }
 
     @Override
     protected int getMaxAttackStep(LivingEntity target) {
-        return 7;
+        return 10;
     }
 }

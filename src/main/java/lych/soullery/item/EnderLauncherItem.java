@@ -28,7 +28,7 @@ public class EnderLauncherItem extends AbstractWandItem<EnderLauncherItem> imple
     private static final String TAG = Utils.snakeToCamel(ModItemNames.ENDER_LAUNCHER) + ".";
 
     public EnderLauncherItem(Properties properties, int tier) {
-        super(properties, 200, tier);
+        super(properties, stack -> getGravity(stack).isUnstable() ? 400 : 200, tier);
     }
 
     @Nullable

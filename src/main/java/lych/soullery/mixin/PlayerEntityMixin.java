@@ -8,10 +8,7 @@ import lych.soullery.extension.ExtraAbility;
 import lych.soullery.extension.control.MindOperator;
 import lych.soullery.gui.container.inventory.ExtraAbilityInventory;
 import lych.soullery.item.EnderLauncherItem;
-import lych.soullery.util.AdditionalCooldownTracker;
-import lych.soullery.util.EntityUtils;
-import lych.soullery.util.InventoryUtils;
-import lych.soullery.util.ModDataSerializers;
+import lych.soullery.util.*;
 import lych.soullery.util.mixin.IFoodStatsMixin;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.entity.Entity;
@@ -40,6 +37,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 
@@ -56,6 +54,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     @Shadow public abstract ItemStack eat(World p_213357_1_, ItemStack p_213357_2_);
 
     @Shadow public abstract void playNotifySound(SoundEvent p_213823_1_, SoundCategory p_213823_2_, float p_213823_3_, float p_213823_4_);
+
+    @Shadow public abstract void startFallFlying();
 
     private static final DataParameter<Integer> DATA_OPERATING_ID = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.INT);
     private static final DataParameter<Set<IExtraAbility>> DATA_EXTRA_ABILITIES = EntityDataManager.defineId(PlayerEntity.class, ModDataSerializers.EXA);
@@ -127,6 +127,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
 
     @Override
     public Set<IExtraAbility> getExtraAbilities() {
+//      Null-check to prevent NPE caused by class loading order
+        if (entityData == null) {
+            return Collections.emptySet();
+        }
         return entityData.get(DATA_EXTRA_ABILITIES);
     }
 
@@ -161,6 +165,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
         ((IFoodStatsMixin) foodData).setPlayer((PlayerEntity) (Object) this);
     }
 
+    @Inject(method = "getFireImmuneTicks", at = @At("HEAD"), cancellable = true)
+    private void modifyFireImmuneTicks(CallbackInfoReturnable<Integer> cir) {
+        if (ExtraAbility.FIRE_WALKER.isOn((PlayerEntity) (Object) this)) {
+            cir.setReturnValue(ModConstants.FIRE_WALKER_IMMUNE_TICKS);
+        }
+    }
+
     @ModifyArg(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;)Ljava/util/List;"))
     private AxisAlignedBB modifyTouchableRange(AxisAlignedBB bb) {
         if (hasExtraAbility(ExtraAbility.ULTRAREACH)) {
@@ -175,6 +186,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
             return oldPickupDelay + ConfigHelper.getUltrareachLengthenPickupDelayAmount();
         }
         return oldPickupDelay;
+    }
+
+    @Inject(method = "tryToStartFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getItemBySlot(Lnet/minecraft/inventory/EquipmentSlotType;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
+    private void tryStartFallFlyingWithExa(CallbackInfoReturnable<Boolean> cir) {
+        if (ExtraAbility.FLYER.isOn((PlayerEntity) (Object) this)) {
+            startFallFlying();
+            cir.setReturnValue(true);
+        }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FoodStats;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundNBT;)V"))

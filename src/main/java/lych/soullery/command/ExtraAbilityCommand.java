@@ -2,18 +2,27 @@ package lych.soullery.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lych.soullery.Soullery;
 import lych.soullery.api.exa.IExtraAbility;
 import lych.soullery.command.argument.ExtraAbilityArgument;
+import lych.soullery.item.ExtraAbilityCarrierItem;
+import lych.soullery.item.ModItems;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.command.arguments.ItemInput;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import static net.minecraft.command.Commands.argument;
@@ -37,7 +46,13 @@ public final class ExtraAbilityCommand {
                 .then(literal("show")
                         .executes(context -> showExtraAbilities(context, context.getSource().getPlayerOrException(), false))
                         .then(argument("player", EntityArgument.player())
-                                .executes(context -> showExtraAbilities(context, EntityArgument.getPlayer(context, "player"), true)))));
+                                .executes(context -> showExtraAbilities(context, EntityArgument.getPlayer(context, "player"), true))))
+                .then(literal("gc")
+                        .then(argument("targets", EntityArgument.players())
+                                .then(argument("exa", new ExtraAbilityArgument())
+                                        .executes(context -> gc(context, EntityArgument.getPlayers(context, "targets"), 1))
+                                        .then(argument("count", IntegerArgumentType.integer(1))
+                                                .executes(context -> gc(context, EntityArgument.getPlayers(context, "targets"), IntegerArgumentType.getInteger(context, "count"))))))));
     }
 
     private static int removeAllExtraAbilities(CommandContext<CommandSource> context, ServerPlayerEntity player) {
@@ -79,10 +94,56 @@ public final class ExtraAbilityCommand {
         }
         int count = 0;
         context.getSource().sendSuccess(new TranslationTextComponent(Soullery.prefixMsg("commands", "exa.show_extra_abilities"), player.getDisplayName()), broadcastToAdmins);
-        for (IExtraAbility exa : ((IPlayerEntityMixin) player).getExtraAbilities().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList())) {
+        for (IExtraAbility exa : ((IPlayerEntityMixin) player).getExtraAbilities().stream().sorted(IExtraAbility::compareToOnlyByName).collect(Collectors.toList())) {
             context.getSource().sendSuccess(exa.getDisplayName().copy().withStyle(exa.getStyle()), false);
             count++;
         }
         return count;
+    }
+
+    private static int gc(CommandContext<CommandSource> context, Collection<ServerPlayerEntity> players, int count) throws CommandSyntaxException {
+        IExtraAbility exa = ExtraAbilityArgument.getExa(context, "exa");
+        ItemStack stack = new ItemStack(ModItems.EXTRA_ABILITY_CARRIER);
+        ExtraAbilityCarrierItem.setExa(stack, exa);
+        return giveItem(context.getSource(), new ItemInput(stack.getItem(), stack.getTag()), players, count);
+    }
+
+    /**
+     * [VanillaCopy] {@link net.minecraft.command.impl.GiveCommand GiveCommand}
+     */
+    @SuppressWarnings("deprecation")
+    private static int giveItem(CommandSource source, ItemInput input, Collection<ServerPlayerEntity> players, int count) throws CommandSyntaxException {
+        for (ServerPlayerEntity player : players) {
+            int cnt = count;
+            while (cnt > 0) {
+                int d = Math.min(input.getItem().getMaxStackSize(), cnt);
+                cnt -= d;
+                ItemStack stack = input.createItemStack(d, false);
+                boolean add = player.inventory.add(stack);
+                if (add && stack.isEmpty()) {
+                    stack.setCount(1);
+                    ItemEntity entity = player.drop(stack, false);
+                    if (entity != null) {
+                        entity.makeFakeItem();
+                    }
+                    player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1) * 2);
+                    player.inventoryMenu.broadcastChanges();
+                } else {
+                    ItemEntity entity = player.drop(stack, false);
+                    if (entity != null) {
+                        entity.setNoPickUpDelay();
+                        entity.setOwner(player.getUUID());
+                    }
+                }
+            }
+        }
+
+        if (players.size() == 1) {
+            source.sendSuccess(new TranslationTextComponent("commands.give.success.single", count, input.createItemStack(count, false).getDisplayName(), players.iterator().next().getDisplayName()), true);
+        } else {
+            source.sendSuccess(new TranslationTextComponent("commands.give.success.single", count, input.createItemStack(count, false).getDisplayName(), players.size()), true);
+        }
+
+        return players.size();
     }
 }

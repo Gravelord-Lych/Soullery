@@ -21,7 +21,7 @@ final class SoulleryAPIDummyImpl implements SoulleryAPI {
     SoulleryAPIDummyImpl() {}
 
     @Override
-    public IExtraAbility createExtraAbility(ResourceLocation registryName, int cost, boolean special) {
+    public IExtraAbility createExtraAbility(ResourceLocation registryName, int cost, int energyCost, boolean special) {
         return IExtraAbility.dummy();
     }
 

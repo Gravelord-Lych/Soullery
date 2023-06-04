@@ -1,8 +1,9 @@
 package lych.soullery.extension.soulpower.reinforce;
 
 import lych.soullery.api.event.ArrowSpawnEvent;
-import lych.soullery.entity.ModEntities;
+import lych.soullery.extension.fire.Fire;
 import lych.soullery.util.mixin.IEntityMixin;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
@@ -13,8 +14,11 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class SoulSkeletonReinforcement extends AggressiveReinforcement {
-    public SoulSkeletonReinforcement() {
-        super(ModEntities.SOUL_SKELETON);
+    private final Fire fire;
+
+    public SoulSkeletonReinforcement(EntityType<?> type, Fire fire) {
+        super(type);
+        this.fire = fire;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class SoulSkeletonReinforcement extends AggressiveReinforcement {
         ItemStack bow = event.getBow();
         int level = getLevel(bow);
         if (level > 0) {
-            ((IEntityMixin) event.getArrow()).setOnSoulFire(true);
+            ((IEntityMixin) event.getArrow()).setFireOnSelf(fire);
         }
     }
 
@@ -45,7 +49,7 @@ public class SoulSkeletonReinforcement extends AggressiveReinforcement {
     @Override
     protected void onDamage(ItemStack stack, LivingEntity attacker, LivingEntity target, int level, LivingDamageEvent event) {
         if (!target.fireImmune()) {
-            ((IEntityMixin) target).setOnSoulFire(true);
+            ((IEntityMixin) target).setFireOnSelf(fire);
         }
     }
 

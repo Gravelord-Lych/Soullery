@@ -9,6 +9,7 @@ import lych.soullery.entity.ai.phase.PhaseManager;
 import lych.soullery.entity.ai.phase.SkippablePhaseManager;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.IIdentifiableEnum;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.mixin.IGoalSelectorMixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,6 +25,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
@@ -182,6 +184,31 @@ public class EnergizedBlazeEntity extends BlazeEntity {
 
     @Override
     public boolean canChangeDimensions() {
+        return false;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.ENERGIZED_BLAZE_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ENERGIZED_BLAZE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ENERGIZED_BLAZE_DEATH.get();
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return 1.2f;
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
         return false;
     }
 

@@ -23,7 +23,7 @@ public class StrafePlayerPhase extends AttackPhase {
         double ty = attackTarget.getY(0.5) - y;
         double tz = attackTarget.getZ() - z;
         if (!dragon.isSilent()) {
-            SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new Message(MessageType.SHOW_SOULBALL_HIT_PARTICLE, dragon.blockPosition(), dragon.getId(), dragon.isSilent(), dragon.isPurified()));
+            SoulDragonNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), new Message(MessageType.PLAY_SHOOT_SOUND, dragon.blockPosition(), dragon.getId(), dragon.isSilent(), dragon.isPurified()));
         }
         SoulballEntity soulball = new SoulballEntity(dragon, tx, ty, tz, level);
         soulball.moveTo(x, y, z, 0, 0);

@@ -1,10 +1,13 @@
 package lych.soullery.api.exa;
 
+import com.google.common.collect.ComparisonChain;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.jetbrains.annotations.NotNull;
 
 public interface IExtraAbility extends Comparable<IExtraAbility> {
@@ -30,7 +33,7 @@ public interface IExtraAbility extends Comparable<IExtraAbility> {
      */
     boolean removeFrom(PlayerEntity player);
 
-    ITextComponent getDisplayName();
+    String makeDescriptionId();
 
     /**
      * Returns the count of <i>Soul Container</i> needed to apply the <i>Extra Ability</i> to a player.
@@ -56,11 +59,34 @@ public interface IExtraAbility extends Comparable<IExtraAbility> {
      */
     TextFormatting getStyle();
 
+    default ITextComponent getDisplayName() {
+        return new TranslationTextComponent(makeDescriptionId());
+    }
+
     /**
      * @return True if this is a dummy
      */
     default boolean isDummy() {
         return this instanceof Dummy;
+    }
+
+    @Override
+    default int compareTo(IExtraAbility o) {
+        if (isSpecial() != o.isSpecial()) {
+            return isSpecial() ? 1 : -1;
+        }
+        String s1 = I18n.get(makeDescriptionId());
+        String s2 = I18n.get(o.makeDescriptionId());
+        return ComparisonChain.start().compare(getSoulContainerCost(), o.getSoulContainerCost()).compare(getSECost(), o.getSECost()).compare(s1, s2).result();
+    }
+
+    default int compareToOnlyByName(IExtraAbility o) {
+        if (isSpecial() != o.isSpecial()) {
+            return isSpecial() ? -1 : 1;
+        }
+        String s1 = I18n.get(makeDescriptionId());
+        String s2 = I18n.get(o.makeDescriptionId());
+        return s1.compareTo(s2);
     }
 
     static IExtraAbility dummy() {
@@ -93,6 +119,11 @@ class Dummy implements IExtraAbility {
     @Override
     public boolean removeFrom(PlayerEntity player) {
         return false;
+    }
+
+    @Override
+    public String makeDescriptionId() {
+        return "dummy";
     }
 
     @Override

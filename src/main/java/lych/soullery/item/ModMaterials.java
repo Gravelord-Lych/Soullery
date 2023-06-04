@@ -26,7 +26,8 @@ public final class ModMaterials {
     private ModMaterials() {}
 
     public static class Tool implements IItemTier {
-        public static final Tool REFINED_SOUL_METAL = new Builder().harvestLevel(3).maxUses(1451).speed(10).damageBonus(4).enchantmentValue(5).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
+        public static final Tool REFINED_SOUL_METAL = new Builder().harvestLevel(3).maxUses(1451).speed(10).damageBonus(4).enchantmentValue(15).repairMaterial(ModItems.REFINED_SOUL_METAL_INGOT).build();
+        public static final Tool SOUL_EXTRACTOR = new Builder().harvestLevel(0).maxUses(303).speed(3).damageBonus(1).enchantmentValue(10).repairMaterial(ModItems.SOUL_PIECE).build();
 
         private final int harvestLevel;
         private final int maxUses;
@@ -127,6 +128,7 @@ public final class ModMaterials {
                 checkArgument(tool.enchantmentValue >= 0, "Invalid enchantmentValue" + tool.enchantmentValue);
                 requireNonNull(tool.repairMaterial, "Repair material supplier should be non-null");
                 requireNonNull(tool.repairMaterial.get(), "Repair material should be non-null");
+                checkArgument(!tool.repairMaterial.get().isEmpty(), "Repair material should not be empty");
                 return tool;
             }
         }

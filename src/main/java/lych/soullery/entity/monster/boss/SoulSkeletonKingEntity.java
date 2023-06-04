@@ -32,6 +32,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -154,7 +155,7 @@ public class SoulSkeletonKingEntity extends AbstractSkeletonKingEntity implement
 
     @Override
     protected SoundEvent getStepSound() {
-        return ModSoundEvents.SOUL_SKELETON_STEP.get();
+        return ModSoundEvents.SOUL_SKELETON_KING_STEP.get();
     }
 
     @Override
@@ -175,7 +176,7 @@ public class SoulSkeletonKingEntity extends AbstractSkeletonKingEntity implement
 
     @Override
     public SoundEvent getCastingSoundEvent() {
-        return SoundEvents.ILLUSIONER_CAST_SPELL;
+        return ModSoundEvents.SOUL_SKELETON_KING_CAST_SPELL.get();
     }
 
     public boolean isLowHealth() {
@@ -214,5 +215,31 @@ public class SoulSkeletonKingEntity extends AbstractSkeletonKingEntity implement
         super.readAdditionalSaveData(compoundNBT);
         updatedWeapon = compoundNBT.getBoolean("UpdatedWeapon");
         setPurified(compoundNBT.getBoolean("Purified"));
+    }
+
+    @Override
+    public void playSound(SoundEvent sound, float volume, float pitch) {
+        super.playSound(sound == SoundEvents.SKELETON_SHOOT ? ModSoundEvents.SOUL_SKELETON_KING_SHOOT.get() : sound, volume, pitch);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.SOUL_SKELETON_KING_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_SKELETON_DEATH.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.SOUL_SKELETON_KING_AMBIENT.get();
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 1.2f;
     }
 }

@@ -41,6 +41,7 @@ import lych.soullery.mixin.IndirectEntityDamageSourceAccessor;
 import lych.soullery.mixin.MobSpawnInfoAccessor;
 import lych.soullery.network.ClickHandlerNetwork;
 import lych.soullery.tag.ModBlockTags;
+import lych.soullery.tag.ModItemTags;
 import lych.soullery.util.*;
 import lych.soullery.util.mixin.IEntityMixin;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
@@ -589,6 +590,11 @@ public final class CommonEventListener {
                 MobEntity mob = (MobEntity) event.getEntityLiving();
                 SoulManager.getData(mob).ifPresent(IControlledMobData::tick);
             }
+            if (event.getEntityLiving() instanceof IHasOwner<?>) {
+                if (EntityUtils.isDead(((IHasOwner<?>) event.getEntityLiving()).getOwner())) {
+                    ((IHasOwner<?>) event.getEntityLiving()).setOwner(null);
+                }
+            }
         }
         if (event.getEntityLiving() instanceof IShieldUser && ((IShieldUser) event.getEntityLiving()).getSharedShield() != null) {
 //          Multi-tick is not allowed for shields
@@ -620,14 +626,13 @@ public final class CommonEventListener {
 
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
-        double dropProbability = Reinforcements.getDropProbability(event.getEntityLiving().getType());
+        double dropProbability = Math.max(0, Reinforcements.getDropProbability(event.getEntityLiving().getType()));
         boolean playerKilled = event.isRecentlyHit() && event.getSource().getEntity() instanceof PlayerEntity;
         boolean canLoot = event.getEntityLiving().level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
         boolean nonDeadPlayer = !(event.getEntityLiving() instanceof PlayerEntity);
         if (playerKilled && canLoot && nonDeadPlayer) {
             PlayerEntity player = (PlayerEntity) event.getSource().getEntity();
-            int level = Reinforcements.WANDERER.getLevel(player.getMainHandItem());
-            dropProbability *= (1 + level * WandererReinforcement.PROBABILITY_MULTIPLIER);
+            dropProbability = getBonusDropProbability(dropProbability, player);
             while (event.getEntityLiving().getRandom().nextDouble() < dropProbability) {
                 ItemStack piece = new ItemStack(ModItems.SOUL_PIECE);
                 SoulPieceItem.setType(piece, event.getEntityLiving().getType());
@@ -638,6 +643,18 @@ public final class CommonEventListener {
                 }
             }
         }
+    }
+
+    private static double getBonusDropProbability(double dropProbability, PlayerEntity player) {
+        ItemStack stack = player.getMainHandItem();
+        int level = Reinforcements.WANDERER.getLevel(stack);
+        dropProbability *= (1 + level * WandererReinforcement.PROBABILITY_ADDITION);
+        if (stack.getItem().is(ModItemTags.SOUL_EXTRACTORS)) {
+            dropProbability *= ModConstants.SOUL_EXTRACTOR_PROBABILITY_MULTIPLIER;
+            dropProbability = Math.max(1, dropProbability);
+            ModItems.forceDamage(stack, player, Hand.MAIN_HAND, (int) Math.ceil(dropProbability));
+        }
+        return dropProbability;
     }
 
     @SubscribeEvent

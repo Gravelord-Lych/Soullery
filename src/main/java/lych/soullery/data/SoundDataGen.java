@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static lych.soullery.Soullery.MOD_ID;
 import static lych.soullery.util.ModSoundEvents.*;
 
 public class SoundDataGen extends SoundDefinitionsProvider {
@@ -29,13 +30,19 @@ public class SoundDataGen extends SoundDefinitionsProvider {
     private static final ResourceLocation MIND_OPERATE_PATH = Soullery.prefix("random/mind_operate");
 
     public SoundDataGen(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, Soullery.MOD_ID, helper);
+        super(generator, MOD_ID, helper);
     }
 
     @Override
     public void registerSounds() {
+        multiple(ARMOR_EQUIP_REFINED_SOUL_METAL, 0.8, paths("enchant/soulspeed/soulspeed", 5, 10));
         add(CHAOS, 4);
         add(DEFENSIVE_META8_SHARE_SHIELD);
+        multiple(ENERGIZED_BLAZE_AMBIENT, paths("mob/blaze/breathe", 4));
+        single(ENERGIZED_BLAZE_BURN, "fire/fire");
+        single(ENERGIZED_BLAZE_DEATH, "mob/blaze/death");
+        multiple(ENERGIZED_BLAZE_HURT, paths("mob/blaze/hit", 4));
+        single(ENERGIZED_BLAZE_SHOOT, "mob/ghast/fireball4");
         multiple(ENERGY_SOUND_BREAK, paths("random/explode", 4));
         redirect(ETHEMOVE, ETHEMOVE_PATH, 4);
         redirect(MIND_OPERATE, MIND_OPERATE_PATH, 3);
@@ -64,6 +71,13 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         add(SOUL_SKELETON_HURT, 4);
         redirect(SOUL_SKELETON_SHOOT, BOW_PATH);
         add(SOUL_SKELETON_STEP, 4, def -> def.subtitle(GENERIC_FOOTSTEPS));
+        multiple(SOUL_SKELETON_KING_AMBIENT, paths(MOD_ID + ":mob/soul_skeleton/ambient", 3));
+        multiple(SOUL_SKELETON_KING_CAST_SPELL, paths("mob/evocation_illager/cast", 2));
+        single(SOUL_SKELETON_KING_DEATH, MOD_ID + ":mob/soul_skeleton/death");
+        multiple(SOUL_SKELETON_KING_HURT, paths(MOD_ID + ":mob/soul_skeleton/hurt", 4));
+        redirect(SOUL_SKELETON_KING_SHOOT, BOW_PATH);
+        single(SOUL_SKELETON_KING_SUMMON, "mob/evocation_illager/prepare_summon");
+        multiple(SOUL_SKELETON_KING_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), paths(MOD_ID + ":mob/soul_skeleton/step", 4));
         add(WANDERER_AMBIENT, 4);
         add(WANDERER_DEATH);
         add(WANDERER_HURT, 4);
@@ -73,7 +87,7 @@ public class SoundDataGen extends SoundDefinitionsProvider {
 
     @Override
     public String getName() {
-        return "Sounds: " + Soullery.MOD_ID;
+        return "Sounds: " + MOD_ID;
     }
 
     private void single(RegistryObject<SoundEvent> sound, String name) {
@@ -128,11 +142,15 @@ public class SoundDataGen extends SoundDefinitionsProvider {
     }
 
     private String[] paths(String type, int count) {
-        if (count == 1) {
+        return paths(type, 1, count);
+    }
+
+    private String[] paths(String type, int min, int max) {
+        if (max == 1) {
             return new String[]{type};
         }
-        List<String> paths = new ArrayList<>(count);
-        for (int i = 1; i <= count; i++) {
+        List<String> paths = new ArrayList<>(max);
+        for (int i = min; i <= max; i++) {
             paths.add(type + i);
         }
         return paths.toArray(new String[0]);

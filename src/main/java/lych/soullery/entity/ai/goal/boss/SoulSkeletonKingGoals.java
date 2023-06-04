@@ -6,12 +6,12 @@ import lych.soullery.entity.monster.SoulSkeletonEntity;
 import lych.soullery.entity.monster.boss.SoulSkeletonKingEntity;
 import lych.soullery.entity.projectile.SoulArrowEntity;
 import lych.soullery.util.EntityUtils;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.PositionCalculators;
 import lych.soullery.util.WorldUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
@@ -47,7 +47,7 @@ public final class SoulSkeletonKingGoals {
                 double tz = target.getZ() - mob.getZ();
                 double dist = MathHelper.sqrt(tx * tx + tz * tz);
                 arrow.shoot(tx, ty + dist * 0.2, tz, 1.6f, DEVIATION);
-                mob.playSound(SoundEvents.SKELETON_SHOOT, 1, 1 / (mob.getRandom().nextFloat() * 0.4f + 0.8f));
+                mob.playSound(ModSoundEvents.SOUL_SKELETON_KING_SHOOT.get(), 2, 1 / (mob.getRandom().nextFloat() * 0.4f + 0.8f));
                 mob.level.addFreshEntity(arrow);
             }
         }
@@ -114,7 +114,7 @@ public final class SoulSkeletonKingGoals {
 
         @Override
         protected SoundEvent getSpellPrepareSound() {
-            return SoundEvents.EVOKER_PREPARE_SUMMON;
+            return ModSoundEvents.SOUL_SKELETON_KING_SUMMON.get();
         }
 
         @Override

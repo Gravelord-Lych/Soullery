@@ -5,20 +5,21 @@ import lych.soullery.entity.ai.goal.FollowOwnerGoal;
 import lych.soullery.entity.iface.IHasOwner;
 import lych.soullery.entity.monster.boss.SoulSkeletonKingEntity;
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
+import lych.soullery.extension.ExtraAbility;
 import lych.soullery.extension.fire.Fires;
 import lych.soullery.item.ModItems;
 import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.mixin.IEntityMixin;
-import lych.soullery.util.mixin.IGoalSelectorMixin;
 import lych.soullery.world.gen.biome.ModBiomes;
 import lych.soullery.world.gen.biome.sll.SLLayer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.passive.TurtleEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -58,11 +59,26 @@ public class SoulSkeletonEntity extends AbstractSkeletonEntity implements IHasOw
 
     @Override
     protected void registerGoals() {
-        super.registerGoals();
+        goalSelector.addGoal(2, new RestrictSunGoal(this));
+        goalSelector.addGoal(3, new FleeSunGoal(this, 1));
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, WolfEntity.class, 6, 1, 1.2));
         goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1, 10, 4, false));
-        targetSelector.addGoal(2, new CopyOwnerTargetGoal<>(this));
-        ((IGoalSelectorMixin) targetSelector).getAvailableGoals().removeIf(goal -> goal.getGoal() instanceof HurtByTargetGoal);
+        goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1));
+        goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8));
+        goalSelector.addGoal(6, new LookRandomlyGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this, SoulSkeletonKingEntity.class, SoulSkeletonEntity.class, SoulDragonEntity.class));
+        targetSelector.addGoal(2, new CopyOwnerTargetGoal<>(this));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, TurtleEntity.class, 10, true, false, TurtleEntity.BABY_ON_LAND_SELECTOR));
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity entity) {
+        if (entity instanceof PlayerEntity) {
+            return super.canAttack(entity) && !ExtraAbility.INTIMIDATOR.isOn((PlayerEntity) entity);
+        }
+        return super.canAttack(entity);
     }
 
     @Override

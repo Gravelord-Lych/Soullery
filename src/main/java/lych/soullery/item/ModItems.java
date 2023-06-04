@@ -38,6 +38,9 @@ import static lych.soullery.util.ModConstants.VOIDWALKER_SPAWN_EGG_BACKGROUND_CO
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
     public static final String SPAWN_EGG_SUFFIX = "_spawn_egg";
+    public static final Item SOUL_METAL_INGOT = new Item(common());
+    public static final Item REFINED_SOUL_METAL_INGOT = new Item(common().fireResistant());
+    public static final Item SOUL_PIECE = new SoulPieceItem(common().stacksTo(16));
     public static final Item CHAOS_WAND = new ChaosWandItem(common().durability(333), 1);
     public static final Item CHAOS_WAND_II = new ChaosWandItem(common().durability(555).fireResistant().rarity(Rarity.RARE), 2);
     public static final EnderLauncherItem ENDER_LAUNCHER = new EnderLauncherItem(common().durability(720), 1);
@@ -46,6 +49,8 @@ public final class ModItems {
     public static final Item ENTITY_CARRIER_II = new EntityCarrierItem(common().stacksTo(1).fireResistant(), 8);
     public static final Item EXTRA_ABILITY_CARRIER = new ExtraAbilityCarrierItem(common().stacksTo(1));
     public static final Item EXTRA_ABILITY_WAND = new ExtraAbilityWandItem(common().stacksTo(1), 2);
+    public static final Item EXTRA_ABILITY_WAND_II = new ExtraAbilityWandItem(common().stacksTo(1).fireResistant().rarity(Rarity.RARE), 4);
+    public static final Item EXTRA_ABILITY_WAND_III = new ExtraAbilityWandItem(common().stacksTo(1).fireResistant().rarity(Rarity.EPIC), 6);
     public static final Item HALF_USED_LINGERING_POTION = new HalfUsedLingeringPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
@@ -59,7 +64,6 @@ public final class ModItems {
     public static final Item REFINED_SOUL_METAL_HELMET = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.HEAD, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_HOE = new HoeItem(Tool.REFINED_SOUL_METAL, -4, 0, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_HORSE_ARMOR = new HorseArmorItem(14, new ResourceLocation(String.format("textures/models/armor/horse_armor_%s.png", Armor.REFINED_SOUL_METAL.getName())), common().fireResistant());
-    public static final Item REFINED_SOUL_METAL_INGOT = new Item(common().fireResistant());
     public static final Item REFINED_SOUL_METAL_LEGGINGS = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.LEGS, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_NUGGET = new Item(common().fireResistant());
     public static final Item REFINED_SOUL_METAL_PICKAXE = new PickaxeItem(Tool.REFINED_SOUL_METAL, 1, -2.8f, common().fireResistant());
@@ -68,15 +72,16 @@ public final class ModItems {
     public static final ArrowItem SOUL_ARROW = new SimpleArrowItem(SoulArrowEntity::new, common());
     public static final Item SOUL_BLAZE_POWDER = new Item(common());
     public static final Item SOUL_BLAZE_ROD = new Item(common());
+    public static final Item SOUL_EXTRACTOR = new SwordItem(Tool.SOUL_EXTRACTOR, 3, -2.4f, common().fireResistant().rarity(Rarity.RARE));
+    public static final Item ENERGIZED_BLAZE_POWDER = new Item(common().rarity(Rarity.UNCOMMON).fireResistant());
+    public static final Item ENERGIZED_BLAZE_ROD = new Item(common().rarity(Rarity.UNCOMMON).fireResistant());
     public static final SoulBowItem SOUL_BOW = new SoulBowItem(common());
     public static final Item SOUL_CONTAINER = new SoulContainerItem(common().stacksTo(16));
     public static final SEGemItem SOUL_ENERGY_GEM = new SEGemItem(common(), SoulEnergies.DEFAULT_CAPACITY, false);
     public static final SEGemItem SOUL_ENERGY_GEM_II = new SEGemItem(common().fireResistant().rarity(Rarity.RARE), SoulEnergies.DEFAULT_CAPACITY * 4, true);
     public static final Item SOUL_LAVA_BUCKET = new BucketItem(() -> ModFluids.SOUL_LAVA, common().craftRemainder(Items.BUCKET));
-    public static final Item SOUL_METAL_INGOT = new Item(common());
     public static final Item SOUL_METAL_NUGGET = new Item(common());
     public static final Item SOUL_METAL_PARTICLE = new Item(common());
-    public static final Item SOUL_PIECE = new SoulPieceItem(common().stacksTo(16));
     public static final Item SOUL_POWDER = new SoulPowderItem(common());
     public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().durability(360), 1);
     public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().durability(600).fireResistant().rarity(Rarity.RARE), 2);
@@ -206,6 +211,8 @@ public final class ModItems {
         registry.register(make(ENTITY_CARRIER_II, ModItemNames.ENTITY_CARRIER_II));
         registry.register(make(EXTRA_ABILITY_CARRIER, ModItemNames.EXTRA_ABILITY_CARRIER));
         registry.register(make(EXTRA_ABILITY_WAND, ModItemNames.EXTRA_ABILITY_WAND));
+        registry.register(make(EXTRA_ABILITY_WAND_II, ModItemNames.EXTRA_ABILITY_WAND_II));
+        registry.register(make(EXTRA_ABILITY_WAND_III, ModItemNames.EXTRA_ABILITY_WAND_III));
         registry.register(make(HALF_USED_LINGERING_POTION, ModItemNames.HALF_USED_LINGERING_POTION));
         registry.register(make(HALF_USED_POTION, ModItemNames.HALF_USED_POTION));
         registry.register(make(HALF_USED_SPLASH_POTION, ModItemNames.HALF_USED_SPLASH_POTION));
@@ -215,6 +222,8 @@ public final class ModItems {
         registry.register(make(MIND_OPERATOR_III, ModItemNames.MIND_OPERATOR_III));
         registry.register(make(SOUL_PURIFIER, ModItemNames.SOUL_PURIFIER));
         registry.register(make(SOUL_PURIFIER_II, ModItemNames.SOUL_PURIFIER_II));
+
+        registry.register(make(SOUL_EXTRACTOR, ModItemNames.SOUL_EXTRACTOR));
 
         registry.register(make(SOUL_PIECE, ModItemNames.SOUL_PIECE));
         registry.register(make(SOUL_CONTAINER, ModItemNames.SOUL_CONTAINER));
@@ -241,6 +250,8 @@ public final class ModItems {
 
         registry.register(make(SOUL_BLAZE_POWDER, ModItemNames.SOUL_BLAZE_POWDER));
         registry.register(make(SOUL_BLAZE_ROD, ModItemNames.SOUL_BLAZE_ROD));
+        registry.register(make(ENERGIZED_BLAZE_POWDER, ModItemNames.ENERGIZED_BLAZE_POWDER));
+        registry.register(make(ENERGIZED_BLAZE_ROD, ModItemNames.ENERGIZED_BLAZE_ROD));
         registry.register(make(SOUL_LAVA_BUCKET, ModItemNames.SOUL_LAVA_BUCKET));
         registry.register(make(SOUL_POWDER, ModItemNames.SOUL_POWDER));
         registry.register(make(REFINED_SOUL_METAL_HORSE_ARMOR, ModItemNames.REFINED_SOUL_METAL_HORSE_ARMOR));

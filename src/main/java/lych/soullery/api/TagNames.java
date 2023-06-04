@@ -39,6 +39,10 @@ public final class TagNames {
      */
     public static final ResourceLocation TIERED_BOSS = new ResourceLocation(SoulleryAPI.MOD_ID, "tiered_boss");
     public static final ResourceLocation SOUL_DRAGON_IMMUNE = new ResourceLocation(SoulleryAPI.MOD_ID, "soul_dragon_immune");
+    /**
+     * Soul Extractors can at least extract one Soul Piece from a mob and additionally increase Soul Piece's drop probability by 50%.
+     */
+    public static final ResourceLocation SOUL_EXTRACTORS = new ResourceLocation(SoulleryAPI.MOD_ID, "soul_extractors");
 
     private TagNames() {}
 }

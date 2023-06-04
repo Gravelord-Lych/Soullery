@@ -1,4 +1,33 @@
 {
+  "item.armor.equip.refined_soul_metal": {
+    "subtitle": "subtitles.soullery:item.armor.equip.refined_soul_metal",
+    "sounds": [
+      {
+        "name": "enchant/soulspeed/soulspeed5",
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed6",
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed7",
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed8",
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed9",
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed10",
+        "volume": 0.8
+      }
+    ]
+  },
   "item.chaos_wand.chaos": {
     "subtitle": "subtitles.soullery:item.chaos_wand.chaos",
     "sounds": [
@@ -12,6 +41,42 @@
     "subtitle": "subtitles.soullery:mob.meta8.share_stronger_shield",
     "sounds": [
       "soullery:mob/meta8/share_stronger_shield"
+    ]
+  },
+  "mob.energized_blaze.ambient": {
+    "subtitle": "subtitles.soullery:mob.energized_blaze.ambient",
+    "sounds": [
+      "mob/blaze/breathe1",
+      "mob/blaze/breathe2",
+      "mob/blaze/breathe3",
+      "mob/blaze/breathe4"
+    ]
+  },
+  "mob.energized_blaze.burn": {
+    "subtitle": "subtitles.soullery:mob.energized_blaze.burn",
+    "sounds": [
+      "fire/fire"
+    ]
+  },
+  "mob.energized_blaze.death": {
+    "subtitle": "subtitles.soullery:mob.energized_blaze.death",
+    "sounds": [
+      "mob/blaze/death"
+    ]
+  },
+  "mob.energized_blaze.hurt": {
+    "subtitle": "subtitles.soullery:mob.energized_blaze.hurt",
+    "sounds": [
+      "mob/blaze/hit1",
+      "mob/blaze/hit2",
+      "mob/blaze/hit3",
+      "mob/blaze/hit4"
+    ]
+  },
+  "mob.energized_blaze.shoot": {
+    "subtitle": "subtitles.soullery:mob.energized_blaze.shoot",
+    "sounds": [
+      "mob/ghast/fireball4"
     ]
   },
   "random.energy_shield_break": {
@@ -273,6 +338,57 @@
     ]
   },
   "mob.soul_skeleton.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "soullery:mob/soul_skeleton/step1",
+      "soullery:mob/soul_skeleton/step2",
+      "soullery:mob/soul_skeleton/step3",
+      "soullery:mob/soul_skeleton/step4"
+    ]
+  },
+  "mob.soul_skeleton_king.ambient": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.ambient",
+    "sounds": [
+      "soullery:mob/soul_skeleton/ambient1",
+      "soullery:mob/soul_skeleton/ambient2",
+      "soullery:mob/soul_skeleton/ambient3"
+    ]
+  },
+  "mob.soul_skeleton_king.cast_spell": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.cast_spell",
+    "sounds": [
+      "mob/evocation_illager/cast1",
+      "mob/evocation_illager/cast2"
+    ]
+  },
+  "mob.soul_skeleton_king.death": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.death",
+    "sounds": [
+      "soullery:mob/soul_skeleton/death"
+    ]
+  },
+  "mob.soul_skeleton_king.hurt": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.hurt",
+    "sounds": [
+      "soullery:mob/soul_skeleton/hurt1",
+      "soullery:mob/soul_skeleton/hurt2",
+      "soullery:mob/soul_skeleton/hurt3",
+      "soullery:mob/soul_skeleton/hurt4"
+    ]
+  },
+  "mob.soul_skeleton_king.shoot": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.shoot",
+    "sounds": [
+      "random/bow"
+    ]
+  },
+  "mob.soul_skeleton_king.summon": {
+    "subtitle": "subtitles.soullery:mob.soul_skeleton_king.summon",
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ]
+  },
+  "mob.soul_skeleton_king.step": {
     "subtitle": "subtitles.block.generic.footsteps",
     "sounds": [
       "soullery:mob/soul_skeleton/step1",

@@ -107,7 +107,7 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     private int attackStep;
     private boolean inWall;
     private boolean firstSpawnElite = true;
-    private int eliteCountRemaining = 32;
+    private int eliteCountRemaining = 16;
     private int eliteToSpawn;
     private int eliteSpawnCooldown;
     public float yRotA;
@@ -375,12 +375,10 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
     }
 
     private void modifyElite(SoulSkeletonEntity elite) {
-        EntityUtils.getAttribute(elite, Attributes.MAX_HEALTH).setBaseValue(1 << (5 + random.nextInt(3)));
         EntityUtils.getAttribute(elite, Attributes.FOLLOW_RANGE).setBaseValue(49);
         EntityUtils.getAttribute(elite, Attributes.MOVEMENT_SPEED).setBaseValue(0.33);
         EntityUtils.getAttribute(elite, Attributes.KNOCKBACK_RESISTANCE).setBaseValue(random.nextDouble() * 0.3 + 0.3);
         EntityUtils.getAttribute(elite, Attributes.ATTACK_DAMAGE).setBaseValue(3);
-        elite.setHealth(elite.getMaxHealth());
         elite.setClimbable(true);
 
         List<Pair<Reinforcement, Integer>> guardianReinforcements = new ArrayList<>(ImmutableList.of(
@@ -1197,8 +1195,14 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
 
         private void setStatus(HealthStatus status) {
+            setStatus(status, true);
+        }
+
+        private void setStatus(HealthStatus status, boolean tryBegin) {
             entityData.set(DATA_HEALTH_STATUS, status.getId());
-            status.begin(SoulDragonEntity.this);
+            if (tryBegin) {
+                status.begin(SoulDragonEntity.this);
+            }
         }
 
         public void saveStatus(CompoundNBT compoundNBT) {
@@ -1207,10 +1211,10 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
 
         public void loadStatus(CompoundNBT compoundNBT) {
             try {
-                setStatus(HealthStatus.byId(compoundNBT.getInt("HealthStatus")));
+                setStatus(HealthStatus.byId(compoundNBT.getInt("HealthStatus")), false);
             } catch (EnumConstantNotFoundException e) {
                 LOGGER.warn("HealthStatus[{}] not found, reloading...", e.getId());
-                setStatus(reloadStatus());
+                setStatus(reloadStatus(), false);
             }
         }
 

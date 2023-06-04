@@ -18,7 +18,7 @@ public final class ExtraAbilityConstants {
     public static final double FANGS_SPACING = 1.25;
     public static final double FANGS_MAX_Y_OFFSET = 5;
     public static final int FANGS_SUMMONER_COUNT = 8;
-    public static final double ULTRAREACH_HORIZONTAL_BONUS = 1;
+    public static final double ULTRAREACH_HORIZONTAL_BONUS = 1.125;
     public static final double ULTRAREACH_VERTICAL_BONUS = 0.25;
     public static final int DEFAULT_ULTRAREACH_LENGTHEN_PICKUP_DELAY_AMOUNT = 20;
     public static final int WATER_BREATHING_TICKS = 300;

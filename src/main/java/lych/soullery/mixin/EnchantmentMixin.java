@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 public class EnchantmentMixin {
     @Redirect(method = "getFullname",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I")),
-            at = @At(value = "NEW", target = "net/minecraft/util/text/TranslationTextComponent", remap = false),
+            at = @At(value = "NEW", target = "(Ljava/lang/String;)Lnet/minecraft/util/text/TranslationTextComponent;", remap = false),
             require = 0)
     private TranslationTextComponent redirect(String name, int level) {
         if (ConfigHelper.shouldUseRomanNumeralGenerator()) {

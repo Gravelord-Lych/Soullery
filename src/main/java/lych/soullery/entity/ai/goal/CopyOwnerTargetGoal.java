@@ -16,6 +16,10 @@ public class CopyOwnerTargetGoal<T extends MobEntity & IHasOwner<? extends MobEn
         this(mob, new EntityPredicate().allowUnseeable().ignoreInvisibilityTesting());
     }
 
+    public CopyOwnerTargetGoal(T mob,  Predicate<? super LivingEntity> selector) {
+        this(mob, -1, selector);
+    }
+
     public CopyOwnerTargetGoal(T mob, double range, Predicate<? super LivingEntity> selector) {
         this(mob, new EntityPredicate().allowUnseeable().ignoreInvisibilityTesting().range(range).selector(selector::test));
     }

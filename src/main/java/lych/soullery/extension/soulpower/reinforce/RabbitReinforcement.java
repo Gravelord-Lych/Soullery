@@ -34,4 +34,9 @@ public class RabbitReinforcement extends AttributiveReinforcement {
     protected boolean isItemPosSuitable(ItemStack stack) {
         return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlot() == EquipmentSlotType.FEET;
     }
+
+    @Override
+    public int getMaxLevel() {
+        return 2;
+    }
 }

@@ -29,7 +29,7 @@ import static net.minecraftforge.common.extensions.IForgeContainerType.create;
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModContainers {
     public static final ContainerType<DepthSEGeneratorContainer> DEPTH_SEGEN = createSimply(DepthSEGeneratorContainer::new);
-    public static final ContainerType<ExtraAbilityContainer> EXA = create((id, inventory, data) -> new ExtraAbilityContainer(id, inventory, 2));
+    public static final ContainerType<ExtraAbilityContainer> EXA = create((id, inventory, data) -> new ExtraAbilityContainer(id, inventory, data.readVarInt()));
     public static final ContainerType<HeatSEGeneratorContainer> HEAT_SEGEN = createSimply(HeatSEGeneratorContainer::new);
     public static final ContainerType<NetherSEGeneratorContainer> NETHER_SEGEN = createSimply(NetherSEGeneratorContainer::new);
     public static final ContainerType<SEGeneratorContainer> SEGEN = createSimply(SEGeneratorContainer::new);
