@@ -30,7 +30,7 @@ import java.util.*;
 
 import static lych.soullery.Soullery.prefix;
 
-public class ExtraAbility implements IExtraAbility {
+public final class ExtraAbility implements IExtraAbility {
     private static final int DEFAULT_SCC = 4;
     private static final int HIGH_SCC = 6;
     private static final int MID_SE = 10000;
