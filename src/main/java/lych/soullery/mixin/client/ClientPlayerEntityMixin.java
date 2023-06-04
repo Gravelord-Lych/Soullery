@@ -35,6 +35,7 @@ import java.util.Iterator;
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IPlayerEntityMixin, IClientPlayerMixin {
     @Shadow @Final protected Minecraft minecraft;
+    @SuppressWarnings("UnusedAssignment")
     @Unique
     private float enhancedJumpFlag = -1;
 
