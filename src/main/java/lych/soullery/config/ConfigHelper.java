@@ -33,7 +33,7 @@ public final class ConfigHelper {
     }
 
     public static boolean shouldFailhard() {
-        return SharedConstants.IS_RUNNING_IN_IDE || CommonConfig.FAILHARD.get();
+        return Soullery.DEBUG || SharedConstants.IS_RUNNING_IN_IDE || CommonConfig.FAILHARD.get();
     }
 
     public static boolean shouldUseRomanNumeralGenerator() {

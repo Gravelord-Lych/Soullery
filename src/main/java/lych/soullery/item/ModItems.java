@@ -55,6 +55,7 @@ public final class ModItems {
     public static final Item HALF_USED_POTION = new HalfUsedPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HORCRUX_CARRIER = new HorcruxCarrierItem(common().stacksTo(1));
+    public static final Item ITEM_FIXER = new ItemFixerItem(common().stacksTo(1).rarity(Rarity.RARE));
     public static final Item MIND_OPERATOR = new MindOperatorItem(common().durability(667), 1);
     public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().durability(1000).fireResistant().rarity(Rarity.RARE), 2);
     public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().durability(2500).fireResistant().rarity(Rarity.EPIC), 3);
@@ -222,6 +223,7 @@ public final class ModItems {
         registry.register(make(MIND_OPERATOR_III, ModItemNames.MIND_OPERATOR_III));
         registry.register(make(SOUL_PURIFIER, ModItemNames.SOUL_PURIFIER));
         registry.register(make(SOUL_PURIFIER_II, ModItemNames.SOUL_PURIFIER_II));
+        registry.register(make(ITEM_FIXER, ModItemNames.ITEM_FIXER));
 
         registry.register(make(SOUL_EXTRACTOR, ModItemNames.SOUL_EXTRACTOR));
 

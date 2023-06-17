@@ -7,12 +7,21 @@ import lych.soullery.gui.container.ExtraAbilityContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ExtraAbilityScreen extends ContainerScreen<ExtraAbilityContainer> {
     private static final ResourceLocation EXA = Soullery.prefixTex("gui/container/extra_ability.png");
+    private static final Map<Integer, ResourceLocation> EXA_TEXTURES = Util.make(new HashMap<>(), map -> {
+        map.put(1, EXA);
+        map.put(2, Soullery.prefixTex("gui/container/extra_ability_l2.png"));
+        map.put(3, Soullery.prefixTex("gui/container/extra_ability_l3.png"));
+    });
 
     public ExtraAbilityScreen(ExtraAbilityContainer container, PlayerInventory inventory, ITextComponent text) {
         super(container, inventory, text);
@@ -23,7 +32,8 @@ public class ExtraAbilityScreen extends ContainerScreen<ExtraAbilityContainer> {
     protected void renderBg(MatrixStack stack, float partialTicks, int x, int y) {
         RenderSystem.color4f(1, 1, 1, 1);
         if (minecraft != null) {
-            minecraft.getTextureManager().bind(EXA);
+            int tier = menu.getAvailableCount() / 2;
+            minecraft.getTextureManager().bind(EXA_TEXTURES.getOrDefault(tier, EXA));
             int startX = (width - imageWidth) / 2;
             int startY = (height - imageHeight) / 2;
             blit(stack, startX, startY, 0, 0, imageWidth, imageHeight);

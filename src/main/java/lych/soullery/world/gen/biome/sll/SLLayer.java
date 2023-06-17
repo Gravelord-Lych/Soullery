@@ -1,5 +1,6 @@
 package lych.soullery.world.gen.biome.sll;
 
+import lych.soullery.Soullery;
 import lych.soullery.world.gen.biome.ModBiomes;
 import lych.soullery.world.gen.biome.SLBiomes;
 import net.minecraft.util.RegistryKey;
@@ -21,7 +22,7 @@ import java.util.function.LongFunction;
 import java.util.stream.Stream;
 
 public final class SLLayer {
-    private static final boolean debug = false;
+    private static final boolean debug = Soullery.DEBUG_BIOMES;
     public static final int OCEAN = 0;
     public static final int LAND = 1;
     public static final int PURE = 2;

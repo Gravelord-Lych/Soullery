@@ -9,6 +9,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IExtraAbility extends Comparable<IExtraAbility> {
     /**
@@ -32,6 +33,13 @@ public interface IExtraAbility extends Comparable<IExtraAbility> {
      * @return True if successfully removed. False if player did not have this <i>Extra Ability</i>
      */
     boolean removeFrom(PlayerEntity player);
+
+    /**
+     * Reloads the Extra Ability when a player dies or game restarts
+     * @param oldPlayer The old player, <code>null</code> if the method is called when game restarts
+     * @param newPlayer The new player
+     */
+    void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer);
 
     String makeDescriptionId();
 
@@ -120,6 +128,9 @@ class Dummy implements IExtraAbility {
     public boolean removeFrom(PlayerEntity player) {
         return false;
     }
+
+    @Override
+    public void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer) {}
 
     @Override
     public String makeDescriptionId() {

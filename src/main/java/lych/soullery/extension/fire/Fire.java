@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.mojang.datafixers.util.Pair;
 import lych.soullery.Soullery;
 import lych.soullery.block.IExtendedFireBlock;
+import lych.soullery.extension.ExtraAbility;
 import lych.soullery.util.Utils;
 import lych.soullery.util.mixin.IAbstractFireBlockMixin;
 import net.minecraft.block.AbstractFireBlock;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
@@ -221,7 +223,17 @@ public final class Fire {
     }
 
     public Fire applyTo(Entity entity) {
+        if (checkResistance(entity)) {
+            return empty();
+        }
         return handler.applyTo(entity, this);
+    }
+
+    public static boolean checkResistance(Entity entity) {
+        if (entity.fireImmune() || entity instanceof LivingEntity && ((LivingEntity) entity).hasEffect(Effects.FIRE_RESISTANCE)) {
+            return true;
+        }
+        return entity instanceof PlayerEntity && ExtraAbility.FIRE_RESISTANCE.isOn((PlayerEntity) entity);
     }
 
     public void startApplyingTo(Entity entity, Fire oldFire) {

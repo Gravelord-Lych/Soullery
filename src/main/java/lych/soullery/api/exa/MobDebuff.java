@@ -4,6 +4,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import org.jetbrains.annotations.Nullable;
 
 public interface MobDebuff {
     /**
@@ -30,6 +31,13 @@ public interface MobDebuff {
      * @param world The world
      */
     void stopApplyingTo(PlayerEntity player, World world);
+
+    /**
+     * Reloads the buff when a player dies or game restarts
+     * @param oldPlayer The old player, <code>null</code> if the method is called when game restarts
+     * @param newPlayer The new player
+     */
+    default void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer) {}
 
     void serverTick(MobEntity mob, ServerWorld world);
 

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import org.jetbrains.annotations.Nullable;
 
 public interface PlayerBuff {
     /**
@@ -23,6 +24,13 @@ public interface PlayerBuff {
      * @param world The world
      */
     void stopApplyingTo(PlayerEntity player, World world);
+
+    /**
+     * Reloads the buff when a player dies or game restarts
+     * @param oldPlayer The old player, <code>null</code> if the method is called when game restarts
+     * @param newPlayer The new player
+     */
+    default void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer) {}
 
     void serverTick(ServerPlayerEntity player, ServerWorld world);
 

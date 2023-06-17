@@ -29,6 +29,7 @@ public class ModEventListener {
         Reinforcements.init();
         Fires.init();
         ControllerType.init();
+        Soullery.checkTranslation();
     }
 
     private static void registerCapabilities(FMLCommonSetupEvent event) {

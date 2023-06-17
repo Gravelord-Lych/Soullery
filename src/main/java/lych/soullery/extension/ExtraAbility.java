@@ -172,6 +172,9 @@ public final class ExtraAbility implements IExtraAbility {
     }
 
     public static IExtraAbility create(ResourceLocation registryName, int containerCost, int energyCost, boolean special) {
+        if (containerCost > 10) {
+            throw new IllegalArgumentException("Too high container cost: " + containerCost);
+        }
         return new ExtraAbility(registryName, containerCost, energyCost, special);
     }
 
@@ -237,6 +240,12 @@ public final class ExtraAbility implements IExtraAbility {
             MobDebuffMap.getDebuff(this).ifPresent(debuff -> debuff.stopApplyingTo(player, player.level));
         }
         return removed;
+    }
+
+    @Override
+    public void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer) {
+        PlayerBuffMap.getBuff(this).ifPresent(buff -> buff.reload(oldPlayer, newPlayer));
+        MobDebuffMap.getDebuff(this).ifPresent(debuff -> debuff.reload(oldPlayer, newPlayer));
     }
 
     @Override

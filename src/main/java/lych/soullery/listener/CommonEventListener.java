@@ -693,12 +693,13 @@ public final class CommonEventListener {
         PlayerEntity newPlayer = event.getPlayer();
         IPlayerEntityMixin oldPlayerM = (IPlayerEntityMixin) oldPlayer;
         IPlayerEntityMixin newPlayerM = (IPlayerEntityMixin) newPlayer;
-        syncData(oldPlayerM, newPlayerM);
+        syncData(oldPlayer, newPlayer, oldPlayerM, newPlayerM);
     }
 
-    private static void syncData(IPlayerEntityMixin oldPlayerM, IPlayerEntityMixin newPlayerM) {
+    private static void syncData(PlayerEntity oldPlayer, PlayerEntity newPlayer, IPlayerEntityMixin oldPlayerM, IPlayerEntityMixin newPlayerM) {
         Set<IExtraAbility> extraAbilities = oldPlayerM.getExtraAbilities();
         newPlayerM.setExtraAbilities(extraAbilities);
+        extraAbilities.forEach(exa -> exa.reload(oldPlayer, newPlayer));
         Map<EntityType<?>, Integer> bossTierMap = oldPlayerM.getBossTierMap();
         CollectionUtils.refill(newPlayerM.getBossTierMap(), bossTierMap);
         AdditionalCooldownTracker tracker = oldPlayerM.getAdditionalCooldowns();

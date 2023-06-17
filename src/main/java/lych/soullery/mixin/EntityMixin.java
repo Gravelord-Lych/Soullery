@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Optional;
 import java.util.Random;
 
@@ -75,6 +75,7 @@ public abstract class EntityMixin implements IEntityMixin {
 
     @Shadow protected abstract void setSharedFlag(int p_70052_1_, boolean p_70052_2_);
 
+    @Shadow private int remainingFireTicks;
     @Unique
     private static final DataParameter<Integer> DATA_FIRE_ID = EntityDataManager.defineId(Entity.class, DataSerializers.INT);
     @Unique
@@ -204,11 +205,13 @@ public abstract class EntityMixin implements IEntityMixin {
     @Inject(method = "setRemainingFireTicks", at = @At("TAIL"))
     private void updateFire(int ticks, CallbackInfo ci) {
         if (ticks > 0 && !getFireOnSelf().isRealFire()) {
-            doSetFireOnSelf(Fires.FIRE);
-            if (!fireImmune()) {
-                Fire.empty().stopApplyingTo((Entity) (Object) this, Fires.FIRE);
-                Fires.FIRE.startApplyingTo((Entity) (Object) this, Fire.empty());
+            if (Fire.checkResistance((Entity) (Object) this)) {
+                remainingFireTicks = 0;
+                return;
             }
+            doSetFireOnSelf(Fires.FIRE);
+            Fire.empty().stopApplyingTo((Entity) (Object) this, Fires.FIRE);
+            Fires.FIRE.startApplyingTo((Entity) (Object) this, Fire.empty());
         }
     }
 

@@ -56,6 +56,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         halfUsedPotion(registryNameToString(HALF_USED_LINGERING_POTION), LINGERING_POTION);
         halfUsedPotion(registryNameToString(HALF_USED_POTION), POTION);
         halfUsedPotion(registryNameToString(HALF_USED_SPLASH_POTION), SPLASH_POTION);
+        simple(registryNameToString(ITEM_FIXER), GENERATED, prefix(ITEM_FIXER));
         simple(registryNameToString(HORCRUX_CARRIER), GENERATED, prefix(HORCRUX_CARRIER));
         simple(registryNameToString(MIND_OPERATOR), HANDHELD, prefix(MIND_OPERATOR));
         simple(registryNameToString(MIND_OPERATOR_II), HANDHELD, prefix(MIND_OPERATOR_II));

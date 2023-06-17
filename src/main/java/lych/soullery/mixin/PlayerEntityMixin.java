@@ -253,6 +253,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
                 ExtraAbility.getOptional(registryName).ifPresent(set::add);
             }
             setExtraAbilities(set);
+            set.forEach(exa -> exa.reload(null, (PlayerEntity) (Object) this));
         }
 
         if (compoundNBT.contains("BossTiers", Constants.NBT.TAG_LIST)) {

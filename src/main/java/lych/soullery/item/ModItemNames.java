@@ -17,6 +17,7 @@ public final class ModItemNames {
     public static final String HALF_USED_POTION = "half_used_potion";
     public static final String HALF_USED_SPLASH_POTION = "half_used_splash_potion";
     public static final String HORCRUX_CARRIER = "horcrux_carrier";
+    public static final String ITEM_FIXER = "item_fixer";
     public static final String MIND_OPERATOR = "mind_operator";
     public static final String MIND_OPERATOR_II = "mind_operator_l2";
     public static final String MIND_OPERATOR_III = "mind_operator_l3";

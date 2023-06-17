@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -22,6 +23,13 @@ public interface AttributiveBuff extends PlayerBuff {
     @Override
     default void stopApplyingTo(PlayerEntity player, World world) {
         getModifiers().forEach((attr, modifier) -> EntityUtils.getAttribute(player, attr).removeModifier(modifier));
+    }
+
+    @Override
+    default void reload(@Nullable PlayerEntity oldPlayer, PlayerEntity newPlayer) {
+        if (oldPlayer != null) {
+            getModifiers().forEach((attr, modifier) -> EntityUtils.getAttribute(newPlayer, attr).addPermanentModifier(modifier));
+        }
     }
 
     @Override

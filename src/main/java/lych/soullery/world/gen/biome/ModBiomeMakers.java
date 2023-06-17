@@ -34,7 +34,7 @@ public final class ModBiomeMakers {
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         addDefaultSoulBiomeCarvers(genBuilder, false);
         genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.SL_PATCH_SOUL_FIRE);
-        defaultSoulBiomeVegetation(genBuilder);
+        defaultSoulBiomeGeneration(genBuilder);
 
         if (spiked) {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SPIKED_SOUL_PLAINS_SPIKE);
@@ -209,7 +209,7 @@ public final class ModBiomeMakers {
                     .addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WEEPING_VINE);
         } else {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI_AT_THE_EDGE);
-            defaultSoulBiomeVegetation(genBuilder);
+            defaultSoulBiomeGeneration(genBuilder);
         }
         if (!edge && depth < 0.2f) {
             genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_CRIMSON_PLAINS);
@@ -259,7 +259,7 @@ public final class ModBiomeMakers {
                     .addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_TWISTING_VINE);
         } else {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI_AT_THE_EDGE);
-            defaultSoulBiomeVegetation(genBuilder);
+            defaultSoulBiomeGeneration(genBuilder);
         }
         if (!edge && depth < 0.2f) {
             genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_WARPED_PLAINS);
@@ -294,7 +294,7 @@ public final class ModBiomeMakers {
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         addDefaultSoulBiomeCarvers(genBuilder, true);
         genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.PATCH_PURE_SOUL_FIRE);
-        defaultSoulBiomeVegetation(genBuilder);
+        defaultSoulBiomeGeneration(genBuilder);
 
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.INNERMOST_SOUL_LAND);
         return new Biome.Builder()
@@ -322,7 +322,7 @@ public final class ModBiomeMakers {
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
 
-        defaultSoulBiomeVegetation(genBuilder);
+        defaultSoulBiomeGeneration(genBuilder);
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_BEACH);
         addDefaultSoulBiomeCarvers(genBuilder, true);
 
@@ -337,6 +337,15 @@ public final class ModBiomeMakers {
                 .mobSpawnSettings(spawnBuilder.build())
                 .generationSettings(genBuilder.build())
                 .build();
+    }
+
+    private static void defaultSoulBiomeGeneration(BiomeGenerationSettings.Builder genBuilder) {
+        defaultSoulBiomeOres(genBuilder);
+        defaultSoulBiomeVegetation(genBuilder);
+    }
+
+    private static void defaultSoulBiomeOres(BiomeGenerationSettings.Builder genBuilder) {
+        genBuilder.addFeature(Decoration.UNDERGROUND_ORES, ModConfiguredFeatures.ORE_PROFOUND_STONE);
     }
 
     private static void defaultSoulBiomeVegetation(BiomeGenerationSettings.Builder genBuilder) {

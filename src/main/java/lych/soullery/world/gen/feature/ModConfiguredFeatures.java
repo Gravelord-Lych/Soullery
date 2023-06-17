@@ -18,6 +18,8 @@ import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
+import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.Placement;
@@ -45,6 +47,7 @@ public final class ModConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> HIGH_SOUL_SAND_SPIKE = ModFeatures.SL_SPIKE.configured(HIGH_SOUL_SAND_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1);
     public static final ConfiguredFeature<?, ?> HIGH_SOUL_SOIL_SPIKE = ModFeatures.SL_SPIKE.configured(HIGH_SOUL_SOIL_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1);
     public static final ConfiguredFeature<?, ?> LAKE_SOUL_LAVA = Feature.LAKE.configured(new BlockStateFeatureConfig(ModBlocks.SOUL_LAVA_FLUID_BLOCK.defaultBlockState())).decorated(ModPlacements.LAKE_SOUL_LAVA.configured(new ChanceConfig(40)));
+    public static final ConfiguredFeature<?, ?> ORE_PROFOUND_STONE = Feature.ORE.configured(new OreFeatureConfig(FillerBlockType.SOUL_STONE, ModBlocks.PROFOUND_STONE.core().defaultBlockState(), 33)).range(256).squared().count(10);
     public static final ConfiguredFeature<?, ?> PARCHED_SOIL_SPIKE = ModFeatures.SL_SPIKE.configured(PARCHED_SOIL_SPIKE_CONFIG).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(1).chance(30);
     public static final ConfiguredFeature<?, ?> PATCH_INFERNO = firePatch(Fires.INFERNO, ModBlocks.PARCHED_SOIL);
     public static final ConfiguredFeature<?, ?> PATCH_POISONOUS_FIRE = firePatch(Fires.POISONOUS_FIRE, ModBlocks.WARPED_HYPHAL_SOIL);
@@ -89,6 +92,7 @@ public final class ModConfiguredFeatures {
         register("patch_pure_soul_fire", PATCH_PURE_SOUL_FIRE);
         register("patch_soul_wart", PATCH_SOUL_WART);
         register("patch_soulified_bush", PATCH_SOULIFIED_BUSH);
+        register("ore_profound_stone", ORE_PROFOUND_STONE);
         register("sl_crimson_fungi", SL_CRIMSON_FUNGI);
         register("sl_crimson_fungi_at_the_edge", SL_CRIMSON_FUNGI_AT_THE_EDGE);
         register("sl_patch_soul_fire", SL_PATCH_SOUL_FIRE);
@@ -133,5 +137,10 @@ public final class ModConfiguredFeatures {
 
     private static <FC extends IFeatureConfig> void register(String name, ConfiguredFeature<FC, ?> feature) {
         Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, Soullery.prefix(name), feature);
+    }
+
+
+    public static class FillerBlockType {
+        public static final RuleTest SOUL_STONE = new BlockMatchRuleTest(ModBlocks.SOUL_STONE);
     }
 }

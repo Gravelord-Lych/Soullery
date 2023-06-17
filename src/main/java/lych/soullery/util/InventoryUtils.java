@@ -1,5 +1,6 @@
 package lych.soullery.util;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -26,6 +27,14 @@ public final class InventoryUtils {
             ItemStack stack = inventory.getItem(i);
             list.add(stack);
         }
+        return list;
+    }
+
+    public static NonNullList<ItemStack> getSortedList(PlayerInventory inventory) {
+        NonNullList<ItemStack> list = CollectionUtils.createMutableNonNullListWithSize(inventory.getContainerSize(), ItemStack.EMPTY);
+        list.addAll(inventory.offhand);
+        list.addAll(Lists.reverse(inventory.armor));
+        list.addAll(inventory.items);
         return list;
     }
 

@@ -19,14 +19,18 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(Soullery.MOD_ID)
 public class Soullery {
+    public static final boolean DEBUG = true;
+    public static final boolean DEBUG_BIOMES = false;
     public static final String MOD_ID = "soullery";
     public static final String MOD_NAME = "Soullery";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public Soullery() {
-        Soullery.LOGGER.debug("Registering Configuration..");
-        SharedConstants.IS_RUNNING_IN_IDE = true;
-        SharedConstants.CHECK_DATA_FIXER_SCHEMA = false;
+        Soullery.LOGGER.debug(MOD_NAME + " Initialization...");
+        if (DEBUG) {
+            SharedConstants.IS_RUNNING_IN_IDE = true;
+            SharedConstants.CHECK_DATA_FIXER_SCHEMA = false;
+        }
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.COMMON_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -34,6 +38,12 @@ public class Soullery {
         ModAttributes.ATTRIBUTES.register(bus);
         ModPotions.POTIONS.register(bus);
         ModSoundEvents.SOUNDS.register(bus);
+    }
+
+    public static void checkTranslation() {
+//        if (DEBUG) {
+//            Bootstrap.getMissingTranslations().forEach(s -> LOGGER.error(MOD_NAME + " - Missing translations: " + s));
+//        }
     }
 
     public static <T extends ForgeRegistryEntry<T>> T make(T value, String name) {

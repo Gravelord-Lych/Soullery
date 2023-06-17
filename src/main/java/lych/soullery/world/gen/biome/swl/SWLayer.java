@@ -1,5 +1,6 @@
 package lych.soullery.world.gen.biome.swl;
 
+import lych.soullery.Soullery;
 import lych.soullery.world.gen.biome.ModBiomes;
 import lych.soullery.world.gen.biome.SLBiomes;
 import lych.soullery.world.gen.biome.SWBiomes;
@@ -25,7 +26,7 @@ import java.util.function.LongFunction;
 import java.util.stream.Stream;
 
 public final class SWLayer {
-    private static final boolean debug = true;
+    private static final boolean debug = Soullery.DEBUG_BIOMES;
     private static final List<RegistryKey<Biome>> ALL_BIOMES = new ArrayList<>();
     private static final Marker SWL = MarkerManager.getMarker("SoulWastelandBiomes");
     private static final Map<Integer, Integer> remapColors;

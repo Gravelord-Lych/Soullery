@@ -65,6 +65,10 @@ public final class ModBlockNames {
     public static final String GLOWSTONE_BRICK_SLAB = "glowstone_brick_slab";
     public static final String GLOWSTONE_BRICK_STAIRS = "glowstone_brick_stairs";
     public static final String GLOWSTONE_BRICK_WALL = "glowstone_brick_wall";
+    public static final String PROFOUND_STONE = "profound_stone";
+    public static final String PROFOUND_STONE_SLAB = "profound_stone_slab";
+    public static final String PROFOUND_STONE_STAIRS = "profound_stone_stairs";
+    public static final String PROFOUND_STONE_WALL = "profound_stone_wall";
     public static final String SMOOTH_SOUL_STONE = "smooth_soul_stone";
     public static final String SMOOTH_SOUL_STONE_SLAB = "smooth_soul_stone_slab";
     public static final String SMOOTH_SOUL_STONE_STAIRS = "smooth_soul_stone_stairs";

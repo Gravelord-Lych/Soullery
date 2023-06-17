@@ -36,6 +36,8 @@ public final class ExtraAbilityConstants {
     public static final int OVERDRIVE_REGEN_INTERVAL = 60;
     public static final double IMITATOR_VISIBILITY_MODIFIER = 0.6;
     public static final float NUTRITIONIST_NUTRITION_AND_SATURATION_MODIFIER = 1.25f;
+    public static final float FIRE_RESISTANCE_DAMAGE_MULTIPLIER = 1.1f;
+    public static final double FIRE_RESISTANCE_SPEED_NERF_AMOUNT = -0.12;
     public static final ImmutableList<ImmutableEffectInstance> GOLD_PREFERENCE_EFFECTS = ImmutableList.of(
             new ImmutableEffectInstance(Effects.DIG_SPEED, 10, 1, false, false, true),
             new ImmutableEffectInstance(Effects.MOVEMENT_SPEED, 10, 1, false, false, true));

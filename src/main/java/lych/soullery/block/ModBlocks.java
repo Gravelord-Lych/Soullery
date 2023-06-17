@@ -108,6 +108,7 @@ public final class ModBlocks {
 //  ------------------------------------------------------------------------------------------
 
     public static final DefaultStoneBlockGroup GLOWSTONE_BRICKS = DefaultStoneBlockGroup.createAndRegister(of(Material.GLASS, MaterialColor.SAND).strength(0.3f).sound(SoundType.GLASS).lightLevel(state -> 15).isValidSpawn(ModBlocks::never), ModBlockNames.GLOWSTONE_BRICKS, ModBlockNames.GLOWSTONE_BRICK_SLAB, ModBlockNames.GLOWSTONE_BRICK_STAIRS, ModBlockNames.GLOWSTONE_BRICK_WALL);
+    public static final DefaultStoneBlockGroup PROFOUND_STONE = DefaultStoneBlockGroup.createAndRegister(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6), ModBlockNames.PROFOUND_STONE, ModBlockNames.PROFOUND_STONE_SLAB, ModBlockNames.PROFOUND_STONE_STAIRS, ModBlockNames.PROFOUND_STONE_WALL);
 
     private ModBlocks() {}
 
