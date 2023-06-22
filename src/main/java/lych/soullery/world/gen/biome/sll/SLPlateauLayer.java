@@ -8,6 +8,12 @@ public enum SLPlateauLayer implements ICastleTransformer {
 
     @Override
     public int apply(INoiseRandom random, int n, int e, int s, int w, int self) {
-        return SLLayer.isSame(n, e, s, w, self) && SLLayer.isPure(self) ? SLLayer.PURE_PLATEAU : self;
+        if (SLLayer.isSame(n, e, s, w, self) && SLLayer.isPure(self)) {
+            return SLLayer.PURE_PLATEAU;
+        }
+        if (SLLayer.isSame(n, e, s, w, self) && SLLayer.isSilence(self)) {
+            return SLLayer.SILENT_PLATEAU;
+        }
+        return self;
     }
 }

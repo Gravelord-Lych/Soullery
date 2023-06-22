@@ -109,6 +109,8 @@ public final class ModBlocks {
 
     public static final DefaultStoneBlockGroup GLOWSTONE_BRICKS = DefaultStoneBlockGroup.createAndRegister(of(Material.GLASS, MaterialColor.SAND).strength(0.3f).sound(SoundType.GLASS).lightLevel(state -> 15).isValidSpawn(ModBlocks::never), ModBlockNames.GLOWSTONE_BRICKS, ModBlockNames.GLOWSTONE_BRICK_SLAB, ModBlockNames.GLOWSTONE_BRICK_STAIRS, ModBlockNames.GLOWSTONE_BRICK_WALL);
     public static final DefaultStoneBlockGroup PROFOUND_STONE = DefaultStoneBlockGroup.createAndRegister(of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6), ModBlockNames.PROFOUND_STONE, ModBlockNames.PROFOUND_STONE_SLAB, ModBlockNames.PROFOUND_STONE_STAIRS, ModBlockNames.PROFOUND_STONE_WALL);
+    public static final DefaultStoneBlockGroup PROFOUND_STONE_BRICKS = DefaultStoneBlockGroup.createAndRegister(copy(PROFOUND_STONE.core()), ModBlockNames.PROFOUND_STONE_BRICKS, ModBlockNames.PROFOUND_STONE_BRICK_SLAB, ModBlockNames.PROFOUND_STONE_BRICK_STAIRS, ModBlockNames.PROFOUND_STONE_BRICK_WALL);
+    public static final DefaultStoneBlockGroup CRACKED_PROFOUND_STONE_BRICKS = DefaultStoneBlockGroup.createAndRegister(copy(PROFOUND_STONE.core()), ModBlockNames.CRACKED_PROFOUND_STONE_BRICKS, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_SLAB, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_STAIRS, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_WALL);
 
     private ModBlocks() {}
 

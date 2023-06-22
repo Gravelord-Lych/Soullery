@@ -26,7 +26,7 @@ import java.util.function.LongFunction;
 import java.util.stream.Stream;
 
 public final class SWLayer {
-    private static final boolean debug = Soullery.DEBUG_BIOMES;
+    private static final boolean debug = Soullery.DEBUG_BIOMES_SW;
     private static final List<RegistryKey<Biome>> ALL_BIOMES = new ArrayList<>();
     private static final Marker SWL = MarkerManager.getMarker("SoulWastelandBiomes");
     private static final Map<Integer, Integer> remapColors;

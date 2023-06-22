@@ -4,6 +4,8 @@
     "soullery:soul_stone",
     "soullery:decayed_stone",
     "soullery:glowstone_bricks",
-    "soullery:profound_stone"
+    "soullery:profound_stone",
+    "soullery:profound_stone_bricks",
+    "soullery:cracked_profound_stone_bricks"
   ]
 }

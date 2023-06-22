@@ -3,10 +3,12 @@ package lych.soullery.data;
 import com.google.gson.JsonObject;
 import lych.soullery.Soullery;
 import lych.soullery.block.ModBlockNames;
+import lych.soullery.block.ModBlocks;
 import lych.soullery.item.ModItemNames;
 import lych.soullery.item.SoulContainerItem;
 import lych.soullery.item.crafting.ModRecipeSerializers;
 import lych.soullery.util.blg.BlockGroup;
+import lych.soullery.util.blg.WalledBlockItemGroup;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -187,6 +189,13 @@ public class RecipeDataGen extends ForgeRecipeProvider {
         soulSmelting(CRACKED_SOUL_STONE_BRICK_SLAB, SOUL_STONE_BRICK_SLAB, 0.1f, stHas(ModBlockNames.SOUL_STONE_BRICK_SLAB), has(SOUL_STONE_BRICK_SLAB), consumer, ModBlockNames.CRACKED_SOUL_STONE_BRICK_SLAB + "_from_smelting");
         soulSmelting(CRACKED_SOUL_STONE_BRICK_STAIRS, SOUL_STONE_BRICK_STAIRS, 0.1f, stHas(ModBlockNames.SOUL_STONE_BRICK_STAIRS), has(SOUL_STONE_BRICK_STAIRS), consumer, ModBlockNames.CRACKED_SOUL_STONE_BRICK_STAIRS + "_from_smelting");
         soulSmelting(CRACKED_SOUL_STONE_BRICK_WALL, SOUL_STONE_BRICK_WALL, 0.1f, stHas(ModBlockNames.SOUL_STONE_BRICK_WALL), has(SOUL_STONE_BRICK_WALL), consumer, ModBlockNames.CRACKED_SOUL_STONE_BRICK_WALL + "_from_smelting");
+
+        WalledBlockItemGroup crackedProfoundStoneBricks = ModBlocks.CRACKED_PROFOUND_STONE_BRICKS.blockItems();
+        WalledBlockItemGroup profoundStoneBricks = ModBlocks.PROFOUND_STONE_BRICKS.blockItems();
+        soulSmelting(crackedProfoundStoneBricks.core(), profoundStoneBricks.core(), 0.1f, stHas(ModBlockNames.PROFOUND_STONE_BRICKS), has(profoundStoneBricks.core()), consumer);
+        soulSmelting(crackedProfoundStoneBricks.slab(), profoundStoneBricks.slab(), 0.1f, stHas(ModBlockNames.PROFOUND_STONE_BRICK_SLAB), has(profoundStoneBricks.slab()), consumer, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_SLAB + "_from_smelting");
+        soulSmelting(crackedProfoundStoneBricks.stairs(), profoundStoneBricks.stairs(), 0.1f, stHas(ModBlockNames.PROFOUND_STONE_BRICK_STAIRS), has(profoundStoneBricks.stairs()), consumer, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_STAIRS + "_from_smelting");
+        soulSmelting(crackedProfoundStoneBricks.wall(), profoundStoneBricks.wall(), 0.1f, stHas(ModBlockNames.PROFOUND_STONE_BRICK_WALL), has(profoundStoneBricks.wall()), consumer, ModBlockNames.CRACKED_PROFOUND_STONE_BRICK_WALL + "_from_smelting");
     }
 
     public static String stHas(String name) {

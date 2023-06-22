@@ -649,7 +649,7 @@ public final class CommonEventListener {
         ItemStack stack = player.getMainHandItem();
         int level = Reinforcements.WANDERER.getLevel(stack);
         dropProbability *= (1 + level * WandererReinforcement.PROBABILITY_ADDITION);
-        if (stack.getItem().is(ModItemTags.SOUL_EXTRACTORS)) {
+        if (dropProbability > 0 && stack.getItem().is(ModItemTags.SOUL_EXTRACTORS)) {
             dropProbability *= ModConstants.SOUL_EXTRACTOR_PROBABILITY_MULTIPLIER;
             dropProbability = Math.max(1, dropProbability);
             ModItems.forceDamage(stack, player, Hand.MAIN_HAND, (int) Math.ceil(dropProbability));

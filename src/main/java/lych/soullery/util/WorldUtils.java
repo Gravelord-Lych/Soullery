@@ -189,8 +189,12 @@ public final class WorldUtils {
     }
 
     public static <T extends TileEntity> boolean placeBlockEntity(StructureBlockPlacer placer, IntBinaryOperator worldXGetter, IntUnaryOperator worldYGetter, IntBinaryOperator worldZGetter, ISeedReader reader, BlockState state, Class<T> type, int x, int y, int z, MutableBoundingBox boundingBox, Consumer<? super T> op) {
+        BlockPos worldPos = new BlockPos(worldXGetter.applyAsInt(x, z), worldYGetter.applyAsInt(y), worldZGetter.applyAsInt(x, z));
+        if (!boundingBox.isInside(worldPos)) {
+            return false;
+        }
         placer.placeBlock(reader, state, x, y, z, boundingBox);
-        TileEntity blockEntity = reader.getBlockEntity(new BlockPos(worldXGetter.applyAsInt(x, z), worldYGetter.applyAsInt(y), worldZGetter.applyAsInt(x, z)));
+        TileEntity blockEntity = reader.getBlockEntity(worldPos);
         if (type.isInstance(blockEntity)) {
             op.accept(type.cast(blockEntity));
             return true;

@@ -13,6 +13,8 @@ public final class SLBiomes {
     public static final RegistryKey<Biome> INNERMOST_SOUL_LAND = makeKey(ModBiomeNames.INNERMOST_SOUL_LAND);
     public static final RegistryKey<Biome> PARCHED_DESERT = makeKey(ModBiomeNames.PARCHED_DESERT);
     public static final RegistryKey<Biome> PARCHED_DESERT_HILLS = makeKey(ModBiomeNames.PARCHED_DESERT_HILLS);
+    public static final RegistryKey<Biome> SILENT_PLAINS = makeKey(ModBiomeNames.SILENT_PLAINS);
+    public static final RegistryKey<Biome> SILENT_PLATEAU = makeKey(ModBiomeNames.SILENT_PLATEAU);
     public static final RegistryKey<Biome> SOUL_MOUNTAINS = makeKey(ModBiomeNames.SOUL_MOUNTAINS);
     public static final RegistryKey<Biome> SOUL_PLAINS = makeKey(ModBiomeNames.SOUL_PLAINS);
     public static final RegistryKey<Biome> SOUL_SAND_BEACH = makeKey(ModBiomeNames.SOUL_SAND_BEACH);

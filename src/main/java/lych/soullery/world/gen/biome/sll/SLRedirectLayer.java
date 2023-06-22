@@ -34,6 +34,12 @@ public enum SLRedirectLayer implements IC0Transformer {
         if (self == SLLayer.PURE_PLATEAU) {
             return ModBiomes.getId(SLBiomes.INNERMOST_PLATEAU);
         }
+        if (self == SLLayer.SILENT_PLAINS) {
+            return ModBiomes.getId(SLBiomes.SILENT_PLAINS);
+        }
+        if (self == SLLayer.SILENT_PLATEAU) {
+            return ModBiomes.getId(SLBiomes.SILENT_PLATEAU);
+        }
         return self == SLLayer.LAND ? getRandom(REDIRECTABLE_BIOMES, random) : getRandom(REDIRECTABLE_OCEANS, random);
     }
 

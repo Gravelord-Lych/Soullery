@@ -9,6 +9,8 @@ public final class ModBiomeNames {
     public static final String INNERMOST_SOUL_LAND = "innermost_soul_land";
     public static final String PARCHED_DESERT = "parched_desert";
     public static final String PARCHED_DESERT_HILLS = "parched_desert_hills";
+    public static final String SILENT_PLAINS = "silent_plains";
+    public static final String SILENT_PLATEAU = "silent_plateau";
     public static final String SOUL_LAVA_OCEAN = "soul_lava_ocean";
     public static final String SOUL_MOUNTAINS = "soul_mountains";
     public static final String SOUL_PLAINS = "soul_plains";

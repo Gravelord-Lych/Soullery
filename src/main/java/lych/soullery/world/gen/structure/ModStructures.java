@@ -13,6 +13,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModStructures {
     public static final FireTempleStructure FIRE_TEMPLE = new FireTempleStructure(NoFeatureConfig.CODEC);
+    public static final SkyCityStructure SKY_CITY = new SkyCityStructure(NoFeatureConfig.CODEC);
     public static final SoulTowerStructure SOUL_TOWER = new SoulTowerStructure(SoulTowerConfig.CODEC);
 
     private ModStructures() {}
@@ -21,6 +22,7 @@ public final class ModStructures {
     public static void registerStructures(RegistryEvent.Register<Structure<?>> event) {
         IForgeRegistry<Structure<?>> registry = event.getRegistry();
         register(registry, ModStructureNames.FIRE_TEMPLE, FIRE_TEMPLE);
+        register(registry, ModStructureNames.SKY_CITY, SKY_CITY);
         register(registry, ModStructureNames.SOUL_TOWER, SOUL_TOWER);
     }
 

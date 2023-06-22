@@ -22,11 +22,13 @@ import java.util.function.LongFunction;
 import java.util.stream.Stream;
 
 public final class SLLayer {
-    private static final boolean debug = Soullery.DEBUG_BIOMES;
+    private static final boolean debug = Soullery.DEBUG_BIOMES_SL;
     public static final int OCEAN = 0;
     public static final int LAND = 1;
     public static final int PURE = 2;
     public static final int PURE_PLATEAU = 3;
+    public static final int SILENT_PLAINS = 99999999;
+    public static final int SILENT_PLATEAU = 100000000;
 
     private static final List<RegistryKey<Biome>> ALL_BIOMES = new ArrayList<>();
     private static final Marker SLL = MarkerManager.getMarker("SoulLandBiomes");
@@ -50,10 +52,14 @@ public final class SLLayer {
         remapColors.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS), 0x8C0094);
         remapColors.put(ModBiomes.getId(SLBiomes.WARPED_HILLS), 0xCA00D5);
         remapColors.put(ModBiomes.getId(SLBiomes.WARPED_PLAINS_EDGE), 0x831BD2);
+        remapColors.put(ModBiomes.getId(SLBiomes.SILENT_PLAINS), 0x193c48);
+        remapColors.put(ModBiomes.getId(SLBiomes.SILENT_PLATEAU), 0x122c35);
         remapColors.put(OCEAN, 0x007FFF);
         remapColors.put(LAND, 0x00FF00);
         remapColors.put(PURE, 0x0000FF);
         remapColors.put(PURE_PLATEAU, 0x7F00FF);
+        remapColors.put(SILENT_PLAINS, 0x004080);
+        remapColors.put(SILENT_PLATEAU, 0x400080);
         initBiomes();
     }
 
@@ -90,6 +96,8 @@ public final class SLLayer {
         debug(factory, "enlarge1");
         factory = SLEnlargeIslandLayer.INSTANCE.run(seedFunc.apply(2), factory);
         debug(factory, "enlarge2");
+        factory = SLCreateSilentPlainsLayer.INSTANCE.run(seedFunc.apply(3844), factory);
+        debug(factory, "silence");
         factory = SLExpandPurificationLayer.INSTANCE.run(seedFunc.apply(6), factory);
         factory = SLExpandPurificationLayer.INSTANCE.run(seedFunc.apply(12), factory);
         debug(factory, "purify2");
@@ -129,6 +137,10 @@ public final class SLLayer {
 
     public static boolean isPure(int id) {
         return id == PURE || id == PURE_PLATEAU || id == ModBiomes.getId(SLBiomes.INNERMOST_SOUL_LAND) || id == ModBiomes.getId(SLBiomes.INNERMOST_PLATEAU);
+    }
+
+    public static boolean isSilence(int id) {
+        return id == SILENT_PLAINS || id == SILENT_PLATEAU || id == ModBiomes.getId(SLBiomes.SILENT_PLAINS) || id == ModBiomes.getId(SLBiomes.SILENT_PLATEAU);
     }
 
     public static boolean isSame(int... ids) {

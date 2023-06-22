@@ -25,8 +25,12 @@ public final class SoulTowerConfigs {
     public static final Selection<BlockState> GLOWSTONE = Selections.selection(
             makeItem(ModBlocks.GLOWSTONE_BRICKS.core().defaultBlockState(), 100),
             makeItem(Blocks.GLOWSTONE.defaultBlockState(), 20),
-            makeItem(Blocks.AIR.defaultBlockState(), 7),
-            makeItem(Blocks.COBWEB.defaultBlockState(), 2));
+            makeItem(Blocks.AIR.defaultBlockState(), 7));
+    public static final Selection<BlockState> PROFOUND_STONE = Selections.selection(
+            makeItem(ModBlocks.PROFOUND_STONE_BRICKS.core().defaultBlockState(), 100),
+            makeItem(ModBlocks.CRACKED_PROFOUND_STONE_BRICKS.core().defaultBlockState(), 20),
+            makeItem(ModBlocks.PROFOUND_STONE.core().defaultBlockState(), 10),
+            makeItem(Blocks.AIR.defaultBlockState(), 7));
     public static final Selection<BlockState> OUTER_NETHER_BRICKS = Selections.selection(
             makeItem(Blocks.NETHER_BRICKS.defaultBlockState(), 36),
             makeItem(Blocks.CRACKED_NETHER_BRICKS.defaultBlockState(), 12),

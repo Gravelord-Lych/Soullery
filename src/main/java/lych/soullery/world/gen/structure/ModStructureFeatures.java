@@ -16,7 +16,6 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public final class ModStructureFeatures {
     public static final StructureFeature<SoulTowerConfig, ? extends Structure<SoulTowerConfig>> SOUL_TOWER_DEFAULT = register(ModDimensions.SOUL_LAND,
             merge(ModStructureNames.SOUL_TOWER, "default"),
             ModStructures.SOUL_TOWER,
-            new SoulTowerConfig(90, 150, SoulTowerConfigs.GLOWSTONE, SoulTowerConfigs.OUTER_SOUL_STONE_BRICKS, SoulTowerConfigs.INNER_SOUL_STONE_BRICKS, SoulTowerConfigs.INNER_SOUL_STONE_BRICK_SLAB, SoulTowerConfigs.LIGHT_BLUE_STAINED_GLASS),
+            new SoulTowerConfig(90, 150, SoulTowerConfigs.PROFOUND_STONE, SoulTowerConfigs.OUTER_SOUL_STONE_BRICKS, SoulTowerConfigs.INNER_SOUL_STONE_BRICKS, SoulTowerConfigs.INNER_SOUL_STONE_BRICK_SLAB, SoulTowerConfigs.LIGHT_BLUE_STAINED_GLASS),
             new StructureSeparationSettings(50, 30, 14523311));
     public static final StructureFeature<SoulTowerConfig, ? extends Structure<SoulTowerConfig>> SOUL_TOWER_PARCHED_DESERT = registerVariant(merge(ModStructureNames.SOUL_TOWER, ModBiomeNames.PARCHED_DESERT),
             ModStructures.SOUL_TOWER,
@@ -38,6 +37,8 @@ public final class ModStructureFeatures {
             ModStructures.SOUL_TOWER,
             new SoulTowerConfig(85, 130, SoulTowerConfigs.WARPED_PLANKS, SoulTowerConfigs.OUTER_NETHER_BRICKS, SoulTowerConfigs.INNER_NETHER_BRICKS, SoulTowerConfigs.INNER_NETHER_BRICK_SLAB, SoulTowerConfigs.GREEN_STAINED_GLASS));
 
+    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> SKY_CITY = register(ModDimensions.SOUL_LAND, ModStructureNames.SKY_CITY, ModStructures.SKY_CITY, NoFeatureConfig.INSTANCE, new StructureSeparationSettings(35, 30, 14523311));
+
     private ModStructureFeatures() {}
 
     private static <T extends Structure<C>, C extends IFeatureConfig> StructureFeature<C, ? extends Structure<C>> register(RegistryKey<World> dimension, String name, T structure, C config, StructureSeparationSettings settings) {
@@ -45,7 +46,6 @@ public final class ModStructureFeatures {
         return registerVariant(name, structure, config);
     }
 
-    @NotNull
     private static <T extends Structure<C>, C extends IFeatureConfig> StructureFeature<C, ? extends Structure<C>> registerVariant(String name, T structure, C config) {
         StructureFeature<C, ? extends Structure<C>> configured = structure.configured(config);
         return WorldGenRegistries.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, Soullery.prefix(name), configured);

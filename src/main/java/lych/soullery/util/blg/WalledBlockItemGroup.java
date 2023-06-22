@@ -13,7 +13,7 @@ public class WalledBlockItemGroup extends BlockItemGroup {
         this.wall = wall;
     }
 
-    public BlockItem getWall() {
+    public BlockItem wall() {
         return wall;
     }
 

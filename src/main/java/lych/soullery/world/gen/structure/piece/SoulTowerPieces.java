@@ -48,6 +48,10 @@ public final class SoulTowerPieces {
 
         @Override
         public boolean postProcess(ISeedReader reader, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+            if (!updateAverageGroundHeight(reader, boundingBox, 0)) {
+                return false;
+            }
+
             WorldUtils.StructureAccessors accessors = WorldUtils.group(this::placeBlock, this::getWorldX, this::getWorldY, this::getWorldZ);
             List<BlockPos> circleSurrounder = WorldUtils.getCircleEdges(0, 0, 0, STAIR_RADIUS, Direction.Axis.Y);
             int i = 0;
@@ -85,6 +89,7 @@ public final class SoulTowerPieces {
 
     public static final class TopRoom extends ScatteredStructurePiece {
         private final SoulTowerConfig config;
+        private boolean placedSpawner;
 
         public TopRoom(Random random, int x, int y, int z, SoulTowerConfig config) {
             super(ModStructurePieces.ST_TOP_ROOM, random, x, y, z, (ROOM_RADIUS + 1) * 2, OUTER_ROOM_HEIGHT, (ROOM_RADIUS + 1) * 2);
@@ -95,12 +100,14 @@ public final class SoulTowerPieces {
         public TopRoom(TemplateManager manager, CompoundNBT compoundNBT) {
             super(ModStructurePieces.ST_TOP_ROOM, compoundNBT);
             config = new SoulTowerConfig(compoundNBT.getCompound("TowerConfig"));
+            placedSpawner = compoundNBT.getBoolean("PlacedSpawner");
         }
 
         @Override
         protected void addAdditionalSaveData(CompoundNBT compoundNBT) {
             super.addAdditionalSaveData(compoundNBT);
             compoundNBT.put("TowerConfig", config.save());
+            compoundNBT.putBoolean("PlacedSpawner", placedSpawner);
         }
 
         @Override
@@ -116,12 +123,14 @@ public final class SoulTowerPieces {
                         placeBlock(reader, config.getGlassBlocks().getRandom(random), pos.getX(), pos.getY(), pos.getZ(), boundingBox);
                     }
                     if (y == ROOM_HEIGHT / 2) {
-                        WorldUtils.placeBlockEntity(accessors, reader, ModBlocks.INSTANT_SPAWNER.defaultBlockState(), InstantSpawnerTileEntity.class, r(0), y, r(0), boundingBox, spawner -> {
-                            spawner.setType(ModEntities.SOUL_SKELETON_KING);
-                            spawner.setRange(ROOM_RADIUS);
-                            spawner.setVerticalRange(ROOM_HEIGHT / 2);
-                            spawner.setRestrictRadiusMultiplier(1);
-                        });
+                        if (!placedSpawner) {
+                            placedSpawner = WorldUtils.placeBlockEntity(accessors, reader, ModBlocks.INSTANT_SPAWNER.defaultBlockState(), InstantSpawnerTileEntity.class, r(0), y, r(0), boundingBox, spawner -> {
+                                spawner.setType(ModEntities.SOUL_SKELETON_KING);
+                                spawner.setRange(ROOM_RADIUS);
+                                spawner.setVerticalRange(ROOM_HEIGHT / 2);
+                                spawner.setRestrictRadiusMultiplier(1);
+                            });
+                        }
                     }
                 }
             }

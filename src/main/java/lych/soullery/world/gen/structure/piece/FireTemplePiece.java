@@ -46,6 +46,10 @@ public class FireTemplePiece extends ScatteredStructurePiece {
 
     @Override
     public boolean postProcess(ISeedReader reader, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos, BlockPos mbbBottomCenter) {
+        if (!updateAverageGroundHeight(reader, boundingBox, 0)) {
+            return false;
+        }
+
         for (int i = 0; i < width / 2; i++) {
             generateBox(reader, boundingBox, i, i, i, width - 1 - i, i, width - 1 - i, false, random, SELECTOR);
         }
@@ -60,17 +64,15 @@ public class FireTemplePiece extends ScatteredStructurePiece {
         generateBox(reader, boundingBox, 0, -height, 0, width - 1, -height + ROOM_HEIGHT + 1, width - 1, false, random, HOLLOW_SELECTOR);
         generateBox(reader, boundingBox, 1, -height + 1, 1, width - 2, -height + SOIL_THICKNESS, width - 2, ModBlocks.PARCHED_SOIL.defaultBlockState(), ModBlocks.PARCHED_SOIL.defaultBlockState(), false);
         if (!placedBossSpawner) {
-            WorldUtils.placeBlockEntity(accessors, reader, ModBlocks.INSTANT_SPAWNER.defaultBlockState(), InstantSpawnerTileEntity.class, cX, -height + SOIL_THICKNESS + 2, cZ, boundingBox, spawner -> {
+            placedBossSpawner = WorldUtils.placeBlockEntity(accessors, reader, ModBlocks.INSTANT_SPAWNER.defaultBlockState(), InstantSpawnerTileEntity.class, cX, -height + SOIL_THICKNESS + 2, cZ, boundingBox, spawner -> {
                 spawner.setType(ModEntities.ENERGIZED_BLAZE);
                 spawner.setRange(InstantSpawnerTileEntity.SHORT_RANGE);
             });
-            placedBossSpawner = true;
         }
 
         carve(reader, boundingBox, maxY, cX, cZ);
         if (!placedBlazeSpawner) {
-            WorldUtils.placeBlockEntity(accessors, reader, Blocks.SPAWNER.defaultBlockState(), MobSpawnerTileEntity.class, cX, maxY + 2, cZ, boundingBox, spawner -> spawner.getSpawner().setEntityId(EntityType.BLAZE));
-            placedBlazeSpawner = true;
+            placedBlazeSpawner = WorldUtils.placeBlockEntity(accessors, reader, Blocks.SPAWNER.defaultBlockState(), MobSpawnerTileEntity.class, cX, maxY + 2, cZ, boundingBox, spawner -> spawner.getSpawner().setEntityId(EntityType.BLAZE));
         }
 
         return true;

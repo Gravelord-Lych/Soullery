@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class ExtraAbilityWandItem extends Item {
     private static final ITextComponent CONTAINER_TITLE = new TranslationTextComponent(Soullery.prefixMsg("gui", "extra_ability"));
     private static final LazyValue<Set<Item>> WANDS = new LazyValue<>(ExtraAbilityWandItem::initWands);
-    private static final int COOLDOWN = 20 * 20;
+    private static final int COOLDOWN = 20 * 60;
     private final int tier;
 
     public ExtraAbilityWandItem(Properties properties, int tier) {

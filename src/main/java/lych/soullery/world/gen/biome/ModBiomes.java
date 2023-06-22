@@ -58,6 +58,8 @@ public class ModBiomes {
         registry.register(make(makeParchedDesertBiome(0.45f, 0.3f), ModBiomeNames.PARCHED_DESERT_HILLS));
         registry.register(make(makeSoulBiome(1, 0.3f, false), ModBiomeNames.SOUL_MOUNTAINS));
         registry.register(make(makeSoulBiome(0.15f, 0.05f, true), ModBiomeNames.SOUL_PLAINS));
+        registry.register(make(makeSilentPlains(0.15f, 0.02f), ModBiomeNames.SILENT_PLAINS));
+        registry.register(make(makeSilentPlains(0.5f, 0.02f), ModBiomeNames.SILENT_PLATEAU));
         registry.register(make(makeSoulBeach(0, 0.01f), ModBiomeNames.SOUL_SAND_BEACH));
         registry.register(make(makeSoulLavaOcean(-1, 0.075f), ModBiomeNames.SOUL_LAVA_OCEAN));
         registry.register(make(makeSoulWastelands(0.15f, 0.03f, false, true, false), ModBiomeNames.SOUL_WASTELANDS));
@@ -87,7 +89,9 @@ public class ModBiomes {
         addTypes(SLBiomes.INNERMOST_PLATEAU, Type.PLATEAU, Type.HOT, Type.DRY, Type.RARE, SOUL_TYPE, SOUL_LAND_TYPE, PURE_TYPE);
         addTypes(SLBiomes.INNERMOST_SOUL_LAND, Type.PLAINS, Type.HOT, Type.DRY, Type.RARE, SOUL_TYPE, SOUL_LAND_TYPE, PURE_TYPE);
         addTypes(SLBiomes.PARCHED_DESERT, Type.SANDY, Type.HOT, Type.DRY, SOUL_LAND_TYPE);
-        addTypes(SLBiomes.PARCHED_DESERT, Type.SANDY, Type.HOT, Type.DRY, Type.HILLS, SOUL_LAND_TYPE);
+        addTypes(SLBiomes.PARCHED_DESERT_HILLS, Type.SANDY, Type.HOT, Type.DRY, Type.HILLS, SOUL_LAND_TYPE);
+        addTypes(SLBiomes.SILENT_PLAINS, Type.HOT, Type.DRY, Type.PLAINS, SOUL_LAND_TYPE);
+        addTypes(SLBiomes.SILENT_PLATEAU, Type.HOT, Type.DRY, Type.PLATEAU, SOUL_LAND_TYPE);
         addTypes(SLBiomes.SOUL_MOUNTAINS, Type.MOUNTAIN, Type.HOT, Type.DRY, Type.MOUNTAIN, SOUL_TYPE, SOUL_LAND_TYPE);
         addTypes(SLBiomes.SOUL_PLAINS, Type.PLAINS, Type.HOT, Type.DRY, SOUL_TYPE, SOUL_LAND_TYPE);
         addTypes(SLBiomes.SOUL_LAVA_OCEAN, Type.OCEAN, Type.HOT, Type.DRY, SOUL_TYPE, SOUL_LAND_TYPE);

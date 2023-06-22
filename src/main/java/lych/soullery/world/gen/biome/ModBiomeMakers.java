@@ -60,6 +60,38 @@ public final class ModBiomeMakers {
                 .build();
     }
 
+    public static Biome makeSilentPlains(float depth, float scale) {
+        MobSpawnInfo.Builder spawnBuilder = new MobSpawnInfo.Builder();
+        spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 4, 1, 1));
+        spawnBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntities.WANDERER, 1, 1, 1));
+
+        BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
+        addDefaultSoulBiomeCarvers(genBuilder, false);
+        genBuilder.addStructureStart(ModStructureFeatures.SKY_CITY);
+        genBuilder.addFeature(Decoration.UNDERGROUND_DECORATION, ModConfiguredFeatures.SL_PATCH_SOUL_FIRE);
+        defaultSoulBiomeOres(genBuilder);
+
+        genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SILENT_PLAINS);
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.NONE)
+                .biomeCategory(Biome.Category.PLAINS)
+                .depth(depth)
+                .scale(scale)
+                .temperature(1.5f)
+                .downfall(0)
+                .specialEffects(new BiomeAmbience.Builder()
+                        .waterColor(DEFAULT_WATER_COLOR)
+                        .waterFogColor(DEFAULT_WATER_FOG_COLOR)
+                        .fogColor(0x285869)
+                        .skyColor(calculateSkyColor(1.5f))
+                        .ambientMoodSound(MoodSoundAmbience.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .generationSettings(genBuilder.build())
+                .build();
+    }
+
     public static Biome makeSoulLavaOcean(float depth, float scale) {
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder().surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_LAVA_OCEAN);
         return new Biome.Builder()

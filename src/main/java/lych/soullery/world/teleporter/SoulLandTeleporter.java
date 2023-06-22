@@ -32,6 +32,8 @@ public class SoulLandTeleporter implements ITeleporter {
     private static final Set<ResourceLocation> SPAWNABLE_BIOMES = ImmutableSet.of(
             SLBiomes.SOUL_PLAINS,
             SLBiomes.SOUL_MOUNTAINS,
+            SLBiomes.SILENT_PLAINS,
+            SLBiomes.SILENT_PLATEAU,
             SLBiomes.SPIKED_SOUL_PLAINS,
             SLBiomes.PARCHED_DESERT,
             SLBiomes.PARCHED_DESERT_HILLS,

@@ -18,6 +18,8 @@ public enum SLBeachesLayer implements ICastleTransformer {
         ModBiomes.putId(map, SLBiomes.INNERMOST_PLATEAU, SLBiomes.INNERMOST_SOUL_LAND);
         ModBiomes.putId(map, SLBiomes.WARPED_PLAINS, SLBiomes.WARPED_PLAINS_EDGE);
         ModBiomes.putId(map, SLBiomes.WARPED_HILLS, SLBiomes.WARPED_PLAINS_EDGE);
+        ModBiomes.putId(map, SLBiomes.SILENT_PLAINS, SLBiomes.SILENT_PLAINS);
+        ModBiomes.putId(map, SLBiomes.SILENT_PLATEAU, SLBiomes.SILENT_PLAINS);
     });
 
     @Override

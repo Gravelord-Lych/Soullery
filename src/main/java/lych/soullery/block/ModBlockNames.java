@@ -49,6 +49,10 @@ public final class ModBlockNames {
     public static final String CRACKED_DECAYED_STONE_BRICK_STAIRS = "cracked_decayed_stone_brick_stairs";
     public static final String CRACKED_DECAYED_STONE_BRICK_WALL = "cracked_decayed_stone_brick_wall";
     public static final String CRACKED_DECAYED_STONE_BRICKS = "cracked_decayed_stone_bricks";
+    public static final String CRACKED_PROFOUND_STONE_BRICK_SLAB = "cracked_profound_stone_brick_slab";
+    public static final String CRACKED_PROFOUND_STONE_BRICK_STAIRS = "cracked_profound_stone_brick_stairs";
+    public static final String CRACKED_PROFOUND_STONE_BRICK_WALL = "cracked_profound_stone_brick_wall";
+    public static final String CRACKED_PROFOUND_STONE_BRICKS = "cracked_profound_stone_bricks";
     public static final String CRACKED_SOUL_STONE_BRICK_SLAB = "cracked_soul_stone_brick_slab";
     public static final String CRACKED_SOUL_STONE_BRICK_STAIRS = "cracked_soul_stone_brick_stairs";
     public static final String CRACKED_SOUL_STONE_BRICK_WALL = "cracked_soul_stone_brick_wall";
@@ -69,6 +73,10 @@ public final class ModBlockNames {
     public static final String PROFOUND_STONE_SLAB = "profound_stone_slab";
     public static final String PROFOUND_STONE_STAIRS = "profound_stone_stairs";
     public static final String PROFOUND_STONE_WALL = "profound_stone_wall";
+    public static final String PROFOUND_STONE_BRICK_SLAB = "profound_stone_brick_slab";
+    public static final String PROFOUND_STONE_BRICK_STAIRS = "profound_stone_brick_stairs";
+    public static final String PROFOUND_STONE_BRICK_WALL = "profound_stone_brick_wall";
+    public static final String PROFOUND_STONE_BRICKS = "profound_stone_bricks";
     public static final String SMOOTH_SOUL_STONE = "smooth_soul_stone";
     public static final String SMOOTH_SOUL_STONE_SLAB = "smooth_soul_stone_slab";
     public static final String SMOOTH_SOUL_STONE_STAIRS = "smooth_soul_stone_stairs";
