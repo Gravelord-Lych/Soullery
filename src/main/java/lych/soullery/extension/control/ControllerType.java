@@ -16,7 +16,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class ControllerType<T extends MobEntity> {
     private static ControllerType<?>[] CONTROLLER_ARRAY = new ControllerType<?>[0];
@@ -95,7 +98,7 @@ public class ControllerType<T extends MobEntity> {
     @SuppressWarnings("unchecked")
     private static Controller<MobEntity> createCustom(ControllerType<MobEntity> type, UUID mob, UUID player, ServerWorld level) {
         try {
-            return (Controller<MobEntity>) CustomOperator.class.getConstructors()[0].newInstance(type, mob, player, level);
+            return (Controller<MobEntity>) CustomOperator.class.getConstructor(ControllerType.class, UUID.class, UUID.class, ServerWorld.class).newInstance(type, mob, player, level);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +107,7 @@ public class ControllerType<T extends MobEntity> {
     @SuppressWarnings("unchecked")
     private static Controller<MobEntity> loadCustom(ControllerType<MobEntity> type, CompoundNBT compoundNBT, ServerWorld level) {
         try {
-            return (Controller<MobEntity>) CustomOperator.class.getConstructors()[1].newInstance(type, compoundNBT, level);
+            return (Controller<MobEntity>) CustomOperator.class.getConstructor(ControllerType.class, CompoundNBT.class, ServerWorld.class).newInstance(type, compoundNBT, level);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
