@@ -41,7 +41,7 @@ public final class EnchanterGoals {
             } else {
                 if (enchanter.countEAS() <= 20) {
                     EnchantedArmorStandEntity eas = enchanter.summonEAS(enchanter.getEASTypePickerList().findRandomTypePicker(target), target);
-                    eas.swing(Hand.MAIN_HAND);
+                    enchanter.swing(Hand.MAIN_HAND);
                     eas.playSound(ModSoundEvents.ENCHANTER_SUMMON.get(), 0.6f, 1);
                 }
                 randomInterval = RANDOM_INTERVAL_RANGE.randomValue(enchanter.getRandom());

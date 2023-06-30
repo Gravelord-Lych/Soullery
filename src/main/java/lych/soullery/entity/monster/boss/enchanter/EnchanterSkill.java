@@ -17,6 +17,6 @@ public interface EnchanterSkill {
     SoundEvent getSound();
 
     default void particlesAround(EnchanterEntity enchanter, int color) {
-        EntityUtils.addParticlesAroundSelfServerside(enchanter, (ServerWorld) enchanter.level, RedstoneParticles.create(color), 6);
+        EntityUtils.addParticlesAroundSelfServerside(enchanter, (ServerWorld) enchanter.level, RedstoneParticles.create(color), 5);
     }
 }
