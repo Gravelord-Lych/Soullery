@@ -260,6 +260,10 @@ public final class AdvancedVoidwalkerGoals {
             if (alwaysEnchant() || shouldEnchant) {
                 stack = EnchantmentHelper.enchantItem(random, stack, getEnchantLevel(), false);
             }
+//          Ensure that the Enchantments are distinct.
+            Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(stack);
+            stack.removeTagKey("Enchantments");
+            EnchantmentHelper.setEnchantments(enchantmentMap, stack);
             return stack;
         }
 
