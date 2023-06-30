@@ -58,7 +58,7 @@ public final class VoidwalkerGoals {
             return canUse;
         }
 
-        private EntityPredicate customize() {
+        protected EntityPredicate customize() {
             return ((AbstractVoidwalkerEntity) mob).customizeTargetConditions(((IEntityPredicateMixin) targetConditions).copy());
         }
 
@@ -133,7 +133,10 @@ public final class VoidwalkerGoals {
         @Override
         public boolean canUse() {
             if (cooldown <= 0 && mob.getRandom().nextBoolean()) {
+                EntityPredicate oldTargetConditions = targetConditions;
+                targetConditions = customize();
                 findTarget();
+                targetConditions = oldTargetConditions;
                 return target != null;
             }
             return false;
