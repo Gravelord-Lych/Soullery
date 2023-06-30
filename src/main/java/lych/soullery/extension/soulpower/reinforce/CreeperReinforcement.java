@@ -5,8 +5,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
@@ -16,8 +16,8 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class CreeperReinforcement extends AggressiveReinforcement {
-    private static final double EXPLOSION_DAMAGE_PROBABILITY = 0.166666666666667;
-    private static final double MAX_EXPLOSION_DAMAGE_PROBABILITY = 0.5;
+    private static final double EXPLOSION_DAMAGE_PROBABILITY = 0.05;
+    private static final double MAX_EXPLOSION_DAMAGE_PROBABILITY = 0.25;
 
     public CreeperReinforcement() {
         super(EntityType.CREEPER);
@@ -25,13 +25,13 @@ public class CreeperReinforcement extends AggressiveReinforcement {
 
     @Override
     public boolean isItemPosSuitable(ItemStack stack) {
-        return super.isItemPosSuitable(stack) || stack.getItem() instanceof BowItem;
+        return super.isItemPosSuitable(stack) || stack.getItem() instanceof ShootableItem;
     }
 
     @Override
     protected void onAttack(ItemStack stack, LivingEntity attacker, LivingEntity target, int level, LivingAttackEvent event) {
         int count = 0;
-        for (LivingEntity entity : attacker.level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(1 + level))) {
+        for (LivingEntity entity : attacker.level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(1 + level))) {
             if (canDoAreaOfEffectDamageTo(entity, attacker, target)) {
                 if (entity.hurt(EntityUtils.livingAttack(attacker).setExplosion(), event.getAmount() / 2)) {
                     count++;
@@ -54,7 +54,6 @@ public class CreeperReinforcement extends AggressiveReinforcement {
                     0,
                     0);
         }
-//      Creeper Reinforcement has a strong synergy with multiple reinforcements, so add a small nerf to it.
         mayHurtSelf(attacker, count);
     }
 

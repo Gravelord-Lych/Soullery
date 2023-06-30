@@ -11,6 +11,7 @@
     "BlazeMixin",
     "BowItemMixin",
     "BrainMixin",
+    "CrossbowItemMixin",
     "DimensionGeneratorSettingsMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",

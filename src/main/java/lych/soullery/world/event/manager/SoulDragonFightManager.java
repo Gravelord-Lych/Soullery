@@ -1,5 +1,6 @@
 package lych.soullery.world.event.manager;
 
+import lych.soullery.util.ModConstants;
 import lych.soullery.world.event.SoulDragonFight;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature.Spike;
 import net.minecraft.entity.item.FallingBlockEntity;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.LinkedList;
@@ -19,6 +21,7 @@ import java.util.List;
 public class SoulDragonFightManager extends EventManager<SoulDragonFight> {
     private static final String NAME = "SoulDragonFights";
     private static final ITextComponent NOT_IN_RANGE = SoulDragonFight.makeText("not_in_range");
+    private static final String NOT_ENOUGH_SE = SoulDragonFight.makeTextString("not_enough_se");
 
     public SoulDragonFightManager(ServerWorld level) {
         super(NAME, level);
@@ -60,8 +63,12 @@ public class SoulDragonFightManager extends EventManager<SoulDragonFight> {
         return eventMap.get(id);
     }
 
-    public static void warnFailedPlayer(PlayerEntity player) {
+    public static void warnPlayerOutOfRange(PlayerEntity player) {
         player.sendMessage(NOT_IN_RANGE.copy().withStyle(TextFormatting.RED), Util.NIL_UUID);
+    }
+
+    public static void warnPlayerWithoutEnoughEnergy(PlayerEntity player, int energy) {
+        player.sendMessage(new TranslationTextComponent(NOT_ENOUGH_SE, energy, ModConstants.SUMMON_DRAGON_SE_COST).withStyle(TextFormatting.RED), Util.NIL_UUID);
     }
 
     @Override

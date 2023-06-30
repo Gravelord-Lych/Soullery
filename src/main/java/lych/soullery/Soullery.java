@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 @Mod(Soullery.MOD_ID)
 public class Soullery {
     public static final boolean DEBUG = true;
-    public static final boolean DEBUG_BIOMES_SL = true;
+    public static final boolean DEBUG_BIOMES_SL = false;
     public static final boolean DEBUG_BIOMES_SW = false;
     public static final String MOD_ID = "soullery";
     public static final String MOD_NAME = "Soullery";
@@ -77,6 +77,18 @@ public class Soullery {
 
     public static String prefixKeyCategory(String name) {
         return String.format("key.categories.%s.%s", MOD_ID, name);
+    }
+
+    public static String prefixAdvancementTitle(String category, String name) {
+        return String.format("advancement.%s.%s.%s.title", MOD_ID, category, name);
+    }
+
+    public static String prefixAdvancementDescription(String category, String name) {
+        return String.format("advancement.%s.%s.%s.description", MOD_ID, category, name);
+    }
+
+    public static ResourceLocation advancementBackground(String name) {
+        return prefixTex(String.format("gui/advancements/backgrounds/%s.png", name));
     }
 
     public static ResourceLocation prefixShader(String name) {

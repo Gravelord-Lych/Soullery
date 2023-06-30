@@ -21,10 +21,13 @@ import lych.soullery.item.ModItems;
 import lych.soullery.item.SoulBowItem;
 import lych.soullery.network.StaticStatusHandler;
 import lych.soullery.util.SoulEnergies;
+import lych.soullery.util.mixin.IClientPlayerMixin;
 import lych.soullery.util.mixin.IEntityMixin;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -37,6 +40,7 @@ import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.MovementInput;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
@@ -63,6 +67,8 @@ public final class ClientEventListener {
 
     @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, value = Dist.CLIENT)
     public static class ForgeEventListener {
+        protected static final ResourceLocation ITEM_VANISHING_LOCATION = Soullery.prefixTex("gui/item_vanishing.png");
+
         private ForgeEventListener() {}
 
         @SubscribeEvent
@@ -191,6 +197,29 @@ public final class ClientEventListener {
                     .color(0.0f, 1.0f, 0.0f, 1.0f)
                     .endVertex();
         }
+
+        @SuppressWarnings("deprecation")
+        @SubscribeEvent
+        public static void onRenderHotbar(RenderGameOverlayEvent.Post event) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
+                ClientPlayerEntity player = Minecraft.getInstance().player;
+                if (!((IClientPlayerMixin) player).getItemVanishingSlots().isEmpty()) {
+                    RenderSystem.enableRescaleNormal();
+                    RenderSystem.enableBlend();
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.color4f(1, 1, 1, 1);
+                    int screenWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+                    int screenHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+                    Minecraft.getInstance().getTextureManager().bind(ITEM_VANISHING_LOCATION);
+                    IngameGui gui = Minecraft.getInstance().gui;
+                    for (int slotIndex : ((IClientPlayerMixin) player).getItemVanishingSlots()) {
+                        AbstractGui.blit(event.getMatrixStack(), screenWidth / 2 - 91 - 1 + slotIndex * 20, screenHeight - 22 - 1, gui.getBlitOffset(), 0, player.inventory.selected == slotIndex ? 24 : 0, 24, 22, 48, 24);
+                    }
+                    RenderSystem.disableRescaleNormal();
+                    RenderSystem.disableBlend();
+                }
+            }
+        }
     }
 
     @Mod.EventBusSubscriber(modid = Soullery.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -245,6 +274,7 @@ public final class ClientEventListener {
             RenderTypeLookup.setRenderLayer(ModBlocks.CHIPPED_SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.DAMAGED_REFINED_SOUL_METAL_BARS, RenderType.cutoutMipped());
             RenderTypeLookup.setRenderLayer(ModBlocks.DAMAGED_SOUL_METAL_BARS, RenderType.cutoutMipped());
+            RenderTypeLookup.setRenderLayer(ModBlocks.ENCHANTER_SPAWNER, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.INFERNO, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.INSTANT_SPAWNER, RenderType.cutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.POISONOUS_FIRE, RenderType.cutout());

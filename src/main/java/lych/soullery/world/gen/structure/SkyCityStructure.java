@@ -1,7 +1,7 @@
 package lych.soullery.world.gen.structure;
 
 import com.mojang.serialization.Codec;
-import lych.soullery.world.gen.structure.piece.SCP0;
+import lych.soullery.world.gen.structure.piece.SkyCityPieces;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
@@ -37,7 +37,7 @@ public class SkyCityStructure extends Structure<NoFeatureConfig> {
 
         @Override
         public void generatePieces(DynamicRegistries registries, ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, NoFeatureConfig config) {
-            SCP0.Start start = new SCP0.Start(random, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            SkyCityPieces.Start start = new SkyCityPieces.Start(random, (chunkX << 4) + 2, (chunkZ << 4) + 2);
 
             do {
                 pieces.clear();

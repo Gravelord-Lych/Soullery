@@ -12,6 +12,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
@@ -39,11 +40,11 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
     }
 
     @Override
-    public void changeMode(ItemStack stack, ServerPlayerEntity player) {
+    public void changeMode(ItemStack stack, ServerPlayerEntity player, boolean reverse) {
         if (maxSize(stack) <= 1) {
             return;
         }
-        IOMode mode = setNextIOMode(stack);
+        IOMode mode = setNextIOMode(stack, reverse);
         player.sendMessage(new TranslationTextComponent(CHANGE_MODE).append(mode.getText()), Util.NIL_UUID);
     }
 
@@ -61,6 +62,7 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
                 return ActionResultType.FAIL;
             }
             useOn(e, context);
+            context.getPlayer().awardStat(Stats.ITEM_USED.get(this));
             return ActionResultType.CONSUME;
         }
         return super.useOn(context);
@@ -157,8 +159,8 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
         stack.getOrCreateTag().putInt(IO_TAG, mode.getId());
     }
 
-    public static IOMode setNextIOMode(ItemStack stack) {
-        IOMode next = getIOMode(stack).next();
+    public static IOMode setNextIOMode(ItemStack stack, boolean reverse) {
+        IOMode next = reverse ? getIOMode(stack).last() : getIOMode(stack).next();
         setIOMode(stack, next);
         return next;
     }
@@ -236,6 +238,13 @@ public abstract class CarrierItem<T extends INBT, E> extends Item implements IMo
                 return byId(0);
             }
             return byId(getId() + 1);
+        }
+
+        public IOMode last() {
+            if (getId() == 0) {
+                return byId(values().length - 1);
+            }
+            return byId(getId() - 1);
         }
 
         public ITextComponent getText() {

@@ -2,8 +2,8 @@ package lych.soullery.extension.soulpower.reinforce;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -21,7 +21,7 @@ public class SpiderReinforcement extends AggressiveReinforcement {
 
     @Override
     public boolean isItemPosSuitable(ItemStack stack) {
-        return super.isItemPosSuitable(stack) || stack.getItem() instanceof BowItem;
+        return super.isItemPosSuitable(stack) || stack.getItem() instanceof ShootableItem;
     }
 
     @Override

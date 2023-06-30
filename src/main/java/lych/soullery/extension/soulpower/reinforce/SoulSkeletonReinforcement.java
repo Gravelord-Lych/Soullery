@@ -5,8 +5,8 @@ import lych.soullery.extension.fire.Fire;
 import lych.soullery.util.mixin.IEntityMixin;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -23,7 +23,7 @@ public class SoulSkeletonReinforcement extends AggressiveReinforcement {
 
     @Override
     public boolean isItemPosSuitable(ItemStack stack) {
-        return super.isItemPosSuitable(stack) || stack.getItem() instanceof BowItem;
+        return super.isItemPosSuitable(stack) || stack.getItem() instanceof ShootableItem;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package lych.soullery.entity.monster.boss;
 
+import lych.soullery.advancements.ModCriteriaTriggers;
 import lych.soullery.entity.ai.goal.boss.EnergizedBlazeGoals;
 import lych.soullery.entity.ai.goal.boss.EnergizedBlazeGoals.FirestormGoal;
 import lych.soullery.entity.ai.goal.boss.EnergizedBlazeGoals.PhasedFireballAttackGoal;
@@ -7,9 +8,7 @@ import lych.soullery.entity.ai.goal.wrapper.Goals;
 import lych.soullery.entity.ai.phase.ISkippablePhase;
 import lych.soullery.entity.ai.phase.PhaseManager;
 import lych.soullery.entity.ai.phase.SkippablePhaseManager;
-import lych.soullery.util.EntityUtils;
-import lych.soullery.util.IIdentifiableEnum;
-import lych.soullery.util.ModSoundEvents;
+import lych.soullery.util.*;
 import lych.soullery.util.mixin.IGoalSelectorMixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -34,14 +33,20 @@ import net.minecraft.world.server.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
-public class EnergizedBlazeEntity extends BlazeEntity {
+public class EnergizedBlazeEntity extends BlazeEntity implements IHasKillers {
     public static final double FIRESTORM_RANGE = 24;
     private static final float FIRESTORM_DAMAGE = 6;
     private static final int FIRESTORM_FIRE_TIME = 8;
     private static final int FIRESTORM_PIERCE = 10;
+    private static final float SWITCH_ATTACK_TYPE_HEALTH = 0.6f;
     private final PhaseManager<Phase> manager;
     private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_10);
+    private final Set<UUID> killers = new HashSet<>();
+    private final Set<UUID> invalidBurningUpKillers = new HashSet<>();
     private boolean constantlyDoFireballAttack;
 
     public EnergizedBlazeEntity(EntityType<? extends EnergizedBlazeEntity> type, World world) {
@@ -77,7 +82,7 @@ public class EnergizedBlazeEntity extends BlazeEntity {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if (getHealth() < getMaxHealth() * 0.6f) {
+        if (getHealth() < getMaxHealth() * SWITCH_ATTACK_TYPE_HEALTH) {
             setConstantlyDoFireballAttack(true);
         }
         bossInfo.setPercent(getHealth() / getMaxHealth());
@@ -101,6 +106,8 @@ public class EnergizedBlazeEntity extends BlazeEntity {
                 firestorm();
             }
         }
+
+        iterateKillers(level, player -> !EntityUtils.isSurvival(player) || !player.isOnFire(), player -> invalidBurningUpKillers.add(player.getUUID()));
     }
 
     @Override
@@ -109,10 +116,27 @@ public class EnergizedBlazeEntity extends BlazeEntity {
     }
 
     @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (!level.isClientSide()) {
+            Set<UUID> burningUpKillers = new HashSet<>(killers);
+            burningUpKillers.removeAll(invalidBurningUpKillers);
+            for (UUID uuid : burningUpKillers) {
+                ServerPlayerEntity player = (ServerPlayerEntity) level.getPlayerByUUID(uuid);
+                if (EntityUtils.isSurvival(player)) {
+                    ModCriteriaTriggers.BURNING_UP.trigger(player);
+                }
+            }
+        }
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundNBT compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.put("PhaseManager", manager.save());
         compoundNBT.putBoolean("ConstantlyDoFireballAttack", isConstantlyDoingFireballAttack());
+        Utils.saveUUIDSet(compoundNBT, killers, "BurningUpKillers");
+        Utils.saveUUIDSet(compoundNBT, invalidBurningUpKillers, "InvalidBurningUpKillers");
     }
 
     @Override
@@ -120,6 +144,8 @@ public class EnergizedBlazeEntity extends BlazeEntity {
         super.readAdditionalSaveData(compoundNBT);
         manager.load(compoundNBT.getCompound("PhaseManager"));
         setConstantlyDoFireballAttack(compoundNBT.getBoolean("ConstantlyDoFireballAttack"));
+        Utils.loadUUIDSet(compoundNBT, killers, "BurningUpKillers");
+        Utils.loadUUIDSet(compoundNBT, invalidBurningUpKillers, "InvalidBurningUpKillers");
     }
 
     public boolean canAttackTarget() {
@@ -210,6 +236,16 @@ public class EnergizedBlazeEntity extends BlazeEntity {
     @Override
     public boolean removeWhenFarAway(double distance) {
         return false;
+    }
+
+    @Override
+    public Set<UUID> getKillers() {
+        return killers;
+    }
+
+    @Override
+    public float getAddKillerThreshold() {
+        return SWITCH_ATTACK_TYPE_HEALTH;
     }
 
     public enum Phase implements IIdentifiableEnum, ISkippablePhase {

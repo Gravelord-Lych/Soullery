@@ -26,6 +26,7 @@ public class SoundDataGen extends SoundDefinitionsProvider {
     private static final String GENERIC_FOOTSTEPS = "subtitles.block.generic.footsteps";
     private static final String BOW_PATH = "random/bow";
     private static final ResourceLocation ETHEMOVE_PATH = Soullery.prefix("random/ethemove");
+    private static final ResourceLocation ITEM_VANISHING_PATH = Soullery.prefix("random/item_vanishing");
     private static final ResourceLocation LASER_PATH = Soullery.prefix("random/laser");
     private static final ResourceLocation MIND_OPERATE_PATH = Soullery.prefix("random/mind_operate");
 
@@ -38,6 +39,21 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         multiple(ARMOR_EQUIP_REFINED_SOUL_METAL, paths("enchant/soulspeed/soulspeed", 5, 10));
         add(CHAOS, 4);
         add(DEFENSIVE_META8_SHARE_SHIELD);
+        multiple(ENCHANTED_ARMOR_STAND_AMBIENT, paths("item/armor/equip_iron", 6));
+        multiple(ENCHANTED_ARMOR_STAND_DEATH, paths("entity/armorstand/break", 4));
+        multiple(ENCHANTED_ARMOR_STAND_HURT, paths("entity/armorstand/hit", 4));
+        multiple(ENCHANTED_ARMOR_STAND_STEP, def -> def.subtitle(GENERIC_FOOTSTEPS), paths("step/wood", 6));
+        add(ENCHANTER_APPEAR, 2);
+        add(ENCHANTER_COUGH);
+        redirect(ENCHANTER_CURSING_ITEM, ITEM_VANISHING_PATH, 4);
+        add(ENCHANTER_DEATH);
+        add(ENCHANTER_EMPOWER, 2);
+        add(ENCHANTER_HURT, 3);
+        add(ENCHANTER_REGENERATE);
+        add(ENCHANTER_SUMMON, 4);
+        add(ENCHANTER_TRANSFORM);
+        add(ENCHANTER_YAWN);
+        multiple(ENCHANTING_WAND_USE, paths("block/enchantment_table/enchant", 3));
         multiple(ENERGIZED_BLAZE_AMBIENT, paths("mob/blaze/breathe", 4));
         single(ENERGIZED_BLAZE_BURN, "fire/fire");
         single(ENERGIZED_BLAZE_DEATH, "mob/blaze/death");
@@ -45,6 +61,8 @@ public class SoundDataGen extends SoundDefinitionsProvider {
         single(ENERGIZED_BLAZE_SHOOT, "mob/ghast/fireball4");
         multiple(ENERGY_SOUND_BREAK, paths("random/explode", 4));
         redirect(ETHEMOVE, ETHEMOVE_PATH, 4);
+        redirect(ITEM_VANISHING, ITEM_VANISHING_PATH, 4);
+        redirect(ITEM_REPAIRED, MIND_OPERATE_PATH, 3);
         redirect(MIND_OPERATE, MIND_OPERATE_PATH, 3);
         redirect(META8_LASER, LASER_PATH, 3);
         add(META8_SHARE_SHIELD);

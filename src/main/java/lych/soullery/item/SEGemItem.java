@@ -102,11 +102,13 @@ public class SEGemItem extends Item implements ItemSEContainer, IModeChangeable,
     }
 
     @Override
-    public void changeMode(ItemStack stack, ServerPlayerEntity player) {
-        if (getMode(stack) == TransferMode.OUT) {
+    public void changeMode(ItemStack stack, ServerPlayerEntity player, boolean reverse) {
+        if (reverse && getMode(stack) == TransferMode.NORMAL) {
+            setMode(stack, TransferMode.OUT);
+        } else if (!reverse && getMode(stack) == TransferMode.OUT) {
             setMode(stack, TransferMode.NORMAL);
         } else {
-            setMode(stack, TransferMode.byId(getMode(stack).getId() + 1).orElseThrow(() -> new IllegalStateException("Something wrong happened when trying to change a Soul Energy Gem's mode")));
+            setMode(stack, TransferMode.byId(getMode(stack).getId() + (reverse ? -1 : 1)).orElseThrow(() -> new IllegalStateException("Something wrong happened when trying to change a Soul Energy Gem's mode")));
         }
         player.sendMessage(new TranslationTextComponent(Soullery.prefixMsg("item", "item_soul_energy_container.transfer.set_mode")).append(getMode(stack).makeTranslationKey()), Util.NIL_UUID);
     }

@@ -41,9 +41,9 @@ public final class ModBiomeMakers {
         } else if (depth < 0.2f) {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.SOUL_PLAINS_SPIKE);
         }
-        if (towers) {
-            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_DEFAULT);
-        }
+//        if (towers) {
+//            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_DEFAULT);
+//        }
 
         genBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SOUL_LAND);
 
@@ -196,7 +196,7 @@ public final class ModBiomeMakers {
         addDefaultSoulBiomeCarvers(genBuilder, false);
         if (depth < 0.2f) {
             genBuilder.addFeature(Decoration.SURFACE_STRUCTURES, ModConfiguredFeatures.PARCHED_SOIL_SPIKE);
-            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_PARCHED_DESERT);
+//            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_PARCHED_DESERT);
         }
 
         return new Biome.Builder()
@@ -243,9 +243,9 @@ public final class ModBiomeMakers {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_CRIMSON_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeGeneration(genBuilder);
         }
-        if (!edge && depth < 0.2f) {
-            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_CRIMSON_PLAINS);
-        }
+//        if (!edge && depth < 0.2f) {
+//            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_CRIMSON_PLAINS);
+//        }
         return new Biome.Builder()
                 .precipitation(Biome.RainType.NONE)
                 .biomeCategory(Biome.Category.PLAINS)
@@ -293,9 +293,9 @@ public final class ModBiomeMakers {
             genBuilder.addFeature(Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SL_WARPED_FUNGI_AT_THE_EDGE);
             defaultSoulBiomeGeneration(genBuilder);
         }
-        if (!edge && depth < 0.2f) {
-            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_WARPED_PLAINS);
-        }
+//        if (!edge && depth < 0.2f) {
+//            genBuilder.addStructureStart(ModStructureFeatures.SOUL_TOWER_WARPED_PLAINS);
+//        }
         return new Biome.Builder()
                 .precipitation(Biome.RainType.NONE)
                 .biomeCategory(Biome.Category.PLAINS)

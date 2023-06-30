@@ -1,6 +1,8 @@
 package lych.soullery.mixin.client;
 
 import com.mojang.authlib.GameProfile;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.extension.ExtraAbility;
 import lych.soullery.util.ExtraAbilityConstants;
@@ -38,6 +40,8 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IP
     @SuppressWarnings("UnusedAssignment")
     @Unique
     private float enhancedJumpFlag = -1;
+    @Unique
+    private IntSet itemVanishingSlots;
 
     private ClientPlayerEntityMixin(World world, BlockPos pos, float yRot, GameProfile profile) {
         super(world, pos, yRot, profile);
@@ -72,6 +76,14 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IP
             return tmp;
         }
         return 0;
+    }
+
+    @Override
+    public IntSet getItemVanishingSlots() {
+        if (itemVanishingSlots == null) {
+            itemVanishingSlots = new IntArraySet();
+        }
+        return itemVanishingSlots;
     }
 
     @Inject(method = "onSyncedDataUpdated", at = @At("RETURN"))

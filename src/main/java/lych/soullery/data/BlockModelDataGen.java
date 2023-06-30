@@ -58,6 +58,7 @@ public class BlockModelDataGen extends BlockModelProvider {
         cubeAll(SOUL_METAL_BLOCK);
         cubeAll(SOUL_OBSIDIAN);
         cubeAll(SOUL_STONE);
+        cubeBottomTop(registryNameToString(DISASSEMBLER), side(DISASSEMBLER), bottom(DISASSEMBLER), top(DISASSEMBLER));
         wallInventory(wallInventoryToString(SOUL_STONE_BRICK_WALL), prefix(SOUL_STONE_BRICKS));
         cubeAll(SOUL_STONE_BRICKS);
         wallInventory(wallInventoryToString(SOUL_STONE_WALL), prefix(SOUL_STONE));

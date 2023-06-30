@@ -4,9 +4,15 @@ import lych.soullery.Soullery;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.functional.HorcruxEntity;
 import lych.soullery.util.Utils;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
@@ -49,7 +55,9 @@ public class HorcruxCarrierItem extends Item {
                 horcrux.yRot = context.getLevel().random.nextFloat() * 360;
                 horcrux.setOwner(context.getPlayer());
                 context.getLevel().addFreshEntity(horcrux);
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) context.getPlayer(), context.getItemInHand());
                 context.getItemInHand().shrink(1);
+                context.getPlayer().awardStat(Stats.ITEM_USED.get(this));
                 return ActionResultType.CONSUME;
             }
             Soullery.LOGGER.error("Horcrux is not summoned");

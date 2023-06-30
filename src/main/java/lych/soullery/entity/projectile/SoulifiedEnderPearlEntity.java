@@ -232,11 +232,18 @@ public class SoulifiedEnderPearlEntity extends ThrowableEntity implements IPurif
             return new TranslationTextComponent(Soullery.prefixMsg("entity", ModEntityNames.SOULIFIED_ENDER_PEARL + ".gravity." + id)).withStyle(Style.EMPTY.withColor(Color.fromRgb(color)));
         }
 
-        public Gravity cycle() {
-            if (this == NEGATIVE) {
-                return NORMAL;
+        public Gravity next() {
+            if (getId() == values().length - 1) {
+                return byId(0);
             }
             return byId(getId() + 1);
+        }
+
+        public Gravity last() {
+            if (getId() == 0) {
+                return byId(values().length - 1);
+            }
+            return byId(getId() - 1);
         }
     }
 }

@@ -3,6 +3,7 @@ package lych.soullery.item;
 import lych.soullery.extension.soulpower.reinforce.ReinforcementHelper;
 import lych.soullery.util.EntityUtils;
 import lych.soullery.util.InventoryUtils;
+import lych.soullery.util.ModSoundEvents;
 import lych.soullery.util.SoulEnergies;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -85,6 +86,7 @@ public class ItemFixerItem extends AbstractTickableItem implements ISkillPerform
             if (canRepair(stackIn) && SoulEnergies.cost(player, SKILL_SE_COST * mul)) {
                 stackIn.setDamageValue(Math.max(stackIn.getDamageValue() - Math.min(SKILL_MAX_REPAIR, stackIn.getMaxDamage() / 3), 0));
                 player.getCooldowns().addCooldown(this, SKILL_COOLDOWN);
+                player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.ITEM_REPAIRED.get(), player.getSoundSource(), 0.5f, 1);
                 return true;
             }
         }

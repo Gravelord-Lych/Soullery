@@ -283,7 +283,11 @@ public class SoulDragonFight extends AbstractWorldEvent {
     }
 
     public static ITextComponent makeText(String name, Object... args) {
-        return new TranslationTextComponent(Soullery.prefixMsg("soul_dragon_fight", name), args);
+        return new TranslationTextComponent(makeTextString(name), args);
+    }
+
+    public static String makeTextString(String name) {
+        return Soullery.prefixMsg("soul_dragon_fight", name);
     }
 
     private void updateCrystalCount() {

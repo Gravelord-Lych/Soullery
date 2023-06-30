@@ -41,10 +41,11 @@ public final class ModItems {
     public static final Item SOUL_METAL_INGOT = new Item(common());
     public static final Item REFINED_SOUL_METAL_INGOT = new Item(common().fireResistant());
     public static final Item SOUL_PIECE = new SoulPieceItem(common().stacksTo(16));
-    public static final Item CHAOS_WAND = new ChaosWandItem(common().durability(333), 1);
-    public static final Item CHAOS_WAND_II = new ChaosWandItem(common().durability(555).fireResistant().rarity(Rarity.RARE), 2);
-    public static final EnderLauncherItem ENDER_LAUNCHER = new EnderLauncherItem(common().durability(720), 1);
-    public static final EnderLauncherItem ENDER_LAUNCHER_II = new EnderLauncherItem(common().durability(1200).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item CHAOS_WAND = new ChaosWandItem(common().durability(100), 1);
+    public static final Item CHAOS_WAND_II = new ChaosWandItem(common().durability(175).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item ENCHANTING_WAND = new EnchantingWandItem(common().durability(50).rarity(Rarity.RARE));
+    public static final EnderLauncherItem ENDER_LAUNCHER = new EnderLauncherItem(common().durability(240), 1);
+    public static final EnderLauncherItem ENDER_LAUNCHER_II = new EnderLauncherItem(common().durability(400).fireResistant().rarity(Rarity.RARE), 2);
     public static final Item ENTITY_CARRIER = new EntityCarrierItem(common().stacksTo(1), 1);
     public static final Item ENTITY_CARRIER_II = new EntityCarrierItem(common().stacksTo(1).fireResistant(), 8);
     public static final Item EXTRA_ABILITY_CARRIER = new ExtraAbilityCarrierItem(common().stacksTo(1));
@@ -56,9 +57,9 @@ public final class ModItems {
     public static final Item HALF_USED_SPLASH_POTION = new HalfUsedSplashPotionItem(common().stacksTo(1).tab(ItemGroup.TAB_BREWING));
     public static final Item HORCRUX_CARRIER = new HorcruxCarrierItem(common().stacksTo(1));
     public static final Item ITEM_FIXER = new ItemFixerItem(common().stacksTo(1).rarity(Rarity.RARE));
-    public static final Item MIND_OPERATOR = new MindOperatorItem(common().durability(667), 1);
-    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().durability(1000).fireResistant().rarity(Rarity.RARE), 2);
-    public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().durability(2500).fireResistant().rarity(Rarity.EPIC), 3);
+    public static final Item MIND_OPERATOR = new MindOperatorItem(common().durability(80), 1);
+    public static final Item MIND_OPERATOR_II = new MindOperatorItem(common().durability(120).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item MIND_OPERATOR_III = new MindOperatorItem(common().durability(250).fireResistant().rarity(Rarity.EPIC), 3);
     public static final Item REFINED_SOUL_METAL_AXE = new AxeItem(Tool.REFINED_SOUL_METAL, 5, -3, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_BOOTS = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.FEET, common().fireResistant());
     public static final Item REFINED_SOUL_METAL_CHESTPLATE = new ArmorItem(Armor.REFINED_SOUL_METAL, EquipmentSlotType.CHEST, common().fireResistant());
@@ -84,8 +85,8 @@ public final class ModItems {
     public static final Item SOUL_METAL_NUGGET = new Item(common());
     public static final Item SOUL_METAL_PARTICLE = new Item(common());
     public static final Item SOUL_POWDER = new SoulPowderItem(common());
-    public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().durability(360), 1);
-    public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().durability(600).fireResistant().rarity(Rarity.RARE), 2);
+    public static final Item SOUL_PURIFIER = new SoulPurifierItem(common().durability(120), 1);
+    public static final Item SOUL_PURIFIER_II = new SoulPurifierItem(common().durability(200).fireResistant().rarity(Rarity.RARE), 2);
 
     public static final BlockItem BROKEN_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.BROKEN_REFINED_SOUL_METAL_BARS, common());
     public static final BlockItem CHIPPED_REFINED_SOUL_METAL_BARS = new BlockItem(ModBlocks.CHIPPED_REFINED_SOUL_METAL_BARS, common());
@@ -112,6 +113,7 @@ public final class ModItems {
     public static final BlockItem DECAYED_STONE_WALL = new BlockItem(ModBlocks.DECAYED_STONE_WALL, common());
     public static final SEGeneratorBlockItem DEPTH_SEGEN = new SEGeneratorBlockItem(ModBlocks.DEPTH_SEGEN, getCapacity(1), se());
     public static final SEGeneratorBlockItem DEPTH_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.DEPTH_SEGEN_II, getCapacity(2), se());
+    public static final BlockItem DISASSEMBLER = new BlockItem(ModBlocks.DISASSEMBLER, common());
     public static final SEGeneratorBlockItem HEAT_SEGEN = new SEGeneratorBlockItem(ModBlocks.HEAT_SEGEN, getCapacity(1), se());
     public static final SEGeneratorBlockItem HEAT_SEGEN_II = new SEGeneratorBlockItem(ModBlocks.HEAT_SEGEN_II, getCapacity(2), se());
     public static final BlockItem MAGNETIC_FIELD_GENERATOR = new BlockItem(ModBlocks.MAGNETIC_FIELD_GENERATOR, common().rarity(Rarity.EPIC));
@@ -206,6 +208,7 @@ public final class ModItems {
         registry.register(make(SOUL_ENERGY_GEM_II, ModItemNames.SOUL_ENERGY_GEM_II));
         registry.register(make(CHAOS_WAND, ModItemNames.CHAOS_WAND));
         registry.register(make(CHAOS_WAND_II, ModItemNames.CHAOS_WAND_II));
+        registry.register(make(ENCHANTING_WAND, ModItemNames.ENCHANTING_WAND));
         registry.register(make(ENDER_LAUNCHER, ModItemNames.ENDER_LAUNCHER));
         registry.register(make(ENDER_LAUNCHER_II, ModItemNames.ENDER_LAUNCHER_II));
         registry.register(make(ENTITY_CARRIER, ModItemNames.ENTITY_CARRIER));
@@ -332,6 +335,7 @@ public final class ModItems {
         registry.register(make(SOUL_ENERGY_STORAGE, ModBlockNames.SOUL_ENERGY_STORAGE));
         registry.register(make(SOUL_ENERGY_STORAGE_II, ModBlockNames.SOUL_ENERGY_STORAGE_II));
 
+        registry.register(make(DISASSEMBLER, ModBlockNames.DISASSEMBLER));
         registry.register(make(MAGNETIC_FIELD_GENERATOR, ModBlockNames.MAGNETIC_FIELD_GENERATOR));
         registry.register(make(SOUL_REINFORCEMENT_TABLE, ModBlockNames.SOUL_REINFORCEMENT_TABLE));
 

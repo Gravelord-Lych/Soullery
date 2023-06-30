@@ -1,7 +1,10 @@
 package lych.soullery.listener;
 
 import lych.soullery.Soullery;
+import lych.soullery.advancements.ModCriteriaTriggers;
+import lych.soullery.api.capability.APICapabilities;
 import lych.soullery.api.capability.IControlledMobData;
+import lych.soullery.api.event.ArrowSpawnEvent;
 import lych.soullery.api.event.PostLivingHurtEvent;
 import lych.soullery.api.exa.IExtraAbility;
 import lych.soullery.api.exa.PlayerBuff;
@@ -14,11 +17,13 @@ import lych.soullery.block.ModBlocks;
 import lych.soullery.block.SoulMetalBarsBlock;
 import lych.soullery.block.plant.SoulifiedBushBlock;
 import lych.soullery.capability.ControlledMobDataProvider;
+import lych.soullery.capability.ItemVanishingSkillDataProvider;
 import lych.soullery.config.ConfigHelper;
 import lych.soullery.effect.ModEffects;
 import lych.soullery.effect.SoulPollutionHandler;
 import lych.soullery.entity.ModEntities;
 import lych.soullery.entity.iface.*;
+import lych.soullery.entity.monster.boss.IHasKillers;
 import lych.soullery.entity.monster.boss.SkeletonKingEntity;
 import lych.soullery.entity.monster.voidwalker.AbstractVoidwalkerEntity;
 import lych.soullery.entity.projectile.SoulArrowEntity;
@@ -32,10 +37,7 @@ import lych.soullery.extension.soulpower.buff.PlayerBuffMap;
 import lych.soullery.extension.soulpower.reinforce.Reinforcements;
 import lych.soullery.extension.soulpower.reinforce.WandererReinforcement;
 import lych.soullery.extension.superlink.SuperLinkManager;
-import lych.soullery.item.ModItems;
-import lych.soullery.item.SoulContainerItem;
-import lych.soullery.item.SoulPieceItem;
-import lych.soullery.item.VoidwalkerSpawnEggItem;
+import lych.soullery.item.*;
 import lych.soullery.mixin.EntityDamageSourceAccessor;
 import lych.soullery.mixin.IndirectEntityDamageSourceAccessor;
 import lych.soullery.mixin.MobSpawnInfoAccessor;
@@ -43,6 +45,7 @@ import lych.soullery.network.ClickHandlerNetwork;
 import lych.soullery.tag.ModBlockTags;
 import lych.soullery.tag.ModItemTags;
 import lych.soullery.util.*;
+import lych.soullery.util.mixin.IAbstractArrowEntityMixin;
 import lych.soullery.util.mixin.IEntityMixin;
 import lych.soullery.util.mixin.IPlayerEntityMixin;
 import lych.soullery.world.CommandData;
@@ -53,6 +56,7 @@ import lych.soullery.world.gen.biome.SLBiomes;
 import lych.soullery.world.gen.dimension.ModDimensions;
 import lych.soullery.world.gen.feature.ModConfiguredFeatures;
 import lych.soullery.world.gen.feature.PlateauSpikeFeature;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -89,10 +93,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -118,6 +119,18 @@ public final class CommonEventListener {
         if (!event.getPlayer().level.isClientSide()) {
             EventManager.runEvents();
         }
+    }
+
+    @SubscribeEvent
+    public static void onArrowLoose(ArrowLooseEvent event) {
+        if (ExtraAbility.BOW_EXPERT.isOn(event.getPlayer())) {
+            event.setCharge(event.getCharge() * 2);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onArrowSpawn(ArrowSpawnEvent event) {
+        ((IAbstractArrowEntityMixin) event.getArrow()).setRecordedBow(event.getBow());
     }
 
     @SubscribeEvent
@@ -232,6 +245,18 @@ public final class CommonEventListener {
                         IShieldUser user = (IShieldUser) event.getEntity();
                         EntityUtils.disableShield(event.getEntityLiving().level, user, event.getEntityLiving().getRandom());
                     }
+                }
+            }
+        }
+
+        Entity entity = event.getSource().getEntity();
+        if (entity instanceof PlayerEntity && event.getEntity() instanceof IHasKillers) {
+            IHasKillers boss = (IHasKillers) event.getEntity();
+            float health = event.getEntityLiving().getHealth();
+            float maxHealth = event.getEntityLiving().getMaxHealth();
+            if (health >= maxHealth * boss.getAddKillerThreshold()) {
+                if (EntityUtils.isSurvival(entity) || !boss.requiresSurvivalModeKiller()) {
+                    boss.getKillers().add(entity.getUUID());
                 }
             }
         }
@@ -417,6 +442,9 @@ public final class CommonEventListener {
         if (entity instanceof MobEntity && !entity.level.isClientSide()) {
             event.addCapability(Soullery.prefix("controlled_mob"), new ControlledMobDataProvider<>((MobEntity) entity, (ServerWorld) entity.level));
         }
+        if (entity instanceof ServerPlayerEntity) {
+            event.addCapability(Soullery.prefix("item_vanishing_data_storage"), new ItemVanishingSkillDataProvider((ServerPlayerEntity) entity));
+        }
     }
 
     private static boolean handleArmoredBlockBreak(World world, BlockPos pos) {
@@ -471,17 +499,23 @@ public final class CommonEventListener {
             return;
         }
         ServerWorld level = (ServerWorld) event.getWorld();
+        ItemStack stack = event.getItemStack();
         if (event.getWorld().getBlockState(event.getPos()).is(Blocks.DRAGON_EGG)) {
-            if (event.getWorld().dimension() == ModDimensions.SOUL_LAND && event.getWorld().getBiomeName(event.getPos()).filter(r -> r == SLBiomes.INNERMOST_PLATEAU).isPresent() && checkBase(event, level) && SoulDragonFightManager.get(level).getNearbyEvent(event.getPos(), 100) == null) {
+            PlayerEntity player = event.getPlayer();
+            if (EnchantingWandItem.canEnchantBlock(stack) && event.getWorld().dimension() == ModDimensions.SOUL_LAND && event.getWorld().getBiomeName(event.getPos()).filter(r -> r == SLBiomes.INNERMOST_PLATEAU).isPresent() && checkBase(event, level) && SoulDragonFightManager.get(level).getNearbyEvent(event.getPos(), 100) == null) {
                 List<BlockPos> posList = checkSoulDragonFrom(event.getPos().below(), level);
-                if (!posList.isEmpty()) {
-                    SoulDragonFightManager.tryAddFight(event.getPos(), level, posList);
+                if (SoulEnergies.cost(player, ModConstants.SUMMON_DRAGON_SE_COST)) {
+                    if (!posList.isEmpty()) {
+                        SoulDragonFightManager.tryAddFight(event.getPos(), level, posList);
+                    } else {
+                        SoulDragonFightManager.warnPlayerOutOfRange(player);
+                    }
                 } else {
-                    SoulDragonFightManager.warnFailedPlayer(event.getPlayer());
+                    SoulDragonFightManager.warnPlayerWithoutEnoughEnergy(player, SoulEnergies.getExtractableSEOf(player));
                 }
                 event.setUseBlock(Event.Result.DENY);
-            } else if (event.getPlayer().getMainHandItem().getItem() instanceof SoulContainerItem && SoulPieceItem.getType(event.getPlayer().getMainHandItem()) == EntityType.ENDER_DRAGON) {
-                event.getPlayer().getMainHandItem().shrink(1);
+            } else if (player.getMainHandItem().getItem() instanceof SoulContainerItem && SoulPieceItem.getType(player.getMainHandItem()) == EntityType.ENDER_DRAGON) {
+                player.getMainHandItem().shrink(1);
                 event.getWorld().destroyBlock(event.getPos(), false);
                 for (int i = 0; i < 2; i++) {
                     EntityUtils.spawnItem(event.getWorld(), event.getPos(), new ItemStack(Items.DRAGON_EGG));
@@ -578,6 +612,7 @@ public final class CommonEventListener {
             ((IPlayerEntityMixin) event.player).getAdditionalCooldowns().tick();
             if (event.side == LogicalSide.SERVER) {
                 SoulPollutionHandler.mayPollute(event.player, event.player.level, SoulPollutionHandler.POLLUTE_PROBABILITY);
+                event.player.getCapability(APICapabilities.ITEM_VANISHING_SKILL).ifPresent(ivs -> ivs.tick(event.player.inventory));
             }
         }
     }
@@ -624,6 +659,18 @@ public final class CommonEventListener {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingFinallyDeath(LivingDeathEvent event) {
+        if (!event.getEntity().level.isClientSide() && event.getEntity() instanceof IHasKillers) {
+            for (UUID uuid : ((IHasKillers) event.getEntity()).getKillers()) {
+                PlayerEntity player = event.getEntity().level.getPlayerByUUID(uuid);
+                if (EntityUtils.isAlive(player)) {
+                    CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger((ServerPlayerEntity) player, event.getEntity(), event.getSource());
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
         double dropProbability = Math.max(0, Reinforcements.getDropProbability(event.getEntityLiving().getType()));
@@ -639,6 +686,7 @@ public final class CommonEventListener {
                 event.getEntityLiving().spawnAtLocation(piece);
                 dropProbability -= 1;
                 if (dropProbability <= 0) {
+                    ModCriteriaTriggers.DROPPED_SOUL_PIECE.trigger((ServerPlayerEntity) player);
                     break;
                 }
             }

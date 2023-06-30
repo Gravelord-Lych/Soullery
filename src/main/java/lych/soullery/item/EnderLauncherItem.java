@@ -95,9 +95,9 @@ public class EnderLauncherItem extends AbstractWandItem<EnderLauncherItem> imple
     }
 
     @Override
-    public void changeMode(ItemStack stack, ServerPlayerEntity player) {
+    public void changeMode(ItemStack stack, ServerPlayerEntity player, boolean reverse) {
         if (getTier() > 1) {
-            Gravity gravity = getGravity(stack).cycle();
+            Gravity gravity = reverse ? getGravity(stack).last() : getGravity(stack).next();
             setGravity(stack, gravity);
             gravity.sendSetGravityMessage(player);
         }

@@ -8,4 +8,6 @@ public class APICapabilities {
     public static Capability<ISoulEnergyStorage> SOUL_ENERGY = null;
     @CapabilityInject(IControlledMobData.class)
     public static Capability<IControlledMobData<?>> CONTROLLED_MOB = null;
+    @CapabilityInject(IItemVanishingSkillData.class)
+    public static Capability<IItemVanishingSkillData> ITEM_VANISHING_SKILL = null;
 }

@@ -36,6 +36,7 @@ public class WandererEntity extends MonsterEntity implements ILaserAttacker, ICu
     private static final TargetFinder<MobEntity> FINDER = new TelepathicTargetFinder(20, Math.PI / 6, Telepathy.HIGH_ANGLE_WEIGHT);
     private static final float LASER_DAMAGE = 8;
     private final RightClickHandler<MobEntity> rightClickHandler = new DynamicRightClickHandler();
+//  Wanderers (including controlled) NEVER attack monsters
     private final LaserData data = new LaserData.Builder()
             .color(Color.CYAN)
             .predicate(Lasers.monster(this), LaserData.DEFAULT_DURABILITY / 2)

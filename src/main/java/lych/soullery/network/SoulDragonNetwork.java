@@ -124,7 +124,7 @@ public class SoulDragonNetwork {
                         y += dy / dis * 2;
                         z += dz / dis * 2;
                     }
-                    Minecraft.getInstance().level.playLocalSound(x, y, z, ModSoundEvents.SOUL_RABBIT_DEATH.get(), SoundCategory.HOSTILE, 5, 1, false);
+                    Minecraft.getInstance().level.playLocalSound(x, y, z, ModSoundEvents.SOUL_DRAGON_DEATH.get(), SoundCategory.HOSTILE, 5, 1, false);
                 }
             }
         };

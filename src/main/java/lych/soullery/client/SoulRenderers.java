@@ -10,12 +10,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.BannerPattern;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
@@ -87,5 +91,23 @@ public class SoulRenderers {
         model.leftArm.zRot = -2.3561945F;
         model.rightArm.yRot = 0.0F;
         model.leftArm.yRot = 0.0F;
+    }
+
+    public static <T extends LivingEntity> void coloredTranslucentModelCopyLayerRender(EntityModel<T> parentModel, EntityModel<T> model, ResourceLocation location, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialRenderTick, float r, float g, float b) {
+        coloredTranslucentModelCopyLayerRender(parentModel, model, location, stack, buffer, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialRenderTick, r, g, b, 1);
+    }
+
+    public static <T extends LivingEntity> void coloredTranslucentModelCopyLayerRender(EntityModel<T> parentModel, EntityModel<T> model, ResourceLocation location, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float partialRenderTick, float r, float g, float b, float a) {
+        if (!entity.isInvisible()) {
+            parentModel.copyPropertiesTo(model);
+            model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialRenderTick);
+            model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            renderColoredTranslucentModel(model, location, stack, buffer, packedLight, entity, r, g, b, a);
+        }
+    }
+
+    public static <T extends LivingEntity> void renderColoredTranslucentModel(EntityModel<T> parentModel, ResourceLocation location, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, T entity, float r, float g, float b, float a) {
+        IVertexBuilder builder = buffer.getBuffer(RenderType.entityTranslucent(location));
+        parentModel.renderToBuffer(stack, builder, packedLight, LivingRenderer.getOverlayCoords(entity, 0), r, g, b, a);
     }
 }

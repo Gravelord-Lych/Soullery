@@ -4,7 +4,9 @@ import lych.soullery.Soullery;
 import lych.soullery.entity.functional.*;
 import lych.soullery.entity.monster.*;
 import lych.soullery.entity.monster.boss.*;
+import lych.soullery.entity.monster.boss.enchanter.EnchanterEntity;
 import lych.soullery.entity.monster.boss.esv.SoulControllerEntity;
+import lych.soullery.entity.monster.boss.enchanter.EnchantedArmorStandEntity;
 import lych.soullery.entity.monster.boss.souldragon.SoulDragonEntity;
 import lych.soullery.entity.monster.raider.DarkEvokerEntity;
 import lych.soullery.entity.monster.raider.EngineerEntity;
@@ -39,6 +41,8 @@ public final class ModEntities {
     public static final EntityType<ComputerScientistEntity> COMPUTER_SCIENTIST = Builder.of(ComputerScientistEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.COMPUTER_SCIENTIST);
     public static final EntityType<DarkEvokerEntity> DARK_EVOKER = Builder.of(DarkEvokerEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(8).build(ModEntityNames.DARK_EVOKER);
     public static final EntityType<DroppingMortarShellEntity> DROPPING_MORTAR_SHELL = Builder.<DroppingMortarShellEntity>of(DroppingMortarShellEntity::new, EntityClassification.MISC).sized(1.2f, 1.2f).clientTrackingRange(12).updateInterval(10).build(ModEntityNames.DROPPING_MORTAR_SHELL);
+    public static final EntityType<EnchantedArmorStandEntity> ENCHANTED_ARMOR_STAND = Builder.of(EnchantedArmorStandEntity::new, EntityClassification.MONSTER).sized(0.5f, 1.975f).clientTrackingRange(8).build(ModEntityNames.ENCHANTED_ARMOR_STAND);
+    public static final EntityType<EnchanterEntity> ENCHANTER = Builder.of(EnchanterEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.ENCHANTER);
     public static final EntityType<EnergizedBlazeEntity> ENERGIZED_BLAZE = Builder.of(EnergizedBlazeEntity::new, EntityClassification.MONSTER).fireImmune().sized(0.6f, 1.8f).clientTrackingRange(10).build(ModEntityNames.ENERGIZED_BLAZE);
     public static final EntityType<EngineerEntity> ENGINEER = Builder.of(EngineerEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.ENGINEER);
     public static final EntityType<EtheArmorerEntity> ETHE_ARMORER = Builder.of(EtheArmorerEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10).build(ModEntityNames.ETHE_ARMORER);
@@ -85,6 +89,8 @@ public final class ModEntities {
         registry.register(make(COMPUTER_SCIENTIST, ModEntityNames.COMPUTER_SCIENTIST));
         registry.register(make(DARK_EVOKER, ModEntityNames.DARK_EVOKER));
         registry.register(make(DROPPING_MORTAR_SHELL, ModEntityNames.DROPPING_MORTAR_SHELL));
+        registry.register(make(ENCHANTED_ARMOR_STAND, ModEntityNames.ENCHANTED_ARMOR_STAND));
+        registry.register(make(ENCHANTER, ModEntityNames.ENCHANTER));
         registry.register(make(ENERGIZED_BLAZE, ModEntityNames.ENERGIZED_BLAZE));
         registry.register(make(ENGINEER, ModEntityNames.ENGINEER));
         registry.register(make(ETHE_ARMORER, ModEntityNames.ETHE_ARMORER));
@@ -128,6 +134,8 @@ public final class ModEntities {
         event.put(CLONED_SKELETON_KING, SkeletonKingEntity.createAttributes().build());
         event.put(COMPUTER_SCIENTIST, ComputerScientistEntity.createAttributes().build());
         event.put(DARK_EVOKER, EvokerEntity.createAttributes().build());
+        event.put(ENCHANTED_ARMOR_STAND, EnchantedArmorStandEntity.createAttributes().build());
+        event.put(ENCHANTER, EnchanterEntity.createAttributes().build());
         event.put(ENERGIZED_BLAZE, EnergizedBlazeEntity.createAttributes().build());
         event.put(ENGINEER, EngineerEntity.createAttributes().build());
         event.put(ETHE_ARMORER, AbstractVoidwalkerEntity.createVoidwalkerAttributes().build());
@@ -156,6 +164,8 @@ public final class ModEntities {
     public static void registerEntitySpawnPlacements() {
         register(COMPUTER_SCIENTIST, PlacementType.NO_RESTRICTIONS, Type.MOTION_BLOCKING, MonsterEntity::checkAnyLightMonsterSpawnRules);
         register(DARK_EVOKER, PlacementType.NO_RESTRICTIONS, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        register(ENCHANTED_ARMOR_STAND, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
+        register(ENCHANTER, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
         register(ENERGIZED_BLAZE, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);
         register(ENGINEER, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
         register(ETHE_ARMORER, PlacementType.ON_GROUND, Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkAnyLightMonsterSpawnRules);

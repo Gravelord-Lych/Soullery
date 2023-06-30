@@ -32,10 +32,7 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
@@ -302,6 +299,13 @@ public final class  EntityUtils {
 
     public static boolean isDead(@Nullable Entity entity) {
         return entity != null && !entity.isAlive();
+    }
+
+    public static boolean isSurvival(@Nullable Entity entity) {
+        if (!isAlive(entity) || !(entity instanceof PlayerEntity)) {
+            return false;
+        }
+        return EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(entity);
     }
 
     @SuppressWarnings("deprecation")

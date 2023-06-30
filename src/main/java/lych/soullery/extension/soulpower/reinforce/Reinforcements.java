@@ -29,6 +29,7 @@ public final class Reinforcements {
     public static final Reinforcement DONKEY = new HorseReinforcement(EntityType.DONKEY);
     public static final Reinforcement DROWNED = new DrownedReinforcement();
     public static final Reinforcement ELDER_GUARDIAN = new ElderGuardianReinforcement();
+    public static final Reinforcement ENCHANTER = new EnchanterReinforcement();
     public static final Reinforcement ENDER_DRAGON = new EnderDragonReinforcement();
     public static final Reinforcement ENDERMAN = new EndermanReinforcement();
     public static final Reinforcement ENERGIZED_BLAZE = new EnergizedBlazeReinforcement();
@@ -150,6 +151,7 @@ public final class Reinforcements {
         setCustomSoulPieceDropProbability(EntityType.SLIME, LOWEST_PDP);
         setCustomSoulPieceDropProbability(EntityType.MAGMA_CUBE, LOWEST_PDP);
         setCustomSoulPieceDropProbability(EntityType.VEX, NO_DROP);
+        setCustomSoulPieceDropProbability(ModEntities.ENCHANTED_ARMOR_STAND, NO_DROP);
         setCustomSoulPieceDropProbability(EntityType.COD, LOWEST_PDP);
         setCustomSoulPieceDropProbability(EntityType.SALMON, LOWEST_PDP);
         setCustomSoulPieceDropProbability(EntityType.TROPICAL_FISH, LOWEST_PDP);
@@ -175,6 +177,7 @@ public final class Reinforcements {
         setCustomSoulPieceDropProbability(ModEntities.SOUL_SKELETON, LOWEST_PDP);
         setCustomSoulPieceDropProbability(ModEntities.SOUL_SKELETON_KING, BOSS_PDP);
         setCustomSoulPieceDropProbability(ModEntities.ENERGIZED_BLAZE, BOSS_PDP);
+        setCustomSoulPieceDropProbability(ModEntities.ENCHANTER, BOSS_PDP);
         setCustomSoulPieceDropProbability(ModEntities.ENGINEER, HIGHEST_PDP);
         setCustomSoulPieceDropProbability(ModEntities.DARK_EVOKER, HIGHEST_PDP);
         setCustomSoulPieceDropProbability(ModEntities.REDSTONE_TURRET, NO_DROP);
@@ -196,6 +199,7 @@ public final class Reinforcements {
         setBaseEnergyCost(DONKEY, LOW);
         setBaseEnergyCost(DROWNED, MID);
         setBaseEnergyCost(ELDER_GUARDIAN, HIGH);
+        setBaseEnergyCost(ENCHANTER, HIGH);
         setBaseEnergyCost(ENDER_DRAGON, BIG_BOSS);
         setBaseEnergyCost(ENDERMAN, MID);
         setBaseEnergyCost(ENERGIZED_BLAZE, HIGH * DOUBLE_TIER_MUL);

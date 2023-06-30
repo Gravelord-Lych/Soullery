@@ -53,6 +53,7 @@ public class BlockStateDataGen extends BlockStateProvider {
         slabBlock(DECAYED_STONE_SLAB, prefix(DECAYED_STONE), prefix(DECAYED_STONE));
         stairsBlock(DECAYED_STONE_STAIRS, prefix(DECAYED_STONE));
         wallBlock(DECAYED_STONE_WALL, prefix(DECAYED_STONE));
+        simpleBlock(DISASSEMBLER, modelFromBlock(DISASSEMBLER));
         fire(INFERNO);
         simpleBlock(PARCHED_SOIL);
         fire(POISONOUS_FIRE);
@@ -109,6 +110,7 @@ public class BlockStateDataGen extends BlockStateProvider {
         simpleBlock(WARPED_HYPHAL_SOIL, modelFromBlock(WARPED_HYPHAL_SOIL));
         tfbBlock(MAGNETIC_FIELD_GENERATOR);
         simpleBlock(INSTANT_SPAWNER, modelFromBlock(Blocks.SPAWNER));
+        simpleBlock(ENCHANTER_SPAWNER, modelFromBlock(Blocks.SPAWNER));
 
         for (BlockGroup<?> group : BlockGroup.getBlockGroups()) {
             group.fillBlockStates(this);

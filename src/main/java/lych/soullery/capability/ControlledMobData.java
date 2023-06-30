@@ -67,6 +67,8 @@ public class ControlledMobData<T extends MobEntity> implements IControlledMobDat
     @Override
     public void tick() {
         PriorityQueue<Controller<?>> controllers = getControllers();
+
+        timer.tick();
         if (controllers.isEmpty()) {
             return;
         }
@@ -86,8 +88,6 @@ public class ControlledMobData<T extends MobEntity> implements IControlledMobDat
         }
 
         highlight(mob, level, playerController);
-
-        timer.tick();
     }
 
     private boolean updateExistence(MobEntity mob, Controller<?> controller, @Nullable PlayerEntity playerController) {

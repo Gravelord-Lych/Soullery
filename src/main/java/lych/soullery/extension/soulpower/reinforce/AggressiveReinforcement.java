@@ -6,8 +6,8 @@ import lych.soullery.util.mixin.IAbstractArrowEntityMixin;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -45,7 +45,7 @@ public abstract class AggressiveReinforcement extends Reinforcement {
             ItemStack stack = attacker.getItemInHand(Hand.MAIN_HAND);
             int level = getLevel(stack);
             boolean canApply = true;
-            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof BowItem) {
+            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof ShootableItem) {
                 canApply = isSameBow(stack, (AbstractArrowEntity) event.getSource().getDirectEntity());
             }
             if (level > 0 && canApply) {
@@ -62,7 +62,7 @@ public abstract class AggressiveReinforcement extends Reinforcement {
             ItemStack stack = attacker.getItemInHand(Hand.MAIN_HAND);
             int level = getLevel(stack);
             boolean canApply = true;
-            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof BowItem) {
+            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof ShootableItem) {
                 canApply = isSameBow(stack, (AbstractArrowEntity) event.getSource().getDirectEntity());
             }
             if (level > 0 && canApply) {
@@ -79,7 +79,7 @@ public abstract class AggressiveReinforcement extends Reinforcement {
             ItemStack stack = attacker.getItemInHand(Hand.MAIN_HAND);
             int level = getLevel(stack);
             boolean canApply = true;
-            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof BowItem) {
+            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof ShootableItem) {
                 canApply = isSameBow(stack, (AbstractArrowEntity) event.getSource().getDirectEntity());
             }
             if (level > 0 && canApply) {
@@ -96,7 +96,7 @@ public abstract class AggressiveReinforcement extends Reinforcement {
             ItemStack stack = attacker.getItemInHand(Hand.MAIN_HAND);
             int level = getLevel(stack);
             boolean canApply = true;
-            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof BowItem) {
+            if (event.getSource().getDirectEntity() instanceof AbstractArrowEntity && stack.getItem() instanceof ShootableItem) {
                 canApply = isSameBow(stack, (AbstractArrowEntity) event.getSource().getDirectEntity());
             }
             if (level > 0 && canApply) {

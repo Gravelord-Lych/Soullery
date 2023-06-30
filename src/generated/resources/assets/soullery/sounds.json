@@ -25,6 +25,124 @@
       "soullery:mob/meta8/share_stronger_shield"
     ]
   },
+  "mob.eas.ambient": {
+    "subtitle": "subtitles.soullery:mob.eas.ambient",
+    "sounds": [
+      "item/armor/equip_iron1",
+      "item/armor/equip_iron2",
+      "item/armor/equip_iron3",
+      "item/armor/equip_iron4",
+      "item/armor/equip_iron5",
+      "item/armor/equip_iron6"
+    ]
+  },
+  "mob.eas.death": {
+    "subtitle": "subtitles.soullery:mob.eas.death",
+    "sounds": [
+      "entity/armorstand/break1",
+      "entity/armorstand/break2",
+      "entity/armorstand/break3",
+      "entity/armorstand/break4"
+    ]
+  },
+  "mob.eas.hurt": {
+    "subtitle": "subtitles.soullery:mob.eas.hurt",
+    "sounds": [
+      "entity/armorstand/hit1",
+      "entity/armorstand/hit2",
+      "entity/armorstand/hit3",
+      "entity/armorstand/hit4"
+    ]
+  },
+  "mob.eas.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      "step/wood1",
+      "step/wood2",
+      "step/wood3",
+      "step/wood4",
+      "step/wood5",
+      "step/wood6"
+    ]
+  },
+  "mob.enchanter.appear": {
+    "subtitle": "subtitles.soullery:mob.enchanter.appear",
+    "sounds": [
+      "soullery:mob/enchanter/appear1",
+      "soullery:mob/enchanter/appear2"
+    ]
+  },
+  "mob.enchanter.cough": {
+    "subtitle": "subtitles.soullery:mob.enchanter.cough",
+    "sounds": [
+      "soullery:mob/enchanter/cough"
+    ]
+  },
+  "mob.enchanter.cursing_item": {
+    "subtitle": "subtitles.soullery:mob.enchanter.cursing_item",
+    "sounds": [
+      "soullery:random/item_vanishing1",
+      "soullery:random/item_vanishing2",
+      "soullery:random/item_vanishing3",
+      "soullery:random/item_vanishing4"
+    ]
+  },
+  "mob.enchanter.death": {
+    "subtitle": "subtitles.soullery:mob.enchanter.death",
+    "sounds": [
+      "soullery:mob/enchanter/death"
+    ]
+  },
+  "mob.enchanter.empower": {
+    "subtitle": "subtitles.soullery:mob.enchanter.empower",
+    "sounds": [
+      "soullery:mob/enchanter/empower1",
+      "soullery:mob/enchanter/empower2"
+    ]
+  },
+  "mob.enchanter.hurt": {
+    "subtitle": "subtitles.soullery:mob.enchanter.hurt",
+    "sounds": [
+      "soullery:mob/enchanter/hurt1",
+      "soullery:mob/enchanter/hurt2",
+      "soullery:mob/enchanter/hurt3"
+    ]
+  },
+  "mob.enchanter.regenerate": {
+    "subtitle": "subtitles.soullery:mob.enchanter.regenerate",
+    "sounds": [
+      "soullery:mob/enchanter/regenerate"
+    ]
+  },
+  "mob.enchanter.summon": {
+    "subtitle": "subtitles.soullery:mob.enchanter.summon",
+    "sounds": [
+      "soullery:mob/enchanter/summon1",
+      "soullery:mob/enchanter/summon2",
+      "soullery:mob/enchanter/summon3",
+      "soullery:mob/enchanter/summon4"
+    ]
+  },
+  "mob.enchanter.transform": {
+    "subtitle": "subtitles.soullery:mob.enchanter.transform",
+    "sounds": [
+      "soullery:mob/enchanter/transform"
+    ]
+  },
+  "mob.enchanter.yawn": {
+    "subtitle": "subtitles.soullery:mob.enchanter.yawn",
+    "sounds": [
+      "soullery:mob/enchanter/yawn"
+    ]
+  },
+  "item.enchanting_wand.use": {
+    "subtitle": "subtitles.soullery:item.enchanting_wand.use",
+    "sounds": [
+      "block/enchantment_table/enchant1",
+      "block/enchantment_table/enchant2",
+      "block/enchantment_table/enchant3"
+    ]
+  },
   "mob.energized_blaze.ambient": {
     "subtitle": "subtitles.soullery:mob.energized_blaze.ambient",
     "sounds": [
@@ -77,6 +195,23 @@
       "soullery:random/ethemove2",
       "soullery:random/ethemove3",
       "soullery:random/ethemove4"
+    ]
+  },
+  "random.item_vanishing": {
+    "subtitle": "subtitles.soullery:random.item_vanishing",
+    "sounds": [
+      "soullery:random/item_vanishing1",
+      "soullery:random/item_vanishing2",
+      "soullery:random/item_vanishing3",
+      "soullery:random/item_vanishing4"
+    ]
+  },
+  "random.item_repaired": {
+    "subtitle": "subtitles.soullery:random.item_repaired",
+    "sounds": [
+      "soullery:random/mind_operate1",
+      "soullery:random/mind_operate2",
+      "soullery:random/mind_operate3"
     ]
   },
   "random.mind_operate": {

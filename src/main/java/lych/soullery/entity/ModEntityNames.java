@@ -5,6 +5,8 @@ public class ModEntityNames {
     public static final String COMPUTER_SCIENTIST = "computer_scientist";
     public static final String DARK_EVOKER = "dark_evoker";
     public static final String DROPPING_MORTAR_SHELL = "dropping_mortar_shell";
+    public static final String ENCHANTED_ARMOR_STAND = "eas";
+    public static final String ENCHANTER = "enchanter";
     public static final String ENERGIZED_BLAZE = "energized_blaze";
     public static final String ENGINEER = "engineer";
     public static final String ETHE_ARMORER = "ethe_armorer";

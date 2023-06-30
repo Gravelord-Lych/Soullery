@@ -11,9 +11,12 @@ import net.minecraft.block.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3d;
@@ -21,6 +24,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.server.ServerWorld;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.ArrayList;
@@ -322,6 +326,11 @@ public final class WorldUtils {
             return paneEdge.setValue(FourWayBlock.EAST, true).setValue(FourWayBlock.WEST, true);
         }
         throw new IllegalArgumentException(String.format("Both abs(x)(Provided: %d) and abs(z)(Provided: %d) != r(Provided: %d)", abs(x), abs(z), r));
+    }
+
+    public static void makeFakeExplosionServerside(BlockPos pos, ServerWorld world) {
+        world.sendParticles(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
+        world.playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, 1 + ((world.random.nextFloat() - world.random.nextFloat()) * 0.2f) * 0.7f);
     }
 
     @FunctionalInterface

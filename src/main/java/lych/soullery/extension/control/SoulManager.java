@@ -26,7 +26,7 @@ public final class SoulManager {
     private SoulManager() {}
 
     @Nullable
-    public static  <T extends MobEntity> Controller<? super T> add(T mob, PlayerEntity player, @Nullable ControllerType<? super T> type) {
+    public static <T extends MobEntity> Controller<? super T> add(T mob, PlayerEntity player, @Nullable ControllerType<? super T> type) {
         MutableObject<Controller<? super T>> controller = new MutableObject<>();
         getData(mob).ifPresent(cd -> controller.setValue(cd.add(player, type)));
         return controller.getValue();

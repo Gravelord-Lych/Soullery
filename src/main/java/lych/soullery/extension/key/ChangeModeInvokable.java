@@ -11,7 +11,7 @@ public enum ChangeModeInvokable implements IInvokable {
     public void onKeyPressed(ServerPlayerEntity player) {
         ItemStack stack = player.getMainHandItem();
         if (stack.getItem() instanceof IModeChangeable) {
-            ((IModeChangeable) stack.getItem()).changeMode(stack, player);
+            ((IModeChangeable) stack.getItem()).changeMode(stack, player, player.isShiftKeyDown());
         }
     }
 }

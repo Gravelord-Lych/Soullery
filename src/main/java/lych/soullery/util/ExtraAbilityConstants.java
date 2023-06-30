@@ -46,7 +46,6 @@ public final class ExtraAbilityConstants {
     public static final double FROST_RESISTANCE_SLOWDOWN_RADIUS = 4;
     public static final int PILLAGER_LOOTING_LEVEL_BONUS = 1;
     public static final float STATIC_DEFENDER_DAMAGE_MULTIPLIER = 0.6f;
-    public static final double BOW_EXPERT_DOUBLE_DURABILITY_COST_PROBABILITY = 0.5;
     public static final double SLIME_POWER_STICKY_EFFECT_ADDITIONAL_KNOCKBACK_STRENGTH = 0.5;
     public static final double SLIME_POWER_STICKY_EFFECT_SPEED_NERF = -0.07;
     public static final double MONSTER_SABOTAGE_AMOUNT = -0.1;

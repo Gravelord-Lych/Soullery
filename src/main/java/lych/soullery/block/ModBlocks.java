@@ -42,6 +42,8 @@ public final class ModBlocks {
     public static final Block DECAYED_STONE = new Block(of(Material.STONE, MaterialColor.COLOR_BLACK).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(1.5f, 6));
     public static final Block DEPTH_SEGEN = createSegenBlock(MaterialColor.STONE, 2, 1.5f, 2, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN, 1));
     public static final Block DEPTH_SEGEN_II = createSegenBlock(MaterialColor.STONE, 3, 3, 4, () -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN_II, 2));
+    public static final Block DISASSEMBLER = new DisassemblerBlock(of(Material.EXPLOSIVE).strength(-1).noDrops().sound(SoundType.GRASS));
+    public static final Block ENCHANTER_SPAWNER = new InstantSpawnerBlock(of(Material.STONE).strength(-1).noDrops().sound(SoundType.METAL).noOcclusion(), () -> new EnchanterSpawnerTileEntity(ModTileEntities.ENCHANTER_SPAWNER));
     public static final Block HEAT_SEGEN = createSegenBlock(MaterialColor.FIRE, 2, 1.5f, 8, () -> new HeatSEGeneratorTileEntity(ModTileEntities.HEAT_SEGEN, 1));
     public static final Block HEAT_SEGEN_II = createSegenBlock(MaterialColor.FIRE, 3, 3, 15, () -> new HeatSEGeneratorTileEntity(ModTileEntities.HEAT_SEGEN_II, 2));
     public static final SimpleFireBlock INFERNO = new SimpleFireBlock(fireProperties(MaterialColor.FIRE, ModConstants.INFERNO_LIGHT_LEVEL), ModBlockTags.INFERNO_BASE_BLOCKS);
@@ -169,6 +171,8 @@ public final class ModBlocks {
         registerGroupedBlocks(registry);
         registry.register(make(DEPTH_SEGEN, ModBlockNames.DEPTH_SEGEN));
         registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
+        registry.register(make(DISASSEMBLER, ModBlockNames.DISASSEMBLER));
+        registry.register(make(ENCHANTER_SPAWNER, ModBlockNames.ENCHANTER_SPAWNER));
         registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
         registry.register(make(HEAT_SEGEN_II, ModBlockNames.HEAT_SEGEN_II));
         registry.register(make(INFERNO, ModBlockNames.INFERNO));

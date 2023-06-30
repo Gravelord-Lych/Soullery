@@ -116,6 +116,20 @@ public class ModEntityLootTables extends EntityLootTables {
                         .add(lootTableItem(ENERGIZED_BLAZE_ROD)
                                 .apply(setCount(exactly(8)))
                                 .apply(lootingMultiplier(between(0, 1))))));
+        add(ModEntities.ENCHANTER, lootTable()
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(ENCHANTING_WAND)
+                                .apply(setCount(exactly(1)))))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(ENDER_PEARL)
+                                .apply(setCount(between(4, 7)))
+                                .apply(lootingMultiplier(between(0, 1)))))
+                .withPool(lootPool()
+                        .setRolls(exactly(1))
+                        .add(lootTableItem(MIND_OPERATOR)
+                                .apply(setCount(exactly(1))))));
     }
 
     @Override

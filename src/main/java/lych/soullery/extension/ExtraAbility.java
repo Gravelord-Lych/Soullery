@@ -46,6 +46,7 @@ public final class ExtraAbility implements IExtraAbility {
     public static final IExtraAbility DRAGON_WIZARD = createSpecial(prefix(ExaNames.DRAGON_WIZARD), HIGH_SCC, HIGHEST_SE);
     public static final IExtraAbility ENHANCED_AUTO_JUMP = create(prefix(ExaNames.ENHANCED_AUTO_JUMP), DEFAULT_SCC, MID_SE);
     public static final IExtraAbility ESCAPER = create(prefix(ExaNames.ESCAPER), DEFAULT_SCC, MID_SE);
+    public static final IExtraAbility EXPERIENCER = create(prefix(ExaNames.EXPERIENCER), HIGH_SCC, HIGHER_SE);
     public static final IExtraAbility EXPLOSION_MASTER = create(prefix(ExaNames.EXPLOSION_MASTER), HIGH_SCC, HIGH_SE);
     public static final IExtraAbility FALLING_BUFFER = create(prefix(ExaNames.FALLING_BUFFER), HIGH_SCC, HIGH_SE);
     public static final IExtraAbility FANGS_SUMMONER = createSpecial(prefix(ExaNames.FANGS_SUMMONER), HIGH_SCC, HIGHER_SE);
@@ -104,6 +105,7 @@ public final class ExtraAbility implements IExtraAbility {
         register(DRAGON_WIZARD, EntityType.ENDER_DRAGON);
         register(ENHANCED_AUTO_JUMP, EntityType.RABBIT);
         register(ESCAPER, EscaperBuff.INSTANCE, EntityType.SQUID);
+        register(EXPERIENCER, ExperiencerBuff.INSTANCE, ModEntities.ENCHANTER);
         register(EXPLOSION_MASTER, ExplosionMasterBuff.INSTANCE, EntityType.CREEPER);
         register(FALLING_BUFFER, EntityType.CAT, EntityType.OCELOT, EntityType.CHICKEN, EntityType.GHAST);
         register(FANGS_SUMMONER, EntityType.EVOKER);

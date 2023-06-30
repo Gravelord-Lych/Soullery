@@ -1,6 +1,7 @@
 package lych.soullery.client.render.renderer;
 
 import lych.soullery.Soullery;
+import lych.soullery.client.render.EnchanterRenderer;
 import lych.soullery.entity.monster.IPurifiable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -29,6 +30,8 @@ public final class ModEntityRenderers {
         registerEntityRenderingHandler(COMPUTER_SCIENTIST, ComputerScientistRenderer::new);
         registerEntityRenderingHandler(DARK_EVOKER, DarkEvokerRenderer::new);
         registerEntityRenderingHandler(DROPPING_MORTAR_SHELL, ModEntityRenderers::createRenderForMortarShells);
+        registerEntityRenderingHandler(ENCHANTED_ARMOR_STAND, EnchantedArmorStandRenderer::new);
+        registerEntityRenderingHandler(ENCHANTER, EnchanterRenderer::new);
         registerEntityRenderingHandler(ENERGIZED_BLAZE, EnergizedBlazeRenderer::new);
         registerEntityRenderingHandler(ENGINEER, EngineerRenderer::new);
         registerEntityRenderingHandler(ETHE_ARMORER, EtheArmorerRenderer::new);

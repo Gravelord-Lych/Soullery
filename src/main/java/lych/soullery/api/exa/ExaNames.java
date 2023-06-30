@@ -10,6 +10,7 @@ public final class ExaNames {
     public static final String ENHANCED_AUTO_JUMP = "enhanced_auto_jump"  ;
     public static final String ESCAPER = "escaper";
     public static final String EXPLOSION_MASTER = "explosion_master";
+    public static final String EXPERIENCER = "experiencer";
     public static final String FALLING_BUFFER = "falling_buffer";
     public static final String FANGS_SUMMONER = "fangs_summoner";
     public static final String FAVORED_TRADER = "favored_trader";

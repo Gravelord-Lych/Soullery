@@ -39,7 +39,7 @@ public abstract class AbstractTickableItem extends Item implements IModeChangeab
     }
 
     @Override
-    public void changeMode(ItemStack stack, ServerPlayerEntity player) {
+    public void changeMode(ItemStack stack, ServerPlayerEntity player, boolean reverse) {
         setOn(stack, !isOn(stack));
     }
 

@@ -50,8 +50,8 @@ public abstract class AbstractSkeletonKingEntity extends AbstractSkeletonEntity 
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(9, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        goalSelector.addGoal(9, new WaterAvoidingRandomWalkingGoal(this, 1));
+        goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8));
         goalSelector.addGoal(10, new LookRandomlyGoal(this));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));

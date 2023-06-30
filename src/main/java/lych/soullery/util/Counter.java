@@ -1,64 +1,96 @@
 package lych.soullery.util;
 
-import it.unimi.dsi.fastutil.Function;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.Nullable;
 
-public class Counter<T, N extends INBT> implements INBTSerializable<ListNBT> {
-    private final Object2IntMap<T> counts = new Object2IntOpenHashMap<>();
-    private final Function<? super T, ? extends N> serializer;
-    private final Function<? super N, ? extends T> deserializer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-    public Counter(Function<? super T, ? extends N> serializer, Function<? super N, ? extends T> deserializer) {
-        this(0, serializer, deserializer);
+public final class Counter extends ForwardingMap<UUID, Integer> implements INBTSerializable<ListNBT> {
+    private final Map<UUID, Integer> map = new HashMap<>();
+
+    @Override
+    protected Map<UUID, Integer> delegate() {
+        return map;
     }
 
-    public Counter(int defaultCount, Function<? super T, ? extends N> serializer, Function<? super N, ? extends T> deserializer) {
-        this.serializer = serializer;
-        this.deserializer = deserializer;
-        counts.defaultReturnValue(defaultCount);
+    public int getAndAdd(UUID uuid) {
+        return getAndAdd(uuid, 1);
     }
 
-    public void add(T t) {
-        add(t, 1);
+    public int getAndAdd(UUID uuid, int count) {
+        return put(uuid, getCount(uuid) + count);
     }
 
-    public void add(T t, int value) {
-        counts.put(t, counts.getInt(t) + value);
+    public int addAndGet(UUID uuid) {
+        return addAndGet(uuid, 1);
     }
 
-    public int get(T t) {
-        return counts.getInt(t);
+    public int addAndGet(UUID uuid, int count) {
+        int oldCount = getCount(uuid);
+        int newCount = oldCount + count;
+        put(uuid, newCount);
+        return newCount;
     }
 
-    public void set(T t, int newCount) {
-        counts.put(t, newCount);
+    public int getCount(@Nullable UUID uuid) {
+        Integer i = get(uuid);
+        return i == null ? 0 : i;
+    }
+
+    public ImmutableSet<Count> getCounts() {
+        return entrySet().stream().map(entry -> new Count(entry.getKey(), entry.getValue())).collect(ImmutableSet.toImmutableSet());
+    }
+
+    @Deprecated
+    @Nullable
+    @Override
+    public Integer get(@Nullable Object key) {
+        return super.get(key);
     }
 
     @Override
     public ListNBT serializeNBT() {
         ListNBT listNBT = new ListNBT();
-        for (Object2IntMap.Entry<T> entry : counts.object2IntEntrySet()) {
+        for (Map.Entry<UUID, Integer> entry : entrySet()) {
             CompoundNBT entryNBT = new CompoundNBT();
-            entryNBT.put("CounterKey", serializer.apply(entry.getKey()));
-            entryNBT.putInt("Count", entry.getIntValue());
+            entryNBT.putUUID("UUID", entry.getKey());
+            entryNBT.putInt("Count", entry.getValue());
+            listNBT.add(entryNBT);
         }
         return listNBT;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void deserializeNBT(ListNBT nbt) {
-        counts.clear();
         for (int i = 0; i < nbt.size(); i++) {
-            CompoundNBT compoundNBT = nbt.getCompound(i);
-            T key = deserializer.apply((N) compoundNBT.get("CounterKey"));
-            int count = compoundNBT.getInt("Count");
-            counts.put(key, count);
+            CompoundNBT entryNBT = nbt.getCompound(i);
+            UUID uuid = entryNBT.getUUID("UUID");
+            int count = entryNBT.getInt("Count");
+            put(uuid, count);
+        }
+    }
+
+    public static final class Count {
+        private final UUID key;
+        private final int count;
+
+        Count(UUID key, int count) {
+            this.key = key;
+            this.count = count;
+        }
+
+        public UUID getKey() {
+            return key;
+        }
+
+        public int getCount() {
+            return count;
         }
     }
 }

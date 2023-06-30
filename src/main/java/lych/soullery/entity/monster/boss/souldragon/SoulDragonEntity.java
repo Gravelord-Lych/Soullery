@@ -642,11 +642,11 @@ public class SoulDragonEntity extends MobEntity implements IMob, IPurifiable {
         }
 
         boolean loot = level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
-        int exp = 3000;
+        int exp = 1000;
 
         if (!level.isClientSide()) {
             if (dragonDeathTime > 150 && dragonDeathTime % 5 == 0 && loot) {
-                dropExperience(MathHelper.floor((float) exp * 0.08F));
+                dropExperience(MathHelper.floor((float) exp * 0.08f));
             }
 
             if (dragonDeathTime == 1 && !isSilent()) {

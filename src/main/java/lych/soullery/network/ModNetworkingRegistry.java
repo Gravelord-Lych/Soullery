@@ -10,6 +10,7 @@ public class ModNetworkingRegistry {
     public static void onCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(ClickHandlerNetwork::register);
         event.enqueueWork(InvokableNetwork::register);
+        event.enqueueWork(ItemVanishingSkillNetwork::register);
         event.enqueueWork(LaserNetwork::register);
         event.enqueueWork(MindOperatorNetwork::register);
         event.enqueueWork(StaticStatusHandler::register);

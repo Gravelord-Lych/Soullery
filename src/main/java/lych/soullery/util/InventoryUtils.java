@@ -32,9 +32,19 @@ public final class InventoryUtils {
 
     public static NonNullList<ItemStack> getSortedList(PlayerInventory inventory) {
         NonNullList<ItemStack> list = CollectionUtils.createMutableNonNullListWithSize(inventory.getContainerSize(), ItemStack.EMPTY);
+        if (PlayerInventory.isHotbarSlot(inventory.selected)) {
+            list.add(inventory.getItem(inventory.selected));
+        }
         list.addAll(inventory.offhand);
+        for (int i = 0; i < PlayerInventory.getSelectionSize(); i++) {
+            if (!(PlayerInventory.isHotbarSlot(inventory.selected) && i == inventory.selected)) {
+                list.add(inventory.items.get(i));
+            }
+        }
         list.addAll(Lists.reverse(inventory.armor));
-        list.addAll(inventory.items);
+        for (int i = PlayerInventory.getSelectionSize(); i < inventory.items.size(); i++) {
+            list.add(inventory.items.get(i));
+        }
         return list;
     }
 
@@ -93,6 +103,10 @@ public final class InventoryUtils {
             }
         }
         return list;
+    }
+
+    public static boolean hasFreeSlot(PlayerInventory inventory) {
+        return inventory.getFreeSlot() != -1;
     }
 
     public static boolean isInHand(ItemStack stack, PlayerEntity player, boolean selected) {

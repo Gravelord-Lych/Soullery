@@ -16,6 +16,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -49,6 +50,7 @@ public class MindOperatorItem extends Item implements IUpgradeableItem, ISkillPe
             ActionResultType type = tryControl(player, ray.getEntity(), hand);
             if (type != null) {
                 player.playSound(ModSoundEvents.MIND_OPERATE.get(), 1, 1);
+                player.awardStat(Stats.ITEM_USED.get(this));
                 return new ActionResult<>(type, player.getItemInHand(hand));
             }
         }

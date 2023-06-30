@@ -45,6 +45,7 @@ public class ItemModelDataGen extends ItemModelProvider {
     protected void registerModels() {
         simple(registryNameToString(CHAOS_WAND), HANDHELD, prefix(CHAOS_WAND));
         simple(registryNameToString(CHAOS_WAND_II), HANDHELD, prefix(CHAOS_WAND_II));
+        simple(registryNameToString(ENCHANTING_WAND), HANDHELD, prefix(ENCHANTING_WAND));
         simple(registryNameToString(ENDER_LAUNCHER), GENERATED, prefix(ENDER_LAUNCHER));
         simple(registryNameToString(ENDER_LAUNCHER_II), GENERATED, prefix(ENDER_LAUNCHER_II));
         simple(registryNameToString(ENTITY_CARRIER), HANDHELD, prefix(ENTITY_CARRIER));
@@ -169,6 +170,7 @@ public class ItemModelDataGen extends ItemModelProvider {
         blockItem(DECAYED_STONE_WALL);
         segenBlockItem(DEPTH_SEGEN);
         segenBlockItem(DEPTH_SEGEN_II);
+        blockItem(DISASSEMBLER);
         segenBlockItem(HEAT_SEGEN);
         segenBlockItem(HEAT_SEGEN_II);
         blockItem(MAGNETIC_FIELD_GENERATOR);

@@ -19,7 +19,7 @@ public final class BipedModels {
         }
 
         public Size64(float offs) {
-            super(RenderType::entityCutoutNoCull, offs, 0,64, 64);
+            super(RenderType::entityCutoutNoCull, offs, 0, 64, 64);
         }
 
         public Size64(Function<? super ResourceLocation, ? extends RenderType> function) {

@@ -7,8 +7,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -32,7 +32,7 @@ public abstract class BowAttackReinforcement extends Reinforcement {
 
     @Override
     protected boolean isItemPosSuitable(ItemStack stack) {
-        return stack.getItem() instanceof BowItem;
+        return stack.getItem() instanceof ShootableItem;
     }
 
     @SubscribeEvent

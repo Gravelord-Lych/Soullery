@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -74,6 +75,7 @@ public abstract class AbstractWandItem<T extends AbstractWandItem<T>> extends It
                 if (result != null && result.consumesAction()) {
                     SoulEnergies.cost(player, energyCostFunction.applyAsInt(stack));
                     ModItems.damage(player, hand);
+                    player.awardStat(Stats.ITEM_USED.get(this));
                     if (getSound() != null) {
                         WandSoundNetwork.INSTANCE.send(PacketDistributor.NEAR.with(() -> PacketDistributor.TargetPoint.p(player.getX(), player.getY(), player.getZ(), 30, player.level.dimension()).get()), getId(this));
                     }

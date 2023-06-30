@@ -5,8 +5,8 @@ import lych.soullery.api.event.PostLivingHurtEvent;
 import lych.soullery.util.EntityUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -45,7 +45,7 @@ public class ShulkerReinforcement extends AggressiveReinforcement {
 
     @Override
     public boolean isItemPosSuitable(ItemStack stack) {
-        return super.isItemPosSuitable(stack) || stack.getItem() instanceof BowItem;
+        return super.isItemPosSuitable(stack) || stack.getItem() instanceof ShootableItem;
     }
 
     @Override

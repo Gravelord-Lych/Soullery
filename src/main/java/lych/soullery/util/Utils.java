@@ -1,9 +1,18 @@
 package lych.soullery.util;
 
 import lych.soullery.world.CommandData;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,11 +20,20 @@ import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public final class Utils {
+    public static final LazyValue<Effect> FROSTED = new LazyValue<>(() -> {
+        Effect frosted = ForgeRegistries.POTIONS.getValue(new ResourceLocation("twilightforest", "frosted"));
+        if (frosted != null) {
+            return frosted;
+        }
+        return Effects.MOVEMENT_SLOWDOWN;
+    });
+
     private Utils() {}
 
     public static long clamp(long value, long min, long max) {
@@ -133,5 +151,46 @@ public final class Utils {
             i++;
         }
         return i;
+    }
+
+    public static void saveBlockPosList(CompoundNBT compoundNBT, List<BlockPos> list, String name) {
+        ListNBT gateNBT = new ListNBT();
+        list.stream().map(NBTUtil::writeBlockPos).forEach(gateNBT::add);
+        compoundNBT.put(name, gateNBT);
+    }
+
+    public static void loadBlockPosList(CompoundNBT compoundNBT, List<BlockPos> list, String name) {
+        if (compoundNBT.contains(name, Constants.NBT.TAG_LIST)) {
+            list.clear();
+            ListNBT gateNBT = compoundNBT.getList(name, Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < gateNBT.size(); i++) {
+                list.add(NBTUtil.readBlockPos(gateNBT.getCompound(i)));
+            }
+        }
+    }
+
+    public static void saveUUIDSet(CompoundNBT compoundNBT, Set<UUID> set, String name) {
+        ListNBT listNBT = new ListNBT();
+        set.stream().map(NBTUtil::createUUID).forEach(listNBT::add);
+        compoundNBT.put(name, listNBT);
+    }
+
+    public static void loadUUIDSet(CompoundNBT compoundNBT, Set<UUID> set, String name) {
+        if (compoundNBT.contains(name, Constants.NBT.TAG_LIST)) {
+            set.clear();
+            ListNBT listNBT = compoundNBT.getList(name, Constants.NBT.TAG_INT_ARRAY);
+            listNBT.stream().map(NBTUtil::loadUUID).forEach(set::add);
+        }
+    }
+
+    public static void saveCounter(CompoundNBT compoundNBT, Counter counter, String name) {
+        compoundNBT.put(name, counter.serializeNBT());
+    }
+
+    public static void loadCounter(CompoundNBT compoundNBT, Counter counter, String name) {
+        if (compoundNBT.contains(name, Constants.NBT.TAG_LIST)) {
+            counter.clear();
+            counter.deserializeNBT(compoundNBT.getList(name, Constants.NBT.TAG_COMPOUND));
+        }
     }
 }

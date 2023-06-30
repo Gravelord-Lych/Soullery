@@ -17,6 +17,7 @@ import static lych.soullery.Soullery.make;
 public final class ModTileEntities {
     public static final TileEntityType<DepthSEGeneratorTileEntity> DEPTH_SEGEN = Builder.of(() -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN, 1), ModBlocks.DEPTH_SEGEN).build(null);
     public static final TileEntityType<DepthSEGeneratorTileEntity> DEPTH_SEGEN_II = Builder.of(() -> new DepthSEGeneratorTileEntity(ModTileEntities.DEPTH_SEGEN_II, 2), ModBlocks.DEPTH_SEGEN_II).build(null);
+    public static final TileEntityType<EnchanterSpawnerTileEntity> ENCHANTER_SPAWNER = Builder.of(() -> new EnchanterSpawnerTileEntity(ModTileEntities.ENCHANTER_SPAWNER), ModBlocks.ENCHANTER_SPAWNER).build(null);
     public static final TileEntityType<MagneticFieldGeneratorTileEntity> MAGNETIC_FIELD_GENERATOR = Builder.of(() -> new MagneticFieldGeneratorTileEntity(ModTileEntities.MAGNETIC_FIELD_GENERATOR), ModBlocks.MAGNETIC_FIELD_GENERATOR).build(null);
     public static final TileEntityType<HeatSEGeneratorTileEntity> HEAT_SEGEN = Builder.of(() -> new HeatSEGeneratorTileEntity(ModTileEntities.HEAT_SEGEN, 1), ModBlocks.HEAT_SEGEN).build(null);
     public static final TileEntityType<HeatSEGeneratorTileEntity> HEAT_SEGEN_II = Builder.of(() -> new HeatSEGeneratorTileEntity(ModTileEntities.HEAT_SEGEN_II, 2), ModBlocks.HEAT_SEGEN_II).build(null);
@@ -39,6 +40,7 @@ public final class ModTileEntities {
         IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
         registry.register(make(DEPTH_SEGEN, ModBlockNames.DEPTH_SEGEN));
         registry.register(make(DEPTH_SEGEN_II, ModBlockNames.DEPTH_SEGEN_II));
+        registry.register(make(ENCHANTER_SPAWNER, ModBlockNames.ENCHANTER_SPAWNER));
         registry.register(make(HEAT_SEGEN, ModBlockNames.HEAT_SEGEN));
         registry.register(make(HEAT_SEGEN_II, ModBlockNames.HEAT_SEGEN_II));
         registry.register(make(INSTANT_SPAWNER, ModBlockNames.INSTANT_SPAWNER));

@@ -74,9 +74,12 @@ public class InstantSpawnerTileEntity extends TileEntity implements ITickableTil
             MobEntity mob = (MobEntity) entity;
             mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), SpawnReason.SPAWNER, null, null);
             mob.restrictTo(getBlockPos(), range * restrictRadiusMultiplier);
+            customizeMob(player, mob, level, pos);
         }
         return level.addFreshEntity(entity);
     }
+
+    protected void customizeMob(PlayerEntity player, MobEntity mob, ServerWorld level, BlockPos pos) {}
 
     @Override
     public CompoundNBT save(CompoundNBT compoundNBT) {

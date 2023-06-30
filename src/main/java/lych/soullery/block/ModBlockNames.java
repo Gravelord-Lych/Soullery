@@ -9,6 +9,8 @@ public final class ModBlockNames {
     public static final String DAMAGED_SOUL_METAL_BARS = "damaged_soul_metal_bars";
     public static final String DEPTH_SEGEN = "depth_segen";
     public static final String DEPTH_SEGEN_II = "depth_segen_l2";
+    public static final String DISASSEMBLER = "disassembler";
+    public static final String ENCHANTER_SPAWNER = "enchanter_spawner";
     public static final String HEAT_SEGEN = "heat_segen";
     public static final String HEAT_SEGEN_II = "heat_segen_l2";
     public static final String INFERNO = "inferno";
